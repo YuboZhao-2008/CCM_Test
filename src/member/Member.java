@@ -1,6 +1,5 @@
 package member;
 import time.*;
-import staff.*;
 import event.*;
 import facility.*;
 
@@ -14,10 +13,15 @@ public abstract class Member {
     protected String name;
     protected Schedule registrations;
 
-    public Member (int id, String name, Schedule registrations) {
+    enum PlanType {
+        BIWEEKLY_BASE,
+        MONTHLY_BASE,
+        ANNUAL_BASE
+    }
+
+    public Member (int id, String name, PlanType) {
         this.id = id;
         this.name = name;
-        this.registrations = registrations;
     }
 
     public double calculateBill()   {
