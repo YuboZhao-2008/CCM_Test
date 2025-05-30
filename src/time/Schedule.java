@@ -24,10 +24,25 @@ public class Schedule {
         return true;
     }
 
+    /**
+     * returns the correct position to insert a target time block using binary
+     * search
+     * 
+     * @param target
+     * @return the index to insert at
+     */
     private int binarySearch(TimeBlock target) {
         return binarySearch(0, eventSchedule.size() - 1, target);
     }
 
+    /**
+     * recursive method to serach for the correct position to insert
+     * 
+     * @param hi     the upper bound
+     * @param lo     the lower bound
+     * @param target
+     * @return the index
+     */
     private int binarySearch(int hi, int lo, TimeBlock target) {
         if (lo >= hi) {
             return (eventSchedule.get(lo).getTimeBlock().compareToStart(target) > 0) ? lo + 1 : lo;
