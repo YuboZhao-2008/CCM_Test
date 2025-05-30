@@ -1,6 +1,6 @@
 /**
  * This class represents a scheduled event.
- * It contains all functions that an event needs.
+ * It contains all the functions that an event needs.
  *
  * @author Mansour Abdelsalam
  * @version 1.0
@@ -24,10 +24,11 @@ abstract class Event {
     protected Member host;
     protected ArrayList<Staff> staffSupervising = new ArrayList<Staff>();
     protected ArrayList<Member> participants = new ArrayList<Member>();
-    private int id;
+    protected int id;
+    protected boolean isCompleted;
 
     /**
-     * Event constructor,
+     * Constructor for Event;
      * creates an event given information.
      * Host can be null to represent no host.
      * 
@@ -39,11 +40,22 @@ abstract class Event {
         this.facility = facility;
         this.timeBlock = timeblock;
         this.host = host;
+        
+        this.isCompleted = false;
+        // id is set within eventManager, which will generate a unique ID for the event.
+    }
+
+    // accessors
+    //
+
+    // mutators
+    public void setID(int id) {
+        this.id = id;
     }
 
     /**
      * isFull
-     * determines whether the event's facility has reached maximum participants.
+     * determines if the event's facility has reached maximum capacity.
      * 
      * @return whether or not the event is full
      */
@@ -65,7 +77,7 @@ abstract class Event {
         }
         
         if (participants.contains(member)) {
-            return false; // already registered
+            return false; // already registered for this event
         }
 
         if (isFull()) {
@@ -85,10 +97,10 @@ abstract class Event {
 
     /**
      * assignStaff
-     * assigns a staff to supervise the event.
+     * assigns a staff member to supervise the event.
      * 
      * @param staff
-     * @return whether or not the staff was successfully added
+     * @return whether or not the staff member was successfully added
      */
     public boolean assignStaff(Staff staff) {
         // guard clauses
@@ -97,7 +109,7 @@ abstract class Event {
         }
 
         if (staffSupervising.contains(staff)) {
-            return false; // already supervising
+            return false; // already supervising this event
         }
 
         if (!staff.getShifts().isBlockFree(timeBlock)) {
@@ -107,5 +119,24 @@ abstract class Event {
         // all conditions are valid for the staff member to be added now
         staffSupervising.add(staff);
         staff.getShifts().add(this);
+        
+        return true;
+    }
+
+    /**
+     * advanceHours
+     * advances the time by the specified hours.
+     * Prints the information of all events that passed and asks the user to enter any required information about the completed event.
+     * 
+     * @param hours
+     */
+    abstract void advanceHours(int hours);
+
+    /*
+     * toString
+     */
+    public String toString() {
+        String s = "Event ID: "+id+"\nFacility #"+facility.getRoomNum()+"\nScheduled for "+timeBlock+"\nHeld by "+host.getName();
+        return s;
     }
  }
