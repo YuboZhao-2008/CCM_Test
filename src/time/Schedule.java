@@ -29,18 +29,28 @@ public class Schedule {
     }
 
     private int binarySearch(int hi, int lo, TimeBlock target) {
-        int mid = (hi + lo) / 2;
-
-        if (eventSchedule.get(mid).getTimeBlock().compareToStart(target) > 0) {
-            hi = lo - 1;
-        } else {
-            lo = hi - 1;
+        if (lo >= hi) {
+            return (eventSchedule.get(lo).getTimeBlock().compareToStart(target) > 0) ? lo + 1 : lo;
         }
 
-        return 0;
+        int mid = lo + (hi - lo) / 2;
+
+        if (eventSchedule.get(mid).getTimeBlock().compareToStart(target) > 0) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+
+        return binarySearch(lo, hi, target);
     }
 
     public boolean add(Event event) {
-        return false;
+        if (isBlockFree(event.getTimeBlock())) {
+            int idx = binarySearch(event.getTimeBlock());
+            eventSchedule.add(idx, event);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
