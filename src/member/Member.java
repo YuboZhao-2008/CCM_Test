@@ -1,1 +1,1 @@
-package src.member;
+package member;
