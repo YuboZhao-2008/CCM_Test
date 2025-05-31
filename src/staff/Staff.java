@@ -1,5 +1,9 @@
 package staff;
 
-public abstract class Staff {
+import time.Schedule;
 
+public abstract class Staff {
+    public Schedule getShifts() {
+        return new Schedule();
+    }
 }

@@ -9,11 +9,21 @@ package time;
 
 import java.util.ArrayList;
 
+import event.Competition;
 import event.Event;
+import facility.SportsFacility;
+import member.AdultMember;
+import time.TimeBlock.Month;
 
 public class Schedule {
     private ArrayList<Event> eventSchedule;
 
+    /**
+     * whether this block is free within the schedule
+     * 
+     * @param timeBlock
+     * @return whether this block does not conflict with any other time blocks
+     */
     public boolean isBlockFree(TimeBlock timeBlock) {
         for (Event event : eventSchedule) {
             if (event.getTimeBlock().isConflicting(timeBlock)) {
@@ -59,6 +69,12 @@ public class Schedule {
         return binarySearch(lo, hi, target);
     }
 
+    /**
+     * adds an event to the schedule if it is free
+     * 
+     * @param event
+     * @return whether the addition succeeded
+     */
     public boolean add(Event event) {
         if (isBlockFree(event.getTimeBlock())) {
             int idx = binarySearch(event.getTimeBlock());
@@ -67,5 +83,10 @@ public class Schedule {
         } else {
             return false;
         }
+    }
+
+    public static void main(String[] args) {
+        Schedule schedule = new Schedule();
+        schedule.add(new Competition(new SportsFacility(), new TimeBlock(2025, Month.MAY, 30), new AdultMember()));
     }
 }
