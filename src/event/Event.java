@@ -111,7 +111,7 @@ public abstract class Event {
             return false; // already supervising this event
         }
 
-        if (!staff.getShifts().isBlockFree(timeBlock)) {
+        if (!staff.isAvailable(timeBlock)) {
             return false; // the staff has a conflicting time block
         }
 
@@ -122,14 +122,8 @@ public abstract class Event {
     }
 
     /**
-     * advanceHours
-     * advances the time by the specified hours.
-     * Prints the information of all events that passed and asks the user to enter
-     * any required information about the completed event.
-     * 
-     * @param hours
      */
-    abstract void advanceHours(int hours);
+    abstract public void setCompleted();
 
     /*
      * toString
