@@ -266,6 +266,6 @@ public class TimeBlock {
      * @return the end hour
      */
     public double getEndHour() {
-        return startHour;
+        return endHour;
     }
 }

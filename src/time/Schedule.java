@@ -9,7 +9,9 @@ package time;
 
 import java.util.ArrayList;
 
+import event.Competition;
 import event.Event;
+import time.TimeBlock.Month;
 
 public class Schedule {
     private ArrayList<Event> eventSchedule;
@@ -45,18 +47,11 @@ public class Schedule {
      * @return the index to insert at
      */
     private int binarySearch(TimeBlock target) {
-        return binarySearch(0, eventSchedule.size() - 1, target);
-    }
+        if (eventSchedule.size() <= 0) {
+            return 0;
+        }
 
-    /**
-     * returns the index of the time block with the same start as the target, -1
-     * otherwise
-     * 
-     * @param target
-     * @return the index
-     */
-    private int binarySearchStrict(TimeBlock target) {
-        return binarySearchStrict(0, eventSchedule.size() - 1, target);
+        return binarySearch(0, eventSchedule.size() - 1, target);
     }
 
     /**
@@ -67,7 +62,7 @@ public class Schedule {
      * @param target
      * @return the index
      */
-    private int binarySearch(int hi, int lo, TimeBlock target) {
+    private int binarySearch(int lo, int hi, TimeBlock target) {
         if (lo >= hi) {
             return (eventSchedule.get(lo).getTimeBlock().compareToStart(target) > 0) ? lo + 1 : lo;
         }
@@ -88,35 +83,6 @@ public class Schedule {
     }
 
     /**
-     * recursive method to serach for the index of a TimeBlock based on the start
-     * time
-     * 
-     * @param hi     the upper bound
-     * @param lo     the lower bound
-     * @param target
-     * @return the index
-     */
-    private int binarySearchStrict(int hi, int lo, TimeBlock target) {
-        if (lo >= hi) {
-            return -1;
-        }
-
-        int mid = lo + (hi - lo) / 2;
-
-        double comp = eventSchedule.get(mid).getTimeBlock().compareToStart(target);
-
-        if (comp == 0) {
-            return mid;
-        } else if (comp > 0) {
-            lo = mid + 1;
-        } else {
-            hi = mid - 1;
-        }
-
-        return binarySearchStrict(lo, hi, target);
-    }
-
-    /**
      * finds all free blocks within a time range
      * 
      * @param range
@@ -125,16 +91,21 @@ public class Schedule {
     public ArrayList<TimeBlock> freeBlocksWithin(TimeBlock range) {
         ArrayList<TimeBlock> blocks = new ArrayList<TimeBlock>();
 
-        int loIdx = binarySearch(range);
-        int hiIdx = binarySearch(range.getEndBlock());
+        int lo = binarySearch(range);
+        int hi = binarySearch(range.getEndBlock()) - 1;
 
-        double hoursUntilLo = range.getStartBlock().hoursUntil(eventSchedule.get(loIdx).getTimeBlock());
+        if (lo > hi) {
+            blocks.add(new TimeBlock(range, range.getStartHour(), range.duration()));
+            return blocks;
+        }
+
+        double hoursUntilLo = range.getStartBlock().hoursUntil(eventSchedule.get(lo).getTimeBlock());
 
         if (hoursUntilLo > 0) {
             blocks.add(new TimeBlock(range, range.getStartHour(), hoursUntilLo));
         }
 
-        for (int i = loIdx; i < hiIdx; i++) {
+        for (int i = lo; i < hi; i++) {
             TimeBlock curr = eventSchedule.get(i).getTimeBlock();
             TimeBlock next = eventSchedule.get(i + 1).getTimeBlock();
 
@@ -145,13 +116,32 @@ public class Schedule {
             }
         }
 
-        double hoursAfterHi = eventSchedule.get(hiIdx).getTimeBlock().hoursUntil(range.getEndBlock());
+        double hoursAfterHi = eventSchedule.get(hi).getTimeBlock().hoursUntil(range.getEndBlock());
 
         if (hoursAfterHi > 0) {
-            blocks.add(new TimeBlock(range, eventSchedule.get(hiIdx).getTimeBlock().getEndHour(), hoursAfterHi));
+            blocks.add(new TimeBlock(range, eventSchedule.get(hi).getTimeBlock().getEndHour(), hoursAfterHi));
         }
 
         return blocks;
+    }
+
+    /**
+     * finds all events within a time range
+     * 
+     * @param range
+     * @return an ArrayList of events which start and end within the range
+     */
+    public ArrayList<Event> eventsWithin(TimeBlock range) {
+        ArrayList<Event> events = new ArrayList<Event>();
+
+        int lo = binarySearch(range);
+        int hi = binarySearch(range.getEndBlock()) - 1;
+
+        for (int i = lo; i <= hi; i++) {
+            events.add(eventSchedule.get(i));
+        }
+
+        return events;
     }
 
     /**
@@ -173,5 +163,36 @@ public class Schedule {
         }
 
         return false;
+    }
+
+    /**
+     * removes from an event from the schedule if it exists
+     * 
+     * @param event
+     * @return whether it was successfuly
+     */
+    public boolean cancelEvent(Event event) {
+        if (eventSchedule.get(binarySearch(event.getTimeBlock())) == event) {
+            eventSchedule.remove(event);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Schedule schedule = new Schedule();
+
+        ArrayList<Event> list = new ArrayList<Event>();
+        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 4));
+
+        schedule.add(new Competition(null, new TimeBlock(2025, Month.JUN, 1, 12, 1), null));
+
+        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 4));
+
+        schedule.add(new Competition(null, new TimeBlock(2025, Month.JUN, 1, 13.5, 1), null));
+
+        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 3.5));
+        System.out.println(list.size());
     }
 }
