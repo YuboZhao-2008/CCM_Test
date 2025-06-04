@@ -89,7 +89,7 @@ public abstract class Event {
 
         // all conditions are valid for member to be added now
         participants.add(member);
-        member.getRegistrations().add(this);
+        member.registerFor(this)
 
         return true;
     }
@@ -117,7 +117,6 @@ public abstract class Event {
 
         // all conditions are valid for the staff member to be added now
         staffSupervising.add(staff);
-        staff.getShifts().add(this);
 
         return true;
     }
