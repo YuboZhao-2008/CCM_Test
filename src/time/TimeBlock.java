@@ -1,5 +1,9 @@
 package time;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class TimeBlock {
     public enum Month {
         JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
@@ -10,6 +14,89 @@ public class TimeBlock {
     private int day;
     private double startHour;
     private double endHour;
+
+    public static final int DAYS_IN_YEAR = 365;
+    public static final Map<Month, Integer> DAYS_BEFORE_MONTH;
+    static {
+        Map<Month, Integer> temp = new HashMap<>();
+        temp.put(Month.JAN, 0);
+        temp.put(Month.FEB, 31);
+        temp.put(Month.MAR, 59);
+        temp.put(Month.APR, 90);
+        temp.put(Month.MAY, 120);
+        temp.put(Month.JUN, 151);
+        temp.put(Month.JUL, 181);
+        temp.put(Month.AUG, 212);
+        temp.put(Month.SEP, 243);
+        temp.put(Month.OCT, 273);
+        temp.put(Month.NOV, 304);
+        temp.put(Month.DEC, 334);
+
+        DAYS_BEFORE_MONTH = Collections.unmodifiableMap(temp);
+    }
+    public static final int HOURS_IN_DAY = 24;
+
+    /**
+     * checks whether a year is a leap year
+     * 
+     * @param year the year
+     * @return whether it is a leap year
+     */
+    public static boolean isLeapYear(int year) {
+        if (year % 400 == 0) {
+            return true;
+        } else if (year % 100 == 0) {
+            return false;
+        } else
+            return year % 4 == 0;
+    }
+
+    /**
+     * calculates how many hours have passed before the start of a given year from
+     * unix epoch
+     *
+     * @param year
+     * @return the number of hours
+     */
+    private static int hoursBeforeYear(int year) {
+        int sum = 0;
+        for (int i = 1970; i < year; i++) {
+            sum += (DAYS_IN_YEAR + (isLeapYear(i) ? 1 : 0)) * HOURS_IN_DAY;
+        }
+        return sum;
+    }
+
+    /**
+     * calculates how many hours are in each month based on the year from unix epoch
+     * 
+     * @return the number of hours in that month
+     */
+    private static int hoursBeforeMonth(Month month, int year) {
+        if (DAYS_BEFORE_MONTH.get(month) >= 59 && isLeapYear(year)) {
+            return (DAYS_BEFORE_MONTH.get(month) + 1) * HOURS_IN_DAY;
+        } else
+            return DAYS_BEFORE_MONTH.get(month) * HOURS_IN_DAY;
+    }
+
+    /**
+     * calculates how many hours have passed since JAN 1, 1970 00:00 until the
+     * start of this block
+     *
+     * @return a double, the number of hours
+     */
+    private double hoursBeforeStart() {
+        return hoursBeforeYear(year) + hoursBeforeMonth(month, year) + (day - 1) * HOURS_IN_DAY + startHour;
+    }
+
+    /**
+     * calculates how many hours have passed since JAN 1, 1970 00:00 until the
+     * end of this block
+     *
+     * @return a double, the number of hours
+     */
+    private double hoursBeforeEnd() {
+        return hoursBeforeYear(year) + hoursBeforeMonth(month, year) + (day - 1) * HOURS_IN_DAY + endHour;
+    }
 
     /**
      * TimeBlock constructor for a whole-day event
@@ -60,6 +147,22 @@ public class TimeBlock {
     }
 
     /**
+     * TimeBlock constructor for a TimeBlock with the same date as other but
+     * different start time and duration
+     * 
+     * @param other
+     * @param startHour
+     * @param duration
+     */
+    public TimeBlock(TimeBlock other, double startHour, double duration) {
+        this.year = other.year;
+        this.month = other.month;
+        this.day = other.day;
+        this.startHour = startHour;
+        endHour = startHour + duration;
+    }
+
+    /**
      * compares the start time of this event and another
      * 
      * @param other
@@ -67,18 +170,29 @@ public class TimeBlock {
      *         event starts first
      */
     public double compareToStart(TimeBlock other) {
-        return other.startHour - this.startHour;
+        return other.hoursBeforeStart() - hoursBeforeStart();
     }
 
     /**
      * compares the end time of this event and another
-     * 
+     *
      * @param other
      * @return a positive number if this event ends first, negative if the other
      *         event end first
      */
     public double compareToEnd(TimeBlock other) {
-        return other.endHour - this.endHour;
+        return other.hoursBeforeEnd() - hoursBeforeEnd();
+    }
+
+    /**
+     * calculates the amount of time between the end of this TimeBlock and the start
+     * of another
+     * 
+     * @param other
+     * @return a double, the number of hours
+     */
+    public double hoursUntil(TimeBlock other) {
+        return other.hoursBeforeStart() - hoursBeforeEnd();
     }
 
     /**
@@ -110,6 +224,7 @@ public class TimeBlock {
      * 
      * @return the string
      */
+    @Override
     public String toString() {
         int startMinute = (int) Math.round(startHour % 1 * 60);
         int endMinute = (int) Math.round(endHour % 1 * 60);
@@ -118,9 +233,39 @@ public class TimeBlock {
                 endMinute);
     }
 
-    public static void main(String[] args) {
-        TimeBlock timeBlock = new TimeBlock(2015, Month.JAN, 3, 12, 4);
-        TimeBlock timeBlock2 = new TimeBlock(2015, Month.JAN, 3, 15.9, 5);
-        System.out.println(timeBlock.isConflicting(timeBlock2));
+    /**
+     * returns a TimeBlock representing the start
+     * 
+     * @return a TimeBlock with duration 0h with the same start
+     */
+    public TimeBlock getStartBlock() {
+        return new TimeBlock(year, month, day, startHour);
+    }
+
+    /**
+     * returns a TimeBlock representing the end
+     * 
+     * @return a TimeBlock with duration 0h where the start hour is the end
+     */
+    public TimeBlock getEndBlock() {
+        return new TimeBlock(year, month, day, endHour);
+    }
+
+    /**
+     * accessor for startHour
+     * 
+     * @return the start hour
+     */
+    public double getStartHour() {
+        return startHour;
+    }
+
+    /**
+     * accessor for endHour
+     * 
+     * @return the end hour
+     */
+    public double getEndHour() {
+        return endHour;
     }
 }

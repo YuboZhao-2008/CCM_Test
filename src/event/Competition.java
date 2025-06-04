@@ -9,10 +9,13 @@
 
 package event;
 
+import java.util.Scanner;
+
 import facility.*;
 import time.*;
 import member.*;
 import staff.*;
+import main.*;
 
 import java.util.ArrayList;
 import java.io.*;

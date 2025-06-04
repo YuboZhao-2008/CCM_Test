@@ -9,15 +9,14 @@
 
 package event;
 
-import facility.*;
-import time.*;
-import member.*;
-import staff.*;
-
 import java.util.ArrayList;
-import java.io.*;
 
-abstract class Event {
+import facility.Facility;
+import member.Member;
+import staff.Staff;
+import time.TimeBlock;
+
+public abstract class Event {
     // fields
     protected Facility facility;
     protected TimeBlock timeBlock;
@@ -36,11 +35,11 @@ abstract class Event {
      * @param timeBlock
      * @param host
      */
-    public Event(Facility facility, TimeBlock timeblock, Member host) {
+    public Event(Facility facility, TimeBlock timeBlock, Member host) {
         this.facility = facility;
-        this.timeBlock = timeblock;
+        this.timeBlock = timeBlock;
         this.host = host;
-        
+
         this.isCompleted = false;
         // id is set within eventManager, which will generate a unique ID for the event.
     }
@@ -75,7 +74,7 @@ abstract class Event {
         if (member == null) {
             return false;
         }
-        
+
         if (participants.contains(member)) {
             return false; // already registered for this event
         }
@@ -118,14 +117,11 @@ abstract class Event {
 
         // all conditions are valid for the staff member to be added now
         staffSupervising.add(staff);
-        staff.scheduleShift(this);
-        
+
         return true;
     }
 
     /**
-     * setCompleted
-     * description
      */
     abstract public void setCompleted();
 
@@ -133,7 +129,13 @@ abstract class Event {
      * toString
      */
     public String toString() {
-        String s = "Event ID: "+id+"\nFacility #"+facility.getRoomNum()+"\nScheduled for "+timeBlock+"\nHeld by "+host.getName();
+        String s = "Event ID: " + id + "\nFacility #" + facility.getRoomNum() + "\nScheduled for " + timeBlock
+                + "\nHeld by " + host.getName();
         return s;
     }
- }
+
+    // accessors
+    public TimeBlock getTimeBlock() {
+        return timeBlock;
+    }
+}
