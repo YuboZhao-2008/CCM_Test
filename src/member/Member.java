@@ -1,7 +1,7 @@
 package member;
-import time.*;
-import event.*;
-import facility.*;
+
+import event.Event;
+import time.Schedule;
 
 public abstract class Member {
     public static final double BIWEEKLY_BASE = 20.00;
@@ -20,7 +20,7 @@ public abstract class Member {
         ANNUAL_BASE
     }
 
-    public Member (int id, String name, PlanType plantype) {
+    public Member(int id, String name, PlanType plantype) {
         this.id = id;
         this.name = name;
         this.planType = plantype;
@@ -39,7 +39,7 @@ public abstract class Member {
                 + String.format("%.2f", calculateBill());
     }
 
-    public void advanceHours(int hours)   {
+    public void advanceHours(int hours) {
         registrations.advanceHours(hours);
     }
 
@@ -51,7 +51,7 @@ public abstract class Member {
         return membershipDetails();
     }
 
-    public boolean registerFor(Event eventName)   {
+    public boolean registerFor(Event eventName) {
 
     }
 }

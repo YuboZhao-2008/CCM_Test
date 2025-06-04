@@ -1,5 +1,9 @@
 package staff;
 
+import event.Event;
+import time.Schedule;
+import time.TimeBlock;
+
 public abstract class Staff {
     private int id;
     private String name;

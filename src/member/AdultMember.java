@@ -1,6 +1,6 @@
 package member;
 
-public class AdultMember extends Member{
+public class AdultMember extends Member {
     private String contactPhone;
     private String address;
     private double billAmount;
