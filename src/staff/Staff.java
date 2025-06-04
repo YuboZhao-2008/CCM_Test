@@ -7,6 +7,7 @@ public abstract class Staff {
 
     public Staff(String name) {
         this.name = name;
+        this.shifts = new Schedule();
     }
 
     public abstract double calculatePay();
@@ -18,6 +19,10 @@ public abstract class Staff {
     public abstract void printPayroll();
 
     public abstract String toString();
+
+    public boolean isAvailalbe(TimeBlock block) {
+        return shifts.isBlockFree(block);
+    }
 
     public int getId() {
         return id;
