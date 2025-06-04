@@ -4,7 +4,7 @@
  *
  * @author Mansour Abdelsalam
  * @version 1.0
- * @since 2025-06-30
+ * @since 2025-06-04
  */
 
 package event;
@@ -68,15 +68,14 @@ public class Competition extends Event {
 
     
     /**
-     * advanceHours
-     * advances the time by the specified hours.
-     * Prints the information of all events that passed and asks the user to enter any required information about the completed event.
-     * 
-     * @param hours
+     * setCompleted
+     * description
      */
     @Override
-    public void advanceHours(int hours) {
-
+    public void setCompleted() {
+        isCompleted = true;
+        
+        setWinner(member)
     }
 
     /*
@@ -85,7 +84,7 @@ public class Competition extends Event {
     public String toString() {
         String s = super.toString() + "\nPrize: "+prize+"\nParticipation Cost: "+participationCost;
         if (winner != null) {
-            s += "Winner: "+winner.getName();
+            s += "\nWinner: "+winner.getName();
         }
 
         return s;
