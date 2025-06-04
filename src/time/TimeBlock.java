@@ -1,3 +1,10 @@
+/**
+ * TimeBlock implements a block of time on a date containing a start and end hour
+ * 
+ * @author Sean Yang
+ * @since June 4, 2025
+ */
+
 package time;
 
 import java.util.Collections;

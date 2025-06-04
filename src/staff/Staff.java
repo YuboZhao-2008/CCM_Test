@@ -24,7 +24,7 @@ public abstract class Staff {
 
     public abstract String toString();
 
-    public boolean isAvailalbe(TimeBlock block) {
+    public boolean isAvailable(TimeBlock block) {
         return shifts.isBlockFree(block);
     }
 

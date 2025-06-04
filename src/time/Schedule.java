@@ -2,7 +2,7 @@
  * Schedule implements a chronologically ordered schedule preventing conflicts
  * 
  * @author Sean Yang
- * @since May 30, 2025
+ * @since June 4, 2025
  */
 
 package time;
