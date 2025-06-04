@@ -9,23 +9,16 @@
 
 package event;
 
-import java.util.Scanner;
-
-import facility.*;
-import time.*;
-import member.*;
-import staff.*;
-import main.*;
-
-import java.util.ArrayList;
-import java.io.*;
+import facility.Facility;
+import member.Member;
+import time.TimeBlock;
 
 public class Competition extends Event {
     // fields
     private double prize;
     private double participationCost;
     private Member winner;
-    
+
     /**
      * Constructor for Competition;
      * creates a competition given information.
@@ -61,7 +54,7 @@ public class Competition extends Event {
      * @return whether or not the winner was successfully set
      */
     public boolean setWinner(Member member) {
-        if(participants.contains(member)) {
+        if (participants.contains(member)) {
             winner = member;
             return true;
         }
@@ -69,25 +62,21 @@ public class Competition extends Event {
         return false;
     }
 
-    
     /**
      * setCompleted
      * description
      */
     @Override
     public void setCompleted() {
-        isCompleted = true;
-        
-        setWinner(member)
     }
 
     /*
      * toString
      */
     public String toString() {
-        String s = super.toString() + "\nPrize: "+prize+"\nParticipation Cost: "+participationCost;
+        String s = super.toString() + "\nPrize: " + prize + "\nParticipation Cost: " + participationCost;
         if (winner != null) {
-            s += "\nWinner: "+winner.getName();
+            s += "\nWinner: " + winner.getName();
         }
 
         return s;
