@@ -83,13 +83,13 @@ public abstract class Event {
             return false; // event is full
         }
 
-        if (!member.getRegistrations().isBlockFree(timeBlock)) {
+        if (!member.isAvailable(timeBlock)) {
             return false; // member has a conflicting time block
         }
 
         // all conditions are valid for member to be added now
         participants.add(member);
-        member.registerFor(this)
+        member.registerFor(this);
 
         return true;
     }
@@ -122,6 +122,8 @@ public abstract class Event {
     }
 
     /**
+     * setCompleted
+     * description
      */
     abstract public void setCompleted();
 
