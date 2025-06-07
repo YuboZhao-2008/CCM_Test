@@ -45,11 +45,39 @@ public abstract class Event {
     }
 
     // accessors
-    //
+    public int getId() {
+        return this.id;
+    }
+    public boolean hasCompleted() {
+        return this.isCompleted;
+    }
+    public TimeBlock getTimeBlock() {
+        return this.timeBlock;
+    }
+    public ArrayList<Staff> getStaffSupervising() {
+        return this.staffSupervising;
+    }
+    public ArrayList<Member> getParticipants() {
+        return this.participants;
+    }
+    public Facility getFacility() {
+        return this.facility;
+    }
 
     // mutators
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * equals
+     * determines if two events are identical
+     * 
+     * @param other
+     * @return whether or not the events are identical
+     */
+    public boolean equals(Event other) {
+        return other != null && this.id == other.id && this.timeBlock.equals(other.timeBlock) && this.host.equals(other.host);
     }
 
     /**
@@ -134,10 +162,5 @@ public abstract class Event {
         String s = "Event ID: " + id + "\nFacility #" + facility.getRoomNum() + "\nScheduled for " + timeBlock
                 + "\nHeld by " + host.getName();
         return s;
-    }
-
-    // accessors
-    public TimeBlock getTimeBlock() {
-        return timeBlock;
     }
 }
