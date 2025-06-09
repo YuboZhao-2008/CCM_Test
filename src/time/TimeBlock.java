@@ -1,3 +1,10 @@
+/**
+ * TimeBlock contains a date as well as a start and end time and implements various helper methods
+ * 
+ * @author Sean Yang
+ * @since May 30, 2025
+ */
+
 package time;
 
 import java.util.Collections;
@@ -34,6 +41,24 @@ public class TimeBlock {
 
         DAYS_BEFORE_MONTH = Collections.unmodifiableMap(temp);
     }
+    public static final Map<Month, Integer> DAYS_IN_MONTH;
+    static {
+        Map<Month, Integer> temp = new HashMap<>();
+        temp.put(Month.JAN, 31);
+        temp.put(Month.FEB, 28);
+        temp.put(Month.MAR, 31);
+        temp.put(Month.APR, 30);
+        temp.put(Month.MAY, 31);
+        temp.put(Month.JUN, 30);
+        temp.put(Month.JUL, 31);
+        temp.put(Month.AUG, 31);
+        temp.put(Month.SEP, 30);
+        temp.put(Month.OCT, 31);
+        temp.put(Month.NOV, 30);
+        temp.put(Month.DEC, 31);
+
+        DAYS_IN_MONTH = Collections.unmodifiableMap(temp);
+    }
     public static final int HOURS_IN_DAY = 24;
 
     /**
@@ -49,6 +74,54 @@ public class TimeBlock {
             return false;
         } else
             return year % 4 == 0;
+    }
+
+    public static Month nextMonth(Month month) {
+        switch (month) {
+            case Month.JAN:
+                return Month.FEB;
+            case Month.FEB:
+                return Month.MAR;
+            case Month.MAR:
+                return Month.APR;
+            case Month.APR:
+                return Month.MAY;
+            case Month.MAY:
+                return Month.JUN;
+            case Month.JUN:
+                return Month.JUL;
+            case Month.JUL:
+                return Month.AUG;
+            case Month.AUG:
+                return Month.SEP;
+            case Month.SEP:
+                return Month.OCT;
+            case Month.OCT:
+                return Month.NOV;
+            case Month.NOV:
+                return Month.DEC;
+            case Month.DEC:
+                return Month.JAN;
+            default:
+                return Month.JAN;
+        }
+    }
+
+    public TimeBlock nextDay() {
+        int newDay = day++;
+        Month newMonth = month;
+        int newYear = year;
+
+        if (newDay > DAYS_IN_MONTH.get(month) &&
+                !(month == Month.FEB && isLeapYear(year) && newDay == DAYS_IN_MONTH.get(month) + 1)) {
+            newDay -= DAYS_IN_MONTH.get(month);
+            newMonth = nextMonth(month);
+            if (newMonth == Month.JAN) {
+                newYear++;
+            }
+        }
+
+        return new TimeBlock(newYear, newMonth, newDay);
     }
 
     /**
@@ -267,5 +340,32 @@ public class TimeBlock {
      */
     public double getEndHour() {
         return endHour;
+    }
+
+    /**
+     * accessor for day
+     * 
+     * @return the day
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * accessor for month
+     * 
+     * @return the month
+     */
+    public Month getMonth() {
+        return month;
+    }
+
+    /**
+     * accessor for year
+     * 
+     * @return the year
+     */
+    public int getYear() {
+        return year;
     }
 }
