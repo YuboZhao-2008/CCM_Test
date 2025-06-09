@@ -1,3 +1,10 @@
+/**
+ * TimeManager keeps track of the current time and controls time progression
+ * 
+ * @author Sean Yang
+ * @since June 06, 2025
+ */
+
 package time;
 
 import time.TimeBlock.Month;
