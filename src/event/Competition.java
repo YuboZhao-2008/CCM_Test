@@ -50,6 +50,12 @@ public class Competition extends Event {
     public Member getWinner() {
         return this.winner;
     }
+    public double getPrize() {
+        return this.prize;
+    }
+    public double getParticipationCost() {
+        return this.participationCost;
+    }
 
     // mutators
     //

@@ -41,7 +41,9 @@ public class Fundraiser extends Event {
     }
 
     // accessors
-    //
+    public double getGoal() {
+        return this.goal;
+    }
 
     // mutators
     //

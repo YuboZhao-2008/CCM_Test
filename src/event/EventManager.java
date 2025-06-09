@@ -90,6 +90,8 @@ public class EventManager {
 
                 events.add(event);
             }
+
+            reader.close();
         } catch(IOException ioe) {
             System.out.println("Error accessing file "+filePath);
         }
@@ -100,6 +102,40 @@ public class EventManager {
 
     // mutators
     //
+
+    /**
+     * save
+     * saves all of EventManager's information to a text file.
+     * 
+     * @param filePath
+     * @return if the save was successful, usually determined by if the file path is correct
+     */
+    public boolean save(String file_path) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file_path));
+
+            writer.write(""+events.size());
+            for (int i = 0; i < events.size(); i++) {
+                Event event = events.get(i);
+                if (event instanceof Competition c) {
+                    writer.write("competition\n");
+                    writer.write(""+c.getPrize());
+                    writer.write(""+c.getParticipationCost());
+                } else if (event instanceof Fundraiser f) {
+                    writer.write("fundraiser\n");
+                    writer.write(""+f.getGoal());
+                }
+
+                writer.write(""+event.getFacility().getId());
+                writer.write(""+event.getTimeBlock().get)
+            }
+
+            writer.close();
+            return true;
+        } catch (IOException ioe) {
+            return false;
+        }
+    }
 
     /**
      * book
