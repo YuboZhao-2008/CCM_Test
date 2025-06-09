@@ -25,39 +25,39 @@ public class TimeBlock {
     public static final int DAYS_IN_YEAR = 365;
     public static final Map<Month, Integer> DAYS_BEFORE_MONTH;
     static {
-        Map<Month, Integer> temp = new HashMap<>();
-        temp.put(Month.JAN, 0);
-        temp.put(Month.FEB, 31);
-        temp.put(Month.MAR, 59);
-        temp.put(Month.APR, 90);
-        temp.put(Month.MAY, 120);
-        temp.put(Month.JUN, 151);
-        temp.put(Month.JUL, 181);
-        temp.put(Month.AUG, 212);
-        temp.put(Month.SEP, 243);
-        temp.put(Month.OCT, 273);
-        temp.put(Month.NOV, 304);
-        temp.put(Month.DEC, 334);
+        Map<Month, Integer> foo = new HashMap<>();
+        foo.put(Month.JAN, 0);
+        foo.put(Month.FEB, 31);
+        foo.put(Month.MAR, 59);
+        foo.put(Month.APR, 90);
+        foo.put(Month.MAY, 120);
+        foo.put(Month.JUN, 151);
+        foo.put(Month.JUL, 181);
+        foo.put(Month.AUG, 212);
+        foo.put(Month.SEP, 243);
+        foo.put(Month.OCT, 273);
+        foo.put(Month.NOV, 304);
+        foo.put(Month.DEC, 334);
 
-        DAYS_BEFORE_MONTH = Collections.unmodifiableMap(temp);
+        DAYS_BEFORE_MONTH = Collections.unmodifiableMap(foo);
     }
     public static final Map<Month, Integer> DAYS_IN_MONTH;
     static {
-        Map<Month, Integer> temp = new HashMap<>();
-        temp.put(Month.JAN, 31);
-        temp.put(Month.FEB, 28);
-        temp.put(Month.MAR, 31);
-        temp.put(Month.APR, 30);
-        temp.put(Month.MAY, 31);
-        temp.put(Month.JUN, 30);
-        temp.put(Month.JUL, 31);
-        temp.put(Month.AUG, 31);
-        temp.put(Month.SEP, 30);
-        temp.put(Month.OCT, 31);
-        temp.put(Month.NOV, 30);
-        temp.put(Month.DEC, 31);
+        Map<Month, Integer> bar = new HashMap<>();
+        bar.put(Month.JAN, 31);
+        bar.put(Month.FEB, 28);
+        bar.put(Month.MAR, 31);
+        bar.put(Month.APR, 30);
+        bar.put(Month.MAY, 31);
+        bar.put(Month.JUN, 30);
+        bar.put(Month.JUL, 31);
+        bar.put(Month.AUG, 31);
+        bar.put(Month.SEP, 30);
+        bar.put(Month.OCT, 31);
+        bar.put(Month.NOV, 30);
+        bar.put(Month.DEC, 31);
 
-        DAYS_IN_MONTH = Collections.unmodifiableMap(temp);
+        DAYS_IN_MONTH = Collections.unmodifiableMap(bar);
     }
     public static final int HOURS_IN_DAY = 24;
 
@@ -105,6 +105,7 @@ public class TimeBlock {
             default:
                 return Month.JAN;
         }
+
     }
 
     public TimeBlock nextDay() {
@@ -169,6 +170,32 @@ public class TimeBlock {
      */
     private double hoursBeforeEnd() {
         return hoursBeforeYear(year) + hoursBeforeMonth(month, year) + (day - 1) * HOURS_IN_DAY + endHour;
+    }
+
+    public boolean isValid() {
+        if (year < 0) {
+            return false;
+        }
+        if (month == null) {
+            return false;
+        }
+        if (day <= 0) {
+            return false;
+        }
+        if (day > DAYS_IN_MONTH.get(month) && !(month == Month.FEB && day == DAYS_IN_MONTH.get(month) + 1)) {
+            return false;
+        }
+        if (startHour < 0) {
+            return false;
+        }
+        if (startHour >= 24) {
+            return false;
+        }
+        if (endHour >= 24) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
