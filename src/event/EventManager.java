@@ -9,6 +9,8 @@
 package event;
 
 import java.util.ArrayList;
+import java.io.*;
+import java.nio.Buffer;
 
 import facility.Facility;
 import member.Member;
@@ -25,8 +27,72 @@ public class EventManager {
      * creates an EventManager.
      * Schedule events using this class.
      */
-    public EventManager() {
+    public EventManager() {}
 
+    /**
+     * Constructor for EventManager;
+     * creates an EventManager with information from a text file.
+     * Schedule events using this class.
+     * 
+     * @param filePath
+     */
+    public EventManager(String filePath) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+            // read event information
+            int numEvents = Integer.parseInt(reader.readLine());
+            for (int i = 0; i < numEvents; i++) {
+                String eventType = reader.readLine();
+
+                double prize;
+                double participationCost;
+                double goal;
+                if (eventType.equals("competition")) {
+                    prize = Double.parseDouble(reader.readLine());
+                    participationCost = Double.parseDouble(reader.readLine());
+                } else if (eventType.equals("fundraiser")) {
+                    goal = Double.parseDouble(reader.readLine());
+                }
+
+                int facility_id = Integer.parseInt(reader.readLine());
+                int day = Integer.parseInt(reader.readLine());
+                Month month = TimeBlock.ABBR_TO_MONTH.get(reader.readLine());
+                int year = Integer.parseInt(reader.readLine());
+                double start_hour = Double.parseDouble(reader.readLine());
+                double end_hour = Double.parseDouble(reader.readLine());
+                int host_id = Integer.parseInt(reader.readLine());
+                
+                Facility facility = main.CommunityCentreRunner.getFacilityManager().searchById(facility_id);
+                TimeBlock timeBlock = new TimeBlock(year, month, day);
+                Member host = main.CommunityCentreRunner.getMemberManager().searchById(host_id);
+                Event event;
+                if (eventType.equals("competition")) {
+                    event = new Competition(facility, timeBlock, host, prize, participationCost);
+                } else if (eventType.equals("fundraiser")) {
+                    event = new Fundraiser(facility, timeBlock, host, goal);
+                }
+
+                // read staff and member information registered to the event
+                int numStaffSupervising = Integer.parseInt(reader.readLine());
+                for (int j = 0; i < numStaffSupervising; i++) {
+                    Staff staff = main.CommunityCentreRunner.getStaffManager().searchById(Integer.parseInt(reader.readLine()));
+                    event.assignStaff(staff);
+                }
+
+                int numParticipants = Integer.parseInt(reader.readLine());
+                for (int k = 0; k < numParticipants; k++) {
+                    Member member = main.CommunityCentreRunner.getMemberManager().searchById(Integer.parseInt(reader.readLine()));
+                    event.registerParticipant(member);
+                }
+
+                facility.book(event);
+
+                events.add(event);
+            }
+        } catch(IOException ioe) {
+            System.out.println("Error accessing file "+filePath);
+        }
     }
 
     // accessors
@@ -52,7 +118,7 @@ public class EventManager {
      * @return the unique ID
      */
     private int generateId() {
-        int maxId = 0;
+        int maxId = -1;
 
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).getId() > maxId) {
