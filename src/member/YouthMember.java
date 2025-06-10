@@ -1,7 +1,5 @@
 package member;
 
-import java.util.*;
-
 /**
  * Represents a youth member who pays a discounted rate and is linked
  * to exactly one adult guardian. Automatically registers itself as a
@@ -26,10 +24,10 @@ public class YouthMember extends Member {
      * Constructs a YouthMember with the given details and wires up
      * the guardian–child relationship.
      *
-     * @param age       the youth member’s age
-     * @param name      the youth member’s full name
-     * @param planType  the billing plan type
-     * @param guardian  the adult guardian of this youth
+     * @param age      the youth member’s age
+     * @param name     the youth member’s full name
+     * @param planType the billing plan type
+     * @param guardian the adult guardian of this youth
      */
     public YouthMember(int age, String name, PlanType planType, AdultMember guardian) {
         super(age, name, planType);
@@ -47,10 +45,18 @@ public class YouthMember extends Member {
     public double calculateBill() {
         double base;
         switch (planType) {
-            case BIWEEKLY_BASE: base = BIWEEKLY_BASE; break;
-            case MONTHLY_BASE:  base = MONTHLY_BASE;  break;
-            case ANNUAL_BASE:   base = ANNUAL_BASE;   break;
-            default:            base = 0.0;          break;
+            case BIWEEKLY_BASE:
+                base = BIWEEKLY_BASE;
+                break;
+            case MONTHLY_BASE:
+                base = MONTHLY_BASE;
+                break;
+            case ANNUAL_BASE:
+                base = ANNUAL_BASE;
+                break;
+            default:
+                base = 0.0;
+                break;
         }
         return base * (1 - DISCOUNT_RATE);
     }

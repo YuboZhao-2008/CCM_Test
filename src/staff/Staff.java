@@ -1,8 +1,8 @@
 package staff;
 
-import facility.Schedule;
-import time.TimeBlock;
 import event.Event;
+import time.Schedule;
+import time.TimeBlock;
 
 /**
  * Abstract base class for all staff members.
@@ -108,6 +108,11 @@ public abstract class Staff {
      */
     public String getName() {
         return name;
+    }
+
+    // accessor for shifts
+    public Schedule getShifts() {
+        return shifts;
     }
 
     /**

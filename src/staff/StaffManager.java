@@ -1,9 +1,13 @@
 package staff;
 
-import java.util.*;
-import java.io.*;
+import static java.util.Collections.*;
 
-import static java.util.Collections.sort;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import time.TimeBlock;
 
 /**
  * Manages a collection of Staff members: loading from file, adding new staff,
@@ -20,17 +24,22 @@ public class StaffManager {
      */
     public ArrayList<Staff> staffs;
 
+    // default constructor
+    public StaffManager() {
+        staffs = new ArrayList<>();
+    }
+
     /**
      * Constructs a StaffManager and loads staff data from a text file.
      * The file format is:
      * <num staff>
      * <id>
-     * <type>          // "fulltime" or "parttime"
+     * <type> // "fulltime" or "parttime"
      * <name>
      * [fulltime only] <yearsWorked>
      * [parttime only] <hoursWorked>
-     *                  <hourlySalary>
-     *                  <maxWeeklyHours>
+     * <hourlySalary>
+     * <maxWeeklyHours>
      *
      * @param filename the path to the staff data file
      */
@@ -46,9 +55,9 @@ public class StaffManager {
                 while ((line = br.readLine()) != null
                         && (line.trim().isEmpty() || line.trim().equals("##"))) {
                 }
-                int id         = Integer.parseInt(line.trim());
-                String type    = br.readLine().trim().toLowerCase();
-                String name    = br.readLine().trim();
+                int id = Integer.parseInt(line.trim());
+                String type = br.readLine().trim().toLowerCase();
+                String name = br.readLine().trim();
 
                 if (type.equals("fulltime")) {
                     int yearsWorked = Integer.parseInt(br.readLine().trim());
@@ -57,9 +66,9 @@ public class StaffManager {
                     staffs.add(full);
 
                 } else if (type.equals("parttime")) {
-                    int   hoursWorked    = Integer.parseInt(br.readLine().trim());
-                    double hourlyRate    = Double.parseDouble(br.readLine().trim());
-                    int   maxWeeklyHours = Integer.parseInt(br.readLine().trim());
+                    int hoursWorked = Integer.parseInt(br.readLine().trim());
+                    double hourlyRate = Double.parseDouble(br.readLine().trim());
+                    int maxWeeklyHours = Integer.parseInt(br.readLine().trim());
                     PartTimeStaff part = new PartTimeStaff(
                             name, hoursWorked, hourlyRate, maxWeeklyHours);
                     part.setId(id);
@@ -114,7 +123,7 @@ public class StaffManager {
         if (low > high) {
             return null;
         }
-        int mid   = (low + high) / 2;
+        int mid = (low + high) / 2;
         int midId = staffs.get(mid).getId();
 
         if (midId == id) {

@@ -1,7 +1,7 @@
 package member;
 
 import event.Event;
-import facility.Schedule;
+import time.Schedule;
 
 /**
  * Abstract base class for all members.
@@ -16,9 +16,9 @@ public abstract class Member {
     /** Biweekly base fee */
     public static final double BIWEEKLY_BASE = 20.00;
     /** Monthly base fee */
-    public static final double MONTHLY_BASE  = 35.00;
+    public static final double MONTHLY_BASE = 35.00;
     /** Annual base fee */
-    public static final double ANNUAL_BASE   = 350.00;
+    public static final double ANNUAL_BASE = 350.00;
 
     /** Unique identifier for this member */
     protected int id;
@@ -44,19 +44,20 @@ public abstract class Member {
      * Constructs a Member with the given age, name, and plan.
      * Initializes an empty registration schedule.
      *
-     * @param age       the member's age
-     * @param name      the member's full name
-     * @param planType  the billing plan for this member
+     * @param age      the member's age
+     * @param name     the member's full name
+     * @param planType the billing plan for this member
      */
     public Member(int age, String name, PlanType planType) {
-        this.age           = age;
-        this.name          = name;
-        this.planType      = planType;
+        this.age = age;
+        this.name = name;
+        this.planType = planType;
         this.registrations = new Schedule();
     }
 
     /**
-     * Calculates this member's total bill based on their plan and any subclass-specific charges.
+     * Calculates this member's total bill based on their plan and any
+     * subclass-specific charges.
      *
      * @return the total amount owed
      */
@@ -69,9 +70,9 @@ public abstract class Member {
      */
     public String membershipDetails() {
         return id
-                + " | age: "   + age
-                + " | name: "  + name
-                + " | plan: "  + planType
+                + " | age: " + age
+                + " | name: " + name
+                + " | plan: " + planType
                 + " | $"
                 + String.format("%.2f", calculateBill());
     }
@@ -154,7 +155,8 @@ public abstract class Member {
      * @return true if IDs and names match
      */
     public boolean equals(Member m) {
-        if (m == null) return false;
+        if (m == null)
+            return false;
         return m.getId() == this.getId()
                 && m.getName().equals(this.getName());
     }

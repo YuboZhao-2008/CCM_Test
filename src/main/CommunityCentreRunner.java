@@ -5,9 +5,6 @@ import facility.FacilityManager;
 import member.MemberManager;
 import staff.StaffManager;
 import time.TimeManager;
-import staff.StaffManager;
-import facility.FacilityManager;
-import event.EventManager;
 
 public class CommunityCentreRunner {
     private static MemberManager memberManager = new MemberManager();
@@ -39,10 +36,6 @@ public class CommunityCentreRunner {
 
     public static FacilityManager getFacilityManager() {
         return facilityManager;
-    }
-
-    public static EventManager getEventManager() {
-        return eventManager;
     }
 
     public static void main(String[] args) {
