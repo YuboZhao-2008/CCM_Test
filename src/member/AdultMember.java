@@ -1,89 +1,113 @@
 package member;
 
+import java.util.ArrayList;
+import java.util.List;
 import event.Event;
-import facility.Schedule;
 
-public abstract class Member {
-    public static final double BIWEEKLY_BASE = 20.00;
-    public static final double MONTHLY_BASE   = 35.00;
-    public static final double ANNUAL_BASE    = 350.00;
+public class AdultMember extends Member {
+    private String contactPhone;
+    private String address;
+    private double totalBillAmount;
+    private double paidBillAmount;
+    private boolean billPaid;
+    private ArrayList<YouthMember> children = new ArrayList<>();
 
-    protected int id;
-    protected int age;
-    protected String name;
-    protected Schedule registrations;
-    protected PlanType planType;
-
-    public enum PlanType {
-        BIWEEKLY_BASE,
-        MONTHLY_BASE,
-        ANNUAL_BASE
+    public AdultMember(int age, String name, PlanType planType,
+                       String contactPhone, String address,
+                       double totalBillAmount, boolean billPaid) {
+        super(age, name, planType);
+        this.contactPhone = contactPhone;
+        this.address = address;
+        this.totalBillAmount = totalBillAmount;
+        this.billPaid = billPaid;
+        this.paidBillAmount = billPaid ? totalBillAmount : 0.0;
     }
 
-    public Member(int age, String name, PlanType planType) {
-        this.age           = age;
-        this.name          = name;
-        this.planType      = planType;
-        this.registrations = new Schedule();
+    public double calculateBill() {
+        double base;
+        switch (planType) {
+            case BIWEEKLY_BASE:
+                base = BIWEEKLY_BASE;
+                break;
+            case MONTHLY_BASE:
+                base = MONTHLY_BASE;
+                break;
+            case ANNUAL_BASE:
+                base = ANNUAL_BASE;
+                break;
+            default:
+                base = 0.0;
+                break;
+        }
+        return base + totalBillAmount;
     }
 
-    public abstract double calculateBill();
-
-    public String membershipDetails() {
-        return id
-                + " | age: "   + age
-                + " | name: "  + name
-                + " | plan: "  + planType
-                + " | $"
-                + String.format("%.2f", calculateBill());
+    public double payBill(double amount) {
+        paidBillAmount += amount;
+        if (paidBillAmount >= totalBillAmount) {
+            paidBillAmount = totalBillAmount;
+            billPaid = true;
+        }
+        return paidBillAmount;
     }
 
     public void printBill() {
-        System.out.println(membershipDetails());
+        super.printBill();
     }
 
     public String toString() {
-        return membershipDetails();
+        return super.toString();
     }
 
-    public void registerFor(Event event) {
-        registrations.add(event);
+    public void addHosting(Event event) {
+        registerFor(event);
     }
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
+    public void addChild(YouthMember child) {
+        children.add(child);
     }
 
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
+    public List<YouthMember> getChildren() {
+        return children;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public PlanType getPlanType() {
-        return planType;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
-    public void setPlanType(PlanType planType) {
-        this.planType = planType;
+    public String getAddress() {
+        return address;
     }
 
-    public Schedule getRegistrations() {
-        return registrations;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public boolean equals(Member m) {
-        return (m.getId() == this.getId() && m.getName().equals(this.getName()));
+    public double getTotalBillAmount() {
+        return totalBillAmount;
+    }
+
+    public void setTotalBillAmount(double totalBillAmount) {
+        this.totalBillAmount = totalBillAmount;
+    }
+
+    public double getPaidBillAmount() {
+        return paidBillAmount;
+    }
+
+    public void setPaidBillAmount(double paidBillAmount) {
+        this.paidBillAmount = paidBillAmount;
+    }
+
+    public boolean isBillPaid() {
+        return billPaid;
+    }
+
+    public void setBillPaid(boolean billPaid) {
+        this.billPaid = billPaid;
     }
 }
