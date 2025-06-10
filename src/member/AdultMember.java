@@ -2,6 +2,7 @@ package member;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import event.Event;
 
 /**
@@ -27,8 +28,7 @@ public class AdultMember extends Member {
     /** Amount already paid toward the total bill. */
     private double paidBillAmount;
 
-    /** Indicates whether the full bill has been paid. */
-    private boolean billPaid;
+
 
     /** List of youth members (children) linked to this guardian. */
     private List<YouthMember> children = new ArrayList<>();
@@ -36,56 +36,61 @@ public class AdultMember extends Member {
     /**
      * Constructs an AdultMember with the specified details.
      *
-     * @param age              the member’s age
-     * @param name             the member’s full name
+     * @param age              the member's age
+     * @param name             the member's full name
      * @param planType         the membership billing plan
      * @param contactPhone     phone number for contact
      * @param address          residential address
      * @param totalBillAmount  additional bill amount beyond base fee
-     * @param billPaid         true if the bill is already paid in full
+     * @param paidBillAmount
+     */
+    public AdultMember(int age, String name, PlanType planType,
+                       String contactPhone, String address) {
+        super(age, name, planType);
+        this.contactPhone   = contactPhone;
+        this.address        = address;
+        this.totalBillAmount = 0;
+        this.paidBillAmount = 0;
+    }
+
+    /**
+     * Constructs an AdultMember with the specified details.
+     *
+     * @param age              the member's age
+     * @param name             the member's full name
+     * @param planType         the membership billing plan
+     * @param contactPhone     phone number for contact
+     * @param address          residential address
+     * @param totalBillAmount  additional bill amount beyond base fee
      */
     public AdultMember(int age, String name, PlanType planType,
                        String contactPhone, String address,
-                       double totalBillAmount, boolean billPaid) {
+                       double totalBillAmount, double paidBillAmount) {
         super(age, name, planType);
         this.contactPhone   = contactPhone;
         this.address        = address;
         this.totalBillAmount = totalBillAmount;
-        this.billPaid       = billPaid;
-        this.paidBillAmount = billPaid ? totalBillAmount : 0.0;
+        this.paidBillAmount = paidBillAmount;
     }
 
     /**
-     * Calculates this member’s total bill by adding the plan base fee
+     * Calculates this member's total bill by adding the plan base fee
      * to any additional charges.
      *
      * @return the total amount due
      */
     @Override
     public double calculateBill() {
-        double base;
-        switch (planType) {
-            case BIWEEKLY_BASE: base = BIWEEKLY_BASE; break;
-            case MONTHLY_BASE:  base = MONTHLY_BASE;  break;
-            case ANNUAL_BASE:   base = ANNUAL_BASE;   break;
-            default:            base = 0.0;          break;
-        }
-        return base + totalBillAmount;
+        return totalBillAmount - paidBillAmount;
     }
 
     /**
-     * Applies a payment toward the bill and updates the paid status.
+     * Applies a payment toward the bill.
      *
      * @param amount the payment amount
-     * @return the updated paid amount
      */
-    public double payBill(double amount) {
+    public void payBill(double amount) {
         paidBillAmount += amount;
-        if (paidBillAmount >= totalBillAmount) {
-            paidBillAmount = totalBillAmount;
-            billPaid = true;
-        }
-        return paidBillAmount;
     }
 
     /**
@@ -203,23 +208,5 @@ public class AdultMember extends Member {
      */
     public void setPaidBillAmount(double paidBillAmount) {
         this.paidBillAmount = paidBillAmount;
-    }
-
-    /**
-     * Checks if the bill is fully paid.
-     *
-     * @return true if fully paid, false otherwise
-     */
-    public boolean isBillPaid() {
-        return billPaid;
-    }
-
-    /**
-     * Marks the bill as paid or unpaid.
-     *
-     * @param billPaid true to mark paid, false for outstanding
-     */
-    public void setBillPaid(boolean billPaid) {
-        this.billPaid = billPaid;
     }
 }

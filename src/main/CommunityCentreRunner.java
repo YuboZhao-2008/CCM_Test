@@ -1,10 +1,13 @@
 package main;
 
-import event.*;
-import facility.*;
-import member.*;
-import staff.*;
-import time.*;
+import event.EventManager;
+import facility.FacilityManager;
+import member.AdultMember;
+import member.Member.PlanType;
+import member.MemberManager;
+import member.YouthMember;
+import staff.StaffManager;
+import time.TimeManager;
 
 public class CommunityCentreRunner {
     public static final String EVENTS_FILEPATH = "data/events.txt";
@@ -41,7 +44,14 @@ public class CommunityCentreRunner {
     public static void main(String[] args) {
         System.out.println("Hello world");
 
-        AdultMember member = new AdultMember("John Doe", 30, "123 Main St", "john.doe@email.com", "555-1234");
+        AdultMember member = new AdultMember(30, "John Doe", PlanType.ANNUAL_BASE, "647-999-9999", "494 Chair Rd.", 1000, 400);
         memberManager.addMember(member);
+        YouthMember member2 = new YouthMember(4, "Baby Boy", PlanType.ANNUAL_BASE, member);
+        memberManager.addMember(member2);
+
+        System.out.println(memberManager.searchById(0));
+        System.out.println(memberManager.searchById(1));
+
+        System.out.println();
     }
 }

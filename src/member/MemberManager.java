@@ -9,28 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import facility.Facility;
+
 /**
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
  * and listing names alphabetically.
- * <p>
- * File format:
- * <num members>
- * <id>
- * <type>
- * <age>
- * <name>
- * <planType>
- * If adult:
- * <contactPhone>
- * <address>
- * <billAmount>
- * <billPaid>
- * <num children>
- * <child id>...
- * If youth:
- * <guardian id>
- *
+ * 
  * @author Yubo-Zhao
  * @version 1.0
  * @since 2025-06-06
@@ -41,6 +26,8 @@ public class MemberManager {
      */
     public ArrayList<Member> members = new ArrayList<>();
 
+    
+    public MemberManager() {}
     /**
      * Constructs a MemberManager and immediately loads member data
      * from the specified file, wiring up parent/child relationships.
@@ -67,8 +54,8 @@ public class MemberManager {
                 if (type.equals("adult")) {
                     String phone = br.readLine().trim();
                     String address = br.readLine().trim();
-                    double billAmount = Double.parseDouble(br.readLine().trim());
-                    boolean billPaid = br.readLine().trim().equalsIgnoreCase("paid");
+                    double totalbillAmount = Double.parseDouble(br.readLine().trim());
+                    double totalbillPaid = Double.parseDouble(br.readLine().trim());
                     int numChildren = Integer.parseInt(br.readLine().trim());
 
                     List<Integer> childIds = new ArrayList<>();
@@ -79,7 +66,7 @@ public class MemberManager {
                     AdultMember adult = new AdultMember(
                             age, name, planType,
                             phone, address,
-                            billAmount, billPaid);
+                            totalbillAmount, totalbillPaid);
                     adult.setId(id);
                     members.add(adult);
                     idToMember.put(id, adult);
@@ -113,15 +100,18 @@ public class MemberManager {
     }
 
     /**
-     * Generates the next unique member ID (last ID + 1).
+     * Generates the next unique member ID (greatest ID + 1).
      *
      * @return the new unique ID
      */
     public int generateId() {
-        if (members.isEmpty()) {
-            return 1;
+        int maxId = -1;
+
+        for (Member member : members) {
+            maxId = Math.max(maxId, member.getId());
         }
-        return members.get(members.size() - 1).getId() + 1;
+
+        return ++maxId;
     }
 
     /**

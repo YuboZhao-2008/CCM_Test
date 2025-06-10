@@ -25,6 +25,8 @@ public class StaffManager {
      */
     public ArrayList<Staff> staffs;
 
+    public StaffManager() {}
+
     /**
      * Constructs a StaffManager and loads staff data from a text file.
      * The file format is:

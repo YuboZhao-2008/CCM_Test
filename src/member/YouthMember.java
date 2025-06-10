@@ -13,7 +13,7 @@ public class YouthMember extends Member {
     /**
      * The discount rate applied to youth members.
      */
-    public static final double DISCOUNT_RATE = 0.5;
+    public static final double DISCOUNT_RATE = 0.4;
 
     /**
      * The guardian responsible for this youth member.
