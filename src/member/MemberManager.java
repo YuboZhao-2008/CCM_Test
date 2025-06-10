@@ -18,7 +18,6 @@ public class MemberManager {
                 int    age      = Integer.parseInt(br.readLine().trim());
                 String name     = br.readLine().trim();
                 Member.PlanType planType = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
-
                 if (type.equals("adult")) {
                     String phone       = br.readLine().trim();
                     String address     = br.readLine().trim();
@@ -53,7 +52,7 @@ public class MemberManager {
             System.out.println(e);
         }
     }
-    
+  
     public void addMember(Member member) {
         member.setId(generateId());
         members.add(member);

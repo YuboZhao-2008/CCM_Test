@@ -67,6 +67,7 @@ public abstract class Member {
     public String getName() {
         return name;
     }
+  
     public void setName(String name) {
         this.name = name;
     }
@@ -81,5 +82,9 @@ public abstract class Member {
 
     public Schedule getRegistrations() {
         return registrations;
+    }
+
+    public boolean equals(Member m) {
+        return (m.getId() == this.getId() && m.getName().equals(this.getName()));
     }
 }

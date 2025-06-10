@@ -23,8 +23,8 @@ public abstract class Staff {
     public abstract void printPayroll();
 
     public abstract String toString();
-
-    public boolean isAvailable(TimeBlock block) {
+  
+    public boolean isAvailalbe(TimeBlock block) {
         return shifts.isBlockFree(block);
     }
 
