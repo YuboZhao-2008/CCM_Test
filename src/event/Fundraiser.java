@@ -9,15 +9,13 @@
 
 package event;
 
-import facility.*;
-import time.*;
-import member.*;
-import staff.*;
-
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.io.*;
 import java.util.Scanner;
+
+import facility.Facility;
+import member.AdultMember;
+import member.Member;
+import time.TimeBlock;
 
 public class Fundraiser extends Event {
     // fields
@@ -50,7 +48,7 @@ public class Fundraiser extends Event {
 
     /**
      * setCompleted
-     * will ask the user for the amount each participant raised, 
+     * will ask the user for the amount each participant raised,
      */
     @Override
     public void setCompleted() {
@@ -60,23 +58,24 @@ public class Fundraiser extends Event {
         boolean valid_input = false;
         double amount = 0;
 
-        System.out.println("For each adult participant, enter the amount they raised (This does not affect their bill).");
-        for (int i = 0; i<participants.size(); i++) {
+        System.out
+                .println("For each adult participant, enter the amount they raised (This does not affect their bill).");
+        for (int i = 0; i < participants.size(); i++) {
             if (participants.get(i) instanceof AdultMember adultMember) {
                 valid_input = false;
 
                 while (!valid_input) {
                     try {
-                        System.out.print(adultMember.getName()+" raised: $");
-                        
+                        System.out.print(adultMember.getName() + " raised: $");
+
                         amount = scan.nextDouble();
 
                         valid_input = true;
-                    } catch(InputMismatchException ime) {
+                    } catch (InputMismatchException ime) {
                         System.out.println("Invalid amount raised.");
                         System.out.println("Please try again.");
                         System.out.println(); // blank line
-                    } 
+                    }
                 }
 
                 amountRaised += amount;
@@ -84,8 +83,8 @@ public class Fundraiser extends Event {
         }
         System.out.println(); // blank line
 
-        System.out.printf("Goal: $.2f\n",goal);
-        System.out.printf("Total Amount Raised: $.2f\n",amountRaised);
+        System.out.printf("Goal: $.2f\n", goal);
+        System.out.printf("Total Amount Raised: $.2f\n", amountRaised);
 
         if (amountRaised > goal) {
             System.out.println("Goal exceeded!");
@@ -102,9 +101,9 @@ public class Fundraiser extends Event {
      * toString
      */
     public String toString() {
-        String s = super.toString() + "\nGoal: "+goal;
+        String s = super.toString() + "\nGoal: " + goal;
         if (isCompleted) {
-            s += "\nTotal Raised: "+amountRaised;
+            s += "\nTotal Raised: " + amountRaised;
         }
 
         return s;
