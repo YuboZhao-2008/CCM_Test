@@ -26,7 +26,7 @@ public class Competition extends Event {
     private double prize;
     private double participationCost;
     private Member winner;
-    
+
     /**
      * Constructor for Competition;
      * creates a competition given information.
@@ -76,7 +76,6 @@ public class Competition extends Event {
         return false;
     }
 
-    
     /**
      * setCompleted
      * will ask the user for the winner, affecting their balance in calculateBill accordingly.
@@ -115,9 +114,8 @@ public class Competition extends Event {
      * toString
      */
     public String toString() {
-        String s = super.toString() + "\nPrize: "+prize+"\nParticipation Cost: "+participationCost;
+        String s = super.toString() + "\nPrize: " + prize + "\nParticipation Cost: " + participationCost;
         if (winner != null) {
-            s += "\nWinner: "+winner.getName();
         }
 
         return s;
