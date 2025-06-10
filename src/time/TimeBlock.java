@@ -170,6 +170,16 @@ public class TimeBlock {
     }
 
     /**
+     * checks if the timeBlocks are identical
+     * 
+     * @param other
+     * @return whether all fields are equal
+     */
+    public boolean equals(TimeBlock other) {
+        return other != null && this.year == other.year && this.month == other.month && this.day == other.day && this.startHour == other.startHour && this.endHour == other.endHour;
+    }
+
+    /**
      * compares the start time of this event and another
      * 
      * @param other
