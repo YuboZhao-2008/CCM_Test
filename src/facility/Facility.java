@@ -85,3 +85,4 @@ public abstract class Facility {
         return String.format("#%d, room: %d, capacity: %d", id, roomNum, maxCapacity);
     }
 }
+

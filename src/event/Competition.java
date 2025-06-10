@@ -9,17 +9,12 @@
 
 package event;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import facility.*;
-import time.*;
-import member.*;
-import staff.*;
-import main.*;
-
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.io.*;
+import facility.Facility;
+import member.Member;
+import time.TimeBlock;
 
 public class Competition extends Event {
     // fields
@@ -50,9 +45,11 @@ public class Competition extends Event {
     public Member getWinner() {
         return this.winner;
     }
+
     public double getPrize() {
         return this.prize;
     }
+
     public double getParticipationCost() {
         return this.participationCost;
     }
@@ -62,13 +59,14 @@ public class Competition extends Event {
 
     /**
      * setWinner
-     * sets the specified member as the winner of the event; used solely within setCompleted
+     * sets the specified member as the winner of the event; used solely within
+     * setCompleted
      * 
      * @param member
      * @return whether or not the winner was successfully set
      */
     private boolean setWinner(Member member) {
-        if(participants.contains(member)) {
+        if (participants.contains(member)) {
             winner = member;
             return true;
         }
@@ -78,7 +76,8 @@ public class Competition extends Event {
 
     /**
      * setCompleted
-     * will ask the user for the winner, affecting their balance in calculateBill accordingly.
+     * will ask the user for the winner, affecting their balance in calculateBill
+     * accordingly.
      */
     @Override
     public void setCompleted() {
@@ -87,7 +86,7 @@ public class Competition extends Event {
         isCompleted = true;
         boolean valid_winner = false;
         int winner_id = 0;
-        
+
         while (!valid_winner) {
             try {
                 System.out.print("Enter the winner's member ID: ");

@@ -48,21 +48,27 @@ public abstract class Event {
     public int getId() {
         return this.id;
     }
+
     public boolean hasCompleted() {
         return this.isCompleted;
     }
+
     public TimeBlock getTimeBlock() {
         return this.timeBlock;
     }
+
     public ArrayList<Staff> getStaffSupervising() {
         return this.staffSupervising;
     }
+
     public ArrayList<Member> getParticipants() {
         return this.participants;
     }
+
     public Facility getFacility() {
         return this.facility;
     }
+
     public Member getHost() {
         return this.host;
     }
@@ -80,7 +86,8 @@ public abstract class Event {
      * @return whether or not the events are identical
      */
     public boolean equals(Event other) {
-        return other != null && this.id == other.id && this.timeBlock.equals(other.timeBlock) && this.host.equals(other.host);
+        return other != null && this.id == other.id && this.timeBlock.equals(other.timeBlock)
+                && this.host.equals(other.host);
     }
 
     /**
@@ -114,7 +121,7 @@ public abstract class Event {
             return false; // event is full
         }
 
-        if (!member.isAvailable(timeBlock)) {
+        if (!member.getRegistrations().isBlockFree(timeBlock)) {
             return false; // member has a conflicting time block
         }
 
@@ -142,7 +149,7 @@ public abstract class Event {
             return false; // already supervising this event
         }
 
-        if (!staff.isAvailable(timeBlock)) {
+        if (!staff.getShifts().isBlockFree(timeBlock)) {
             return false; // the staff has a conflicting time block
         }
 

@@ -1,50 +1,3 @@
-<<<<<<< HEAD
-package staff;
-
-import time.*;
-import event.*;
-
-public abstract class Staff {
-    private int id = 0;
-    private String name;
-    private Schedule shifts;
-
-    public Staff(String name) {
-        this.name = name;
-        this.shifts = new Schedule();
-    }
-
-    public abstract double calculatePay();
-
-    public boolean scheduleShift(Event event) {
-        return this.shifts.add(event);
-    }
-
-    public abstract void printPayroll();
-
-    public abstract String toString();
-
-    public boolean isAvailable(TimeBlock block) {
-        return shifts.isBlockFree(block);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-}
-=======
 package staff;
 
 import facility.Schedule;
@@ -166,4 +119,3 @@ public abstract class Staff {
         this.name = name;
     }
 }
->>>>>>> 15fd0a25629d36c9e0a62385dc2b3c62acfdd1e2
