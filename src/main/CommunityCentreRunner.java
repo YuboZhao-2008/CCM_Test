@@ -11,11 +11,11 @@ import time.TimeManager;
 
 public class CommunityCentreRunner {
     public static final String EVENTS_FILEPATH = "data/events.txt";
-    public static final String FACILITIES_FILEPATH = "data/facilites.txt";
+    public static final String FACILITIES_FILEPATH = "data/facilities.txt";
     public static final String MEMBERS_FILEPATH = "data/members.txt";
     public static final String STAFF_FILEPATH = "data/staff.txt";
 
-    private static MemberManager memberManager = new MemberManager();
+    private static MemberManager memberManager = new MemberManager(MEMBERS_FILEPATH);
     private static TimeManager timeManager = new TimeManager();
     private static EventManager eventManager = new EventManager();
     private static FacilityManager facilityManager = new FacilityManager();
