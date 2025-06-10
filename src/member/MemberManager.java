@@ -104,6 +104,69 @@ public class MemberManager {
 
         } catch (IOException e) {
             System.out.println("Error loading members: " + e.getMessage());
+
+    /**
+     * Generates the next unique member ID (last ID + 1).
+     *
+     * @return the new unique ID
+     */
+    public int generateId() {
+        if (members.isEmpty()) {
+            return 1;
+        }
+        return members.get(members.size() - 1).getId() + 1;
+    }
+
+    /**
+     * Searches for a member by ID using binary search.
+     * Assumes the members list is sorted by ID.
+     *
+     * @param id the ID to search for
+     * @return the Member with matching ID, or null if not found
+     */
+    public Member searchById(int id) {
+        return searchByIdRecursive(id, 0, members.size() - 1);
+    }
+
+    /**
+     * Recursive helper for binary search.
+     */
+    private Member searchByIdRecursive(int id, int low, int high) {
+        if (low > high) {
+            return null;
+        }
+        int mid   = (low + high) / 2;
+        int midId = members.get(mid).getId();
+
+        if (midId == id) {
+            return members.get(mid);
+        } else if (midId > id) {
+            return searchByIdRecursive(id, low, mid - 1);
+        } else {
+            return searchByIdRecursive(id, mid + 1, high);
+        }
+    }
+
+    /**
+     * Prints all members' bills to standard output.
+     */
+    public void printAllBills() {
+        for (Member m : members) {
+            m.printBill();
+        }
+    }
+
+    /**
+     * Prints all member names in alphabetical order.
+     */
+    public void printAlphabetical() {
+        ArrayList<String> sorted = new ArrayList<>();
+        for (Member m : members) {
+            sorted.add(m.getName());
+        }
+        Collections.sort(sorted);
+        for (String name : sorted) {
+            System.out.println(name);
         }
     }
 

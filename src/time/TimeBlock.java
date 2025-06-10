@@ -1,8 +1,8 @@
 /**
- * TimeBlock implements a block of time on a date containing a start and end hour
+ * TimeBlock contains a date as well as a start and end time and implements various helper methods
  * 
  * @author Sean Yang
- * @since June 4, 2025
+ * @since May 30, 2025
  */
 
 package time;
@@ -278,16 +278,6 @@ public class TimeBlock {
         this.day = other.day;
         this.startHour = startHour;
         endHour = startHour + duration;
-    }
-
-    /**
-     * checks if the timeBlocks are identical
-     * 
-     * @param other
-     * @return whether all fields are equal
-     */
-    public boolean equals(TimeBlock other) {
-        return other != null && this.year == other.year && this.month == other.month && this.day == other.day && this.startHour == other.startHour && this.endHour == other.endHour;
     }
 
     /**

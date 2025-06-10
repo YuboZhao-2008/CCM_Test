@@ -3,7 +3,7 @@
  *
  * @author Mansour Abdelsalam
  * @version 1.0
- * @since 2025-06-06
+ * @since 2025-06-10 
  */
 
 package event;
@@ -129,13 +129,16 @@ public class EventManager {
                     writer.write("" + f.getGoal() + "\n");
                 }
 
+
                 writer.write("" + event.getFacility().getId() + "\n");
                 writer.write("" + event.getTimeBlock().getDay() + "\n"); // day
                 // month
                 writer.write("" + event.getTimeBlock().getMonth() + "\n");
                 // year
+                writer.write("" + event.getTimeBlock().getYear() + "\n");
                 writer.write("" + event.getTimeBlock().getStartHour() + "\n");
-                writer.write("" + event.getTimeBlock().getEndHour() + "\n");
+                writer.write("" + event.getTimeBlock().duration() + "\n");
+              
                 if (event.getHost() != null) {
                     writer.write("" + event.getHost().getId() + "\n");
                 } else {
