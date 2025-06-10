@@ -63,6 +63,9 @@ public abstract class Event {
     public Facility getFacility() {
         return this.facility;
     }
+    public Member getHost() {
+        return this.host;
+    }
 
     // mutators
     public void setId(int id) {

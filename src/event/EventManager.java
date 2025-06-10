@@ -75,7 +75,7 @@ public class EventManager {
 
                 // read staff and member information registered to the event
                 int numStaffSupervising = Integer.parseInt(reader.readLine());
-                for (int j = 0; i < numStaffSupervising; i++) {
+                for (int j = 0; j < numStaffSupervising; j++) {
                     Staff staff = main.CommunityCentreRunner.getStaffManager().searchById(Integer.parseInt(reader.readLine()));
                     event.assignStaff(staff);
                 }
@@ -119,15 +119,34 @@ public class EventManager {
                 Event event = events.get(i);
                 if (event instanceof Competition c) {
                     writer.write("competition\n");
-                    writer.write(""+c.getPrize());
-                    writer.write(""+c.getParticipationCost());
+                    writer.write(""+c.getPrize()+"\n");
+                    writer.write(""+c.getParticipationCost()+"\n");
                 } else if (event instanceof Fundraiser f) {
-                    writer.write("fundraiser\n");
-                    writer.write(""+f.getGoal());
+                    writer.write("fundraiser\n"+"\n");
+                    writer.write(""+f.getGoal()+"\n");
                 }
 
-                writer.write(""+event.getFacility().getId());
-                writer.write(""+event.getTimeBlock().get)
+                writer.write(""+event.getFacility().getId()+"\n");
+                writer.write(""+event.getTimeBlock().get+"\n") // day
+                //month
+                //year
+                writer.write(""+event.getTimeBlock().getStartHour()+"\n");
+                writer.write(""+event.getTimeBlock().getEndHour()+"\n");
+                if (event.getHost() != null) {
+                    writer.write(""+event.getHost().getId()+"\n");
+                } else {
+                    writer.write(""+(-1)+"\n"); // no host
+                }
+                
+                // write staff and member ids
+                writer.write(""+event.getStaffSupervising().size()+"\n");
+                for (int j = 0; j < event.getStaffSupervising().size(); j++) {
+                    writer.write(event.getStaffSupervising().get(j)+"\n");
+                }
+                writer.write(""+event.getParticipants().size()+"\n");
+                for (int j = 0; j < event.getParticipants().size(); j++) {
+                    writer.write(event.getParticipants().get(j)+"\n");
+                }
             }
 
             writer.close();
