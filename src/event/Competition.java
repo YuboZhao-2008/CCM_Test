@@ -113,8 +113,11 @@ public class Competition extends Event {
      * toString
      */
     public String toString() {
-        String s = super.toString() + "\nPrize: " + prize + "\nParticipation Cost: " + participationCost;
+        String s = super.toString() +
+                " | prize: " + prize +
+                " | participation cost: " + String.format("$%.2f", participationCost);
         if (winner != null) {
+            s += " | winner name: " + winner.getName();
         }
 
         return s;

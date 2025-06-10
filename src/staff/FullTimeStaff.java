@@ -12,12 +12,12 @@ public class FullTimeStaff extends Staff {
     /**
      * The base annual salary for all full-time staff.
      */
-    public static final double BASE_SALARY   = 60000;
+    public static final double BASE_SALARY = 60000;
 
     /**
      * The annual raise rate applied per year worked.
      */
-    public static final double YEARLY_RAISE  = 0.05;
+    public static final double YEARLY_RAISE = 0.05;
 
     /**
      * Number of years this staff member has worked.
@@ -27,8 +27,8 @@ public class FullTimeStaff extends Staff {
     /**
      * Constructs a FullTimeStaff with the given name and years worked.
      *
-     * @param name         the full name of the staff member
-     * @param yearsWorked  the number of years the staff has been employed
+     * @param name        the full name of the staff member
+     * @param yearsWorked the number of years the staff has been employed
      */
     public FullTimeStaff(String name, int yearsWorked) {
         super(name);
@@ -63,9 +63,9 @@ public class FullTimeStaff extends Staff {
      */
     @Override
     public String toString() {
-        return "Employee ID: " + getId() +
-                " | Name: " + getName() +
-                " | Years Worked: " + yearsWorked;
+        return "Employee #" + id +
+                " | name: " + name +
+                " | years worked: " + yearsWorked;
     }
 
     /**

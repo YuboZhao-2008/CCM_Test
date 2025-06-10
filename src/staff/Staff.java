@@ -17,17 +17,17 @@ public abstract class Staff {
     /**
      * Unique identifier for this staff.
      */
-    private int id = 0;
+    protected int id = 0;
 
     /**
      * Full name of the staff member.
      */
-    private String name;
+    protected String name;
 
     /**
      * Schedule of shifts (events) assigned to this staff.
      */
-    private Schedule shifts;
+    protected Schedule shifts;
 
     /**
      * Constructs a new Staff with the given name.

@@ -169,8 +169,10 @@ public abstract class Event {
      * toString
      */
     public String toString() {
-        String s = "Event ID: " + id + "\nFacility #" + facility.getRoomNum() + "\nScheduled for " + timeBlock
-                + "\nHeld by " + host.getName();
+        String s = "Event #" + id +
+                " | facility room: " + facility.getRoomNum() +
+                " | time: " + timeBlock +
+                " | host name: " + host.getName();
         return s;
     }
 }

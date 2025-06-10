@@ -69,12 +69,12 @@ public abstract class Member {
      * @return formatted membership details
      */
     public String membershipDetails() {
-        return id
+        return "Member #" + id
                 + " | age: " + age
                 + " | name: " + name
                 + " | plan: " + planType
-                + " | $"
-                + String.format("%.2f", calculateBill());
+                + " | bill: "
+                + String.format("$%.2f", calculateBill());
     }
 
     /**

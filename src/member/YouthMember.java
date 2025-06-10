@@ -22,10 +22,10 @@ public class YouthMember extends Member {
 
     /**
      * Constructs a YouthMember with the given details and wires up
-     * the guardian–child relationship.
+     * the guardian-child relationship.
      *
-     * @param age      the youth member’s age
-     * @param name     the youth member’s full name
+     * @param age      the youth member's age
+     * @param name     the youth member's full name
      * @param planType the billing plan type
      * @param guardian the adult guardian of this youth
      */
@@ -70,7 +70,8 @@ public class YouthMember extends Member {
     }
 
     /**
-     * Returns a string representation of this youth member’s billing details.
+     * `
+     * Returns a string representation of this youth member's billing details.
      *
      * @return the membership details string
      */
@@ -80,7 +81,7 @@ public class YouthMember extends Member {
     }
 
     /**
-     * Gets this youth member’s guardian.
+     * Gets this youth member's guardian.
      *
      * @return the guardian AdultMember
      */
@@ -90,7 +91,7 @@ public class YouthMember extends Member {
 
     /**
      * Sets a new guardian for this youth member and updates
-     * the guardian’s child list.
+     * the guardian's child list.
      *
      * @param guardian the new adult guardian
      */

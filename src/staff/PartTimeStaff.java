@@ -27,15 +27,15 @@ public class PartTimeStaff extends Staff {
     /**
      * Constructs a new PartTimeStaff with the given name and pay parameters.
      *
-     * @param name            the staff member's name
-     * @param hoursWorked     the initial hours worked
-     * @param hourlySalary    the wage per hour
-     * @param maxWeeklyHours  the cap on hours per week
+     * @param name           the staff member's name
+     * @param hoursWorked    the initial hours worked
+     * @param hourlySalary   the wage per hour
+     * @param maxWeeklyHours the cap on hours per week
      */
     public PartTimeStaff(String name, int hoursWorked, double hourlySalary, int maxWeeklyHours) {
         super(name);
-        this.hoursWorked    = hoursWorked;
-        this.hourlySalary   = hourlySalary;
+        this.hoursWorked = hoursWorked;
+        this.hourlySalary = hourlySalary;
         this.maxWeeklyHours = maxWeeklyHours;
     }
 
@@ -69,10 +69,10 @@ public class PartTimeStaff extends Staff {
      */
     @Override
     public String toString() {
-        return "Staff ID: " + getId() +
-                " | Name: " + getName() +
-                " | Hourly Salary: " + hourlySalary +
-                " | Max Weekly Hours: " + maxWeeklyHours;
+        return "Staff #" + id +
+                " | name: " + name +
+                " | hourly salary: " + hourlySalary +
+                " | max weekly hours: " + maxWeeklyHours;
     }
 
     /**

@@ -39,7 +39,7 @@ public class MeetingFacility extends Facility {
 
     // converts object to string
     public String toString() {
-        return "Meeting Facility" + ((Facility) this).toString() + String.format(" size: %.0fsqft", size);
+        return "Meeting Facility" + ((Facility) this).toString() + String.format(" | size: %.0fsqft", size);
     }
 
     // accessor for size
