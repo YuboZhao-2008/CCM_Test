@@ -1,167 +1,122 @@
-package member;
+package staff;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.io.*;
+
+import static java.util.Collections.sort;
 
 /**
- * Manages a collection of Member objects: loading from file,
- * adding new members, searching by ID, printing bills,
- * and listing names alphabetically.
- * <p>
- * File format:
- * <num members>
- * <id>
- * <type>
- * <age>
- * <name>
- * <planType>
- * If adult:
- * <contactPhone>
- * <address>
- * <billAmount>
- * <billPaid>
- * <num children>
- * <child id>...
- * If youth:
- * <guardian id>
+ * Manages a collection of Staff members: loading from file, adding new staff,
+ * searching by ID, printing payrolls, finding available staff for a timeslot,
+ * and printing names alphabetically.
  *
  * @author Yubo-Zhao
  * @version 1.0
- * @since 2025-06-06
+ * @since 2025-06-09
  */
-public class MemberManager {
+public class StaffManager {
     /**
-     * The list of all members managed by this class.
+     * The list of all staff members managed by this class.
      */
-    public ArrayList<Member> members;
-
-    // default constructor
-    public MemberManager() {
-        members = new ArrayList<>();
-    }
+    public ArrayList<Staff> staffs;
 
     /**
-     * Constructs a MemberManager and immediately loads member data
-     * from the specified file, wiring up parent/child relationships.
+     * Constructs a StaffManager and loads staff data from a text file.
+     * The file format is:
+     * <num staff>
+     * <id>
+     * <type>          // "fulltime" or "parttime"
+     * <name>
+     * [fulltime only] <yearsWorked>
+     * [parttime only] <hoursWorked>
+     *                  <hourlySalary>
+     *                  <maxWeeklyHours>
      *
-     * @param filename the path to the member data file
+     * @param filename the path to the staff data file
      */
-    public MemberManager(String filename) {
-        members = new ArrayList<>();
-        Map<Integer, Member> idToMember = new HashMap<>();
-        Map<Integer, List<Integer>> adultChildrenIds = new HashMap<>();
-        Map<Integer, Integer> youthGuardianIds = new HashMap<>();
+    public StaffManager(String filename) {
+        staffs = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            int numMembers = Integer.parseInt(br.readLine().trim());
+            int numStaff = Integer.parseInt(br.readLine().trim());
 
-            for (int i = 0; i < numMembers; i++) {
-                int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim().toLowerCase();
-                int age = Integer.parseInt(br.readLine().trim());
-                String name = br.readLine().trim();
-                Member.PlanType planType = Member.PlanType
-                        .valueOf(br.readLine().trim().toUpperCase());
+            for (int i = 0; i < numStaff; i++) {
+                String line;
+                while ((line = br.readLine()) != null
+                        && (line.trim().isEmpty() || line.trim().equals("##"))) {
+                }
+                int id         = Integer.parseInt(line.trim());
+                String type    = br.readLine().trim().toLowerCase();
+                String name    = br.readLine().trim();
 
-                if (type.equals("adult")) {
-                    String phone = br.readLine().trim();
-                    String address = br.readLine().trim();
-                    double billAmount = Double.parseDouble(br.readLine().trim());
-                    boolean billPaid = br.readLine().trim().equalsIgnoreCase("paid");
-                    int numChildren = Integer.parseInt(br.readLine().trim());
+                if (type.equals("fulltime")) {
+                    int yearsWorked = Integer.parseInt(br.readLine().trim());
+                    FullTimeStaff full = new FullTimeStaff(name, yearsWorked);
+                    full.setId(id);
+                    staffs.add(full);
 
-                    List<Integer> childIds = new ArrayList<>();
-                    for (int j = 0; j < numChildren; j++) {
-                        childIds.add(Integer.parseInt(br.readLine().trim()));
-                    }
-
-                    AdultMember adult = new AdultMember(
-                            age, name, planType,
-                            phone, address,
-                            billAmount, billPaid);
-                    adult.setId(id);
-                    members.add(adult);
-                    idToMember.put(id, adult);
-                    adultChildrenIds.put(id, childIds);
-
-                } else { // youth
-                    int guardianId = Integer.parseInt(br.readLine().trim());
-
-                    YouthMember youth = new YouthMember(
-                            age, name, planType,
-                            null // wired below
-                    );
-                    youth.setId(id);
-                    members.add(youth);
-                    idToMember.put(id, youth);
-                    youthGuardianIds.put(id, guardianId);
+                } else if (type.equals("parttime")) {
+                    int   hoursWorked    = Integer.parseInt(br.readLine().trim());
+                    double hourlyRate    = Double.parseDouble(br.readLine().trim());
+                    int   maxWeeklyHours = Integer.parseInt(br.readLine().trim());
+                    PartTimeStaff part = new PartTimeStaff(name, hoursWorked, hourlyRate, maxWeeklyHours);
+                    part.setId(id);
+                    staffs.add(part);
                 }
             }
 
-            // Wire up guardian ↔ children relationships
-            for (Map.Entry<Integer, Integer> entry : youthGuardianIds.entrySet()) {
-                YouthMember youth = (YouthMember) idToMember.get(entry.getKey());
-                AdultMember guardian = (AdultMember) idToMember.get(entry.getValue());
-                youth.setGuardian(guardian);
-                guardian.addChild(youth);
-            }
-
         } catch (IOException e) {
-            System.out.println("Error loading members: " + e.getMessage());
+            System.out.println("Error loading staff file: " + e.getMessage());
         }
     }
 
     /**
-     * Adds a new member, assigning a unique ID automatically.
+     * Adds a new staff member, assigning them a unique ID.
      *
-     * @param member the Member to add
+     * @param staff the Staff object to add
      */
-    public void addMember(Member member) {
-        member.setId(generateId());
-        members.add(member);
+    public void addStaff(Staff staff) {
+        staff.setId(generateId());
+        staffs.add(staff);
     }
 
     /**
-     * Generates the next unique member ID (last ID + 1).
+     * Generates the next unique staff ID by taking the last assigned ID + 1.
      *
-     * @return the new unique ID
+     * @return a new unique ID
      */
     public int generateId() {
-        if (members.isEmpty()) {
-            return 1;
-        }
-        return members.get(members.size() - 1).getId() + 1;
+        return staffs.get(staffs.size() - 1).getId() + 1;
     }
 
     /**
-     * Searches for a member by ID using binary search.
-     * Assumes the members list is sorted by ID.
+     * Searches for a staff member by their ID using binary search.
+     * Assumes the list is sorted by ID.
      *
-     * @param id the ID to search for
-     * @return the Member with matching ID, or null if not found
+     * @param id the staff ID to search for
+     * @return the Staff with the matching ID, or null if not found
      */
-    public Member searchById(int id) {
-        return searchByIdRecursive(id, 0, members.size() - 1);
+    public Staff searchById(int id) {
+        return searchByIdRecursive(id, 0, staffs.size() - 1);
     }
 
     /**
-     * Recursive helper for binary search.
+     * Recursive helper for binary search by ID.
+     *
+     * @param id   the target ID
+     * @param low  the lower index
+     * @param high the upper index
+     * @return the matching Staff, or null if not present
      */
-    private Member searchByIdRecursive(int id, int low, int high) {
+    private Staff searchByIdRecursive(int id, int low, int high) {
         if (low > high) {
             return null;
         }
-        int mid = (low + high) / 2;
-        int midId = members.get(mid).getId();
+        int mid   = (low + high) / 2;
+        int midId = staffs.get(mid).getId();
 
         if (midId == id) {
-            return members.get(mid);
+            return staffs.get(mid);
         } else if (midId > id) {
             return searchByIdRecursive(id, low, mid - 1);
         } else {
@@ -170,25 +125,48 @@ public class MemberManager {
     }
 
     /**
-     * Prints all members' bills to standard output.
+     * Prints the payroll information for all staff to standard output.
      */
-    public void printAllBills() {
-        for (Member m : members) {
-            m.printBill();
+    public void printAllPayrolls() {
+        for (Staff s : staffs) {
+            s.printPayroll();
         }
     }
 
     /**
-     * Prints all member names in alphabetical order.
+     * Finds all staff members available during the given time block.
+     *
+     * @param block the time block to check availability against
+     * @return a list of Staff who are available
+     */
+    public ArrayList<Staff> availableStaff(TimeBlock block) {
+        ArrayList<Staff> available = new ArrayList<>();
+        for (Staff s : staffs) {
+            if (s.isAvailable(block)) {
+                available.add(s);
+            }
+        }
+        return available;
+    }
+
+    /**
+     * Prints all staff names in alphabetical order.
      */
     public void printAlphabetical() {
-        ArrayList<String> sorted = new ArrayList<>();
-        for (Member m : members) {
-            sorted.add(m.getName());
+        ArrayList<String> sortedNames = new ArrayList<>();
+        for (Staff s : staffs) {
+            sortedNames.add(s.getName());
         }
-        Collections.sort(sorted);
-        for (String name : sorted) {
+        sort(sortedNames);
+        for (String name : sortedNames) {
             System.out.println(name);
         }
+    }
+
+    /**
+     * Sorts the staff list by descending pay, then by ascending name.
+     */
+    public void sortByPayThenName() {
+        sort(staffs, Comparator.comparingDouble(Staff::calculatePay).reversed().thenComparing(Staff::getName, String.CASE_INSENSITIVE_ORDER));
     }
 }
