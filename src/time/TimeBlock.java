@@ -78,6 +78,73 @@ public class TimeBlock {
         ABBR_TO_MONTH = Collections.unmodifiableMap(baz);
     }
     public static final int HOURS_IN_DAY = 24;
+    
+    public TimeBlock() {
+        
+    }
+    /**
+     * TimeBlock constructor for a whole-day event
+     * 
+     * @param year
+     * @param month
+     * @param day
+     */
+    public TimeBlock(int year, Month month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        startHour = 0;
+        endHour = 24;
+    }
+
+    /**
+     * TimeBlock constructor for an event without an end time
+     * 
+     * @param year
+     * @param month
+     * @param day
+     * @param startHour
+     */
+    public TimeBlock(int year, Month month, int day, double startHour) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.startHour = startHour;
+        endHour = startHour;
+    }
+
+    /**
+     * TimeBlock constructor for an event with a duration
+     * 
+     * @param year
+     * @param month
+     * @param day
+     * @param startHour
+     * @param duration
+     */
+    public TimeBlock(int year, Month month, int day, double startHour, double duration) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.startHour = startHour;
+        endHour = startHour + duration;
+    }
+
+    /**
+     * TimeBlock constructor for a TimeBlock with the same date as other but
+     * different start time and duration
+     * 
+     * @param other
+     * @param startHour
+     * @param duration
+     */
+    public TimeBlock(TimeBlock other, double startHour, double duration) {
+        this.year = other.year;
+        this.month = other.month;
+        this.day = other.day;
+        this.startHour = startHour;
+        endHour = startHour + duration;
+    }
 
     /**
      * checks whether a year is a leap year
@@ -214,70 +281,6 @@ public class TimeBlock {
         }
 
         return true;
-    }
-
-    /**
-     * TimeBlock constructor for a whole-day event
-     * 
-     * @param year
-     * @param month
-     * @param day
-     */
-    public TimeBlock(int year, Month month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        startHour = 0;
-        endHour = 24;
-    }
-
-    /**
-     * TimeBlock constructor for an event without an end time
-     * 
-     * @param year
-     * @param month
-     * @param day
-     * @param startHour
-     */
-    public TimeBlock(int year, Month month, int day, double startHour) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.startHour = startHour;
-        endHour = startHour;
-    }
-
-    /**
-     * TimeBlock constructor for an event with a duration
-     * 
-     * @param year
-     * @param month
-     * @param day
-     * @param startHour
-     * @param duration
-     */
-    public TimeBlock(int year, Month month, int day, double startHour, double duration) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.startHour = startHour;
-        this.endHour = startHour + duration;
-    }
-
-    /**
-     * TimeBlock constructor for a TimeBlock with the same date as other but
-     * different start time and duration
-     * 
-     * @param other
-     * @param startHour
-     * @param duration
-     */
-    public TimeBlock(TimeBlock other, double startHour, double duration) {
-        this.year = other.year;
-        this.month = other.month;
-        this.day = other.day;
-        this.startHour = startHour;
-        endHour = startHour + duration;
     }
 
     /**

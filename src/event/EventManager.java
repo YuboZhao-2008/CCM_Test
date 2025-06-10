@@ -83,8 +83,7 @@ public class EventManager {
 
                 int numParticipants = Integer.parseInt(reader.readLine());
                 for (int k = 0; k < numParticipants; k++) {
-                    Member member = main.CommunityCentreRunner.getMemberManager()
-                            .searchById(Integer.parseInt(reader.readLine()));
+                    Member member = main.CommunityCentreRunner.getMemberManager().searchById(Integer.parseInt(reader.readLine()));
                     event.registerParticipant(member);
                 }
 

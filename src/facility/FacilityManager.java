@@ -148,4 +148,11 @@ public class FacilityManager {
 
         return avail;
     }
+
+    /**
+     * adds a facility to the facilities arraylist
+     */
+    public void addFacility(Facility facility) {
+        facilities.add(facility);
+    }
 }

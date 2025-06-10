@@ -14,8 +14,7 @@ import member.MemberManager;
 import member.YouthMember;
 import staff.FullTimeStaff;
 import staff.StaffManager;
-import time.TimeBlock;
-import time.TimeManager;
+import time.*;
 
 public class CommunityCentreRunner {
     public static final String EVENTS_FILEPATH = "data/events.txt";
@@ -66,8 +65,15 @@ public class CommunityCentreRunner {
         System.out.println(staffManager.searchById(0));
 
         SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
-        TimeBlock timeBlock = new TimeBlock(2000, Month.APRIL, 10, 12.0, 2.0);
-        Competition competition = new Competition(sportsFacility, timeblock, host, prize, participationcost);
+        facilityManager.addFacility(sportsFacility);
 
+        TimeBlock timeBlock = new TimeBlock(2000, TimeBlock.Month.APR, 10, 12.0, 2.0);
+        Competition competition = new Competition(sportsFacility, timeBlock, member, 1000, 10);
+        eventManager.book(competition);
+        eventManager.searchById(0).registerParticipant(member2);
+
+        System.out.println(eventManager.searchById(0));
+        System.out.println(member2);
+        System.out.println(member.getId());
     }
 }
