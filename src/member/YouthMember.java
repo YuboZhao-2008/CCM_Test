@@ -77,7 +77,7 @@ public class YouthMember extends Member {
      */
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString()+" | guardian: "+guardian.getName();
     }
 
     /**

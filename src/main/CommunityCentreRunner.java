@@ -1,12 +1,20 @@
 package main;
 
+import static java.util.Collections.newSetFromMap;
+
+import java.time.Month;
+
+import event.Competition;
 import event.EventManager;
 import facility.FacilityManager;
+import facility.SportsFacility;
 import member.AdultMember;
 import member.Member.PlanType;
 import member.MemberManager;
 import member.YouthMember;
+import staff.FullTimeStaff;
 import staff.StaffManager;
+import time.TimeBlock;
 import time.TimeManager;
 
 public class CommunityCentreRunner {
@@ -52,6 +60,14 @@ public class CommunityCentreRunner {
         System.out.println(memberManager.searchById(0));
         System.out.println(memberManager.searchById(1));
 
-        System.out.println();
+        FullTimeStaff staff = new FullTimeStaff("John Cena", 20);
+        staffManager.addStaff(staff);
+
+        System.out.println(staffManager.searchById(0));
+
+        SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
+        TimeBlock timeBlock = new TimeBlock(2000, Month.APRIL, 10, 12.0, 2.0);
+        Competition competition = new Competition(sportsFacility, timeblock, host, prize, participationcost);
+
     }
 }

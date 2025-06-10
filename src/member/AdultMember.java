@@ -75,14 +75,48 @@ public class AdultMember extends Member {
     }
 
     /**
-     * Calculates this member's total bill by adding the plan base fee
-     * to any additional charges.
+     * Calculates this member's bill to pay by subtracting
+     * the total bill by the total amount of the bill they've paid
      *
      * @return the total amount due
      */
     @Override
     public double calculateBill() {
         return totalBillAmount - paidBillAmount;
+    }
+
+    /**
+     * Calculates this member's total bill by adding the plan base fee
+     * to any additional charges.
+     * 
+     * @return the total bill
+     */
+    public double calculateTotalBill() {
+        return 1;
+/*
+ *   switch(planType)
+   case(BIWEEKLY):
+	base = BIWEEKLY_BASE
+	break
+   case(MONTHLY):
+   	base = MONTHLY_BASE
+	break
+   case(ANNUAL):
+	base = ANNUAL_BASE
+	break
+   default:
+base = 0.00
+break
+
+    for each event in registrations:
+        if event instanceof Competition:
+            base += event.getParticipationCost()
+	if (event.getWinner().equals(Member)):
+		eventCost -= event.getPrize()
+        Else if 
+    return base
+
+ */
     }
 
     /**

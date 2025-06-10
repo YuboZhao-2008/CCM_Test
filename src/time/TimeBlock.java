@@ -261,7 +261,7 @@ public class TimeBlock {
         this.month = month;
         this.day = day;
         this.startHour = startHour;
-        endHour = startHour + duration;
+        this.endHour = startHour + duration;
     }
 
     /**

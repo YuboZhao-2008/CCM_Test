@@ -25,7 +25,12 @@ public class StaffManager {
      */
     public ArrayList<Staff> staffs;
 
-    public StaffManager() {}
+    /**
+     * Default constructor for StaffManager.
+     */
+    public StaffManager() {
+        staffs = new ArrayList<>();
+    }
 
     /**
      * Constructs a StaffManager and loads staff data from a text file.
@@ -94,7 +99,14 @@ public class StaffManager {
      * @return a new unique ID
      */
     public int generateId() {
-        return staffs.get(staffs.size() - 1).getId() + 1;
+        int maxId = -1;
+
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i).getId() > maxId) {
+                maxId = staffs.get(i).getId();
+            }
+        }
+        return maxId + 1;
     }
 
     /**
