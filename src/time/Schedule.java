@@ -9,9 +9,7 @@ package time;
 
 import java.util.ArrayList;
 
-import event.Competition;
 import event.Event;
-import time.TimeBlock.Month;
 
 public class Schedule {
     private ArrayList<Event> eventSchedule;
@@ -178,21 +176,5 @@ public class Schedule {
         }
 
         return false;
-    }
-
-    public static void main(String[] args) {
-        Schedule schedule = new Schedule();
-
-        ArrayList<Event> list = new ArrayList<Event>();
-        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 4));
-
-        schedule.add(new Competition(null, new TimeBlock(2025, Month.JUN, 1, 12, 1), null));
-
-        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 4));
-
-        schedule.add(new Competition(null, new TimeBlock(2025, Month.JUN, 1, 13.5, 1), null));
-
-        list = schedule.eventsWithin(new TimeBlock(2025, Month.JUN, 1, 11, 3.5));
-        System.out.println(list.size());
     }
 }

@@ -60,11 +60,11 @@ public class EventManager {
                 Month month = TimeBlock.ABBR_TO_MONTH.get(reader.readLine());
                 int year = Integer.parseInt(reader.readLine());
                 double start_hour = Double.parseDouble(reader.readLine());
-                double end_hour = Double.parseDouble(reader.readLine());
+                double duration = Double.parseDouble(reader.readLine());
                 int host_id = Integer.parseInt(reader.readLine());
                 
                 Facility facility = main.CommunityCentreRunner.getFacilityManager().searchById(facility_id);
-                TimeBlock timeBlock = new TimeBlock(year, month, day);
+                TimeBlock timeBlock = new TimeBlock(year, month, day, start_hour, duration);
                 Member host = main.CommunityCentreRunner.getMemberManager().searchById(host_id);
                 Event event;
                 if (eventType.equals("competition")) {
@@ -127,9 +127,9 @@ public class EventManager {
                 }
 
                 writer.write(""+event.getFacility().getId()+"\n");
-                writer.write(""+event.getTimeBlock().get+"\n") // day
-                //month
-                //year
+                writer.write(""+event.getTimeBlock().getDay()+"\n") // day
+                writer.write("")
+                writer.write(""+event.getTImeBlock().getYear()+"\n");
                 writer.write(""+event.getTimeBlock().getStartHour()+"\n");
                 writer.write(""+event.getTimeBlock().getEndHour()+"\n");
                 if (event.getHost() != null) {
