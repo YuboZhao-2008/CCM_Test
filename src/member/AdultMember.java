@@ -10,9 +10,9 @@ import event.Event;
  * Provides methods to calculate and pay bills, register for events,
  * and manage children.
  *
- * @author Yubo-Zhao
+ * @author Yubo Zhao
  * @version 1.0
- * @since 2025-06-03
+ * @since 2025-06-10
  */
 public class AdultMember extends Member {
     /** Contact phone number for this adult member. */
@@ -27,9 +27,6 @@ public class AdultMember extends Member {
     /** Amount already paid toward the total bill. */
     private double paidBillAmount;
 
-    /** Indicates whether the full bill has been paid. */
-    private boolean billPaid;
-
     /** List of youth members (children) linked to this guardian. */
     private List<YouthMember> children = new ArrayList<>();
 
@@ -42,22 +39,21 @@ public class AdultMember extends Member {
      * @param contactPhone     phone number for contact
      * @param address          residential address
      * @param totalBillAmount  additional bill amount beyond base fee
-     * @param billPaid         true if the bill is already paid in full
+     * @param paidBillAmount   amount already paid toward the bill
      */
     public AdultMember(int age, String name, PlanType planType,
                        String contactPhone, String address,
-                       double totalBillAmount, boolean billPaid) {
+                       double totalBillAmount, double paidBillAmount) {
         super(age, name, planType);
-        this.contactPhone   = contactPhone;
-        this.address        = address;
+        this.contactPhone    = contactPhone;
+        this.address         = address;
         this.totalBillAmount = totalBillAmount;
-        this.billPaid       = billPaid;
-        this.paidBillAmount = billPaid ? totalBillAmount : 0.0;
+        this.paidBillAmount  = paidBillAmount;
     }
 
     /**
      * Calculates this member’s total bill by adding the plan base fee
-     * to any additional charges.
+     * to any outstanding charges.
      *
      * @return the total amount due
      */
@@ -70,21 +66,18 @@ public class AdultMember extends Member {
             case ANNUAL_BASE:   base = ANNUAL_BASE;   break;
             default:            base = 0.0;          break;
         }
-        return base + totalBillAmount;
+        // remaining balance = base fee + (charges − payments)
+        return base + (totalBillAmount - paidBillAmount);
     }
 
     /**
-     * Applies a payment toward the bill and updates the paid status.
+     * Applies a payment toward the bill and updates the paid amount.
      *
      * @param amount the payment amount
      * @return the updated paid amount
      */
     public double payBill(double amount) {
-        paidBillAmount += amount;
-        if (paidBillAmount >= totalBillAmount) {
-            paidBillAmount = totalBillAmount;
-            billPaid = true;
-        }
+        paidBillAmount = Math.min(totalBillAmount, paidBillAmount + amount);
         return paidBillAmount;
     }
 
@@ -203,23 +196,5 @@ public class AdultMember extends Member {
      */
     public void setPaidBillAmount(double paidBillAmount) {
         this.paidBillAmount = paidBillAmount;
-    }
-
-    /**
-     * Checks if the bill is fully paid.
-     *
-     * @return true if fully paid, false otherwise
-     */
-    public boolean isBillPaid() {
-        return billPaid;
-    }
-
-    /**
-     * Marks the bill as paid or unpaid.
-     *
-     * @param billPaid true to mark paid, false for outstanding
-     */
-    public void setBillPaid(boolean billPaid) {
-        this.billPaid = billPaid;
     }
 }
