@@ -52,7 +52,7 @@ public class MemberManager {
             System.out.println(e);
         }
     }
-
+  
     public void addMember(Member member) {
         member.setId(generateId());
         members.add(member);

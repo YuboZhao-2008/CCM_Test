@@ -2,7 +2,9 @@ package staff;
 import java.util.*;
 
 import static java.util.Collections.sort;
+
 import java.io.*;
+
 public class StaffManager {
     public ArrayList<Staff> staffs;
 
@@ -39,7 +41,7 @@ public class StaffManager {
             System.out.println(e);
         }
     }
-
+  
     public void addStaff(Staff staff)   {
         staff.setId(generateId());
         staffs.add(staff);
