@@ -3,9 +3,11 @@ package main;
 import event.EventManager;
 import facility.FacilityManager;
 import member.MemberManager;
+import time.TimeManager;
 
 public class CommunityCentreRunner {
     private static MemberManager memberManager = new MemberManager();
+    private static TimeManager timeManager = new TimeManager();
     private static EventManager eventManager = new EventManager();
     private static FacilityManager facilityManager = new FacilityManager();
 
@@ -20,6 +22,14 @@ public class CommunityCentreRunner {
 
     public static EventManager getEventManager() {
         return eventManager;
+    }
+  
+    public static TimeManager getTimeManager() {
+        return timeManager;
+    }
+    
+    public static StaffManager getStaffManager() {
+        return staffManager;
     }
 
     public static FacilityManager getFacilityManager() {

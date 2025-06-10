@@ -1,12 +1,12 @@
 package member;
 
 import event.Event;
-import time.Schedule;
+import facility.Schedule;
 
 public abstract class Member {
     public static final double BIWEEKLY_BASE = 20.00;
-    public static final double MONTHLY_BASE = 35.00;
-    public static final double ANNUAL_BASE = 350.00;
+    public static final double MONTHLY_BASE   = 35.00;
+    public static final double ANNUAL_BASE    = 350.00;
 
     protected int id;
     protected int age;
@@ -20,10 +20,10 @@ public abstract class Member {
         ANNUAL_BASE
     }
 
-    public Member(int id, String name, PlanType plantype) {
-        this.id = id;
-        this.name = name;
-        this.planType = plantype;
+    public Member(int age, String name, PlanType planType) {
+        this.age           = age;
+        this.name          = name;
+        this.planType      = planType;
         this.registrations = new Schedule();
     }
 
@@ -31,16 +31,11 @@ public abstract class Member {
 
     public String membershipDetails() {
         return id
-                + " | "
-                + name
-                + " | "
-                + planType
+                + " | age: "   + age
+                + " | name: "  + name
+                + " | plan: "  + planType
                 + " | $"
                 + String.format("%.2f", calculateBill());
-    }
-
-    public void advanceHours(int hours) {
-        registrations.advanceHours(hours);
     }
 
     public void printBill() {
@@ -51,7 +46,45 @@ public abstract class Member {
         return membershipDetails();
     }
 
-    public boolean registerFor(Event eventName) {
+    public void registerFor(Event event) {
+        registrations.add(event);
+    }
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+  
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PlanType getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(PlanType planType) {
+        this.planType = planType;
+    }
+
+    public Schedule getRegistrations() {
+        return registrations;
+    }
+
+    public boolean equals(Member m) {
+        return (m.getId() == this.getId() && m.getName().equals(this.getName()));
     }
 }

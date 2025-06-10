@@ -45,11 +45,42 @@ public abstract class Event {
     }
 
     // accessors
-    //
+    public int getId() {
+        return this.id;
+    }
+    public boolean hasCompleted() {
+        return this.isCompleted;
+    }
+    public TimeBlock getTimeBlock() {
+        return this.timeBlock;
+    }
+    public ArrayList<Staff> getStaffSupervising() {
+        return this.staffSupervising;
+    }
+    public ArrayList<Member> getParticipants() {
+        return this.participants;
+    }
+    public Facility getFacility() {
+        return this.facility;
+    }
+    public Member getHost() {
+        return this.host;
+    }
 
     // mutators
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * equals
+     * determines if two events are identical
+     * 
+     * @param other
+     * @return whether or not the events are identical
+     */
+    public boolean equals(Event other) {
+        return other != null && this.id == other.id && this.timeBlock.equals(other.timeBlock) && this.host.equals(other.host);
     }
 
     /**
@@ -83,13 +114,13 @@ public abstract class Event {
             return false; // event is full
         }
 
-        if (!member.getRegistrations().isBlockFree(timeBlock)) {
+        if (!member.isAvailable(timeBlock)) {
             return false; // member has a conflicting time block
         }
 
         // all conditions are valid for member to be added now
         participants.add(member);
-        member.registerFor(this)
+        member.registerFor(this);
 
         return true;
     }
@@ -122,6 +153,8 @@ public abstract class Event {
     }
 
     /**
+     * setCompleted
+     * description
      */
     abstract public void setCompleted();
 
@@ -132,10 +165,5 @@ public abstract class Event {
         String s = "Event ID: " + id + "\nFacility #" + facility.getRoomNum() + "\nScheduled for " + timeBlock
                 + "\nHeld by " + host.getName();
         return s;
-    }
-
-    // accessors
-    public TimeBlock getTimeBlock() {
-        return timeBlock;
     }
 }

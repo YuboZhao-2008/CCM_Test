@@ -3,8 +3,8 @@
  * It contains all the functions that a fundraiser needs.
  *
  * @author Mansour Abdelsalam
- * @version 1.0
- * @since 2025-06-04
+ * @version 1.1
+ * @since 2025-06-06
  */
 
 package event;
@@ -15,7 +15,9 @@ import member.*;
 import staff.*;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.io.*;
+import java.util.Scanner;
 
 public class Fundraiser extends Event {
     // fields
@@ -39,23 +41,63 @@ public class Fundraiser extends Event {
     }
 
     // accessors
-    //
+    public double getGoal() {
+        return this.goal;
+    }
 
     // mutators
     //
 
     /**
      * setCompleted
-     * updates isCompleted to true and generates/asks for information.
-     * It will also print the information of the completed event.
-     * 
-     * @param hours
+     * will ask the user for the amount each participant raised, 
      */
     @Override
     public void setCompleted() {
-        if 
+        Scanner scan = new Scanner(System.in);
+
+        isCompleted = true;
+        boolean valid_input = false;
+        double amount = 0;
+
+        System.out.println("For each adult participant, enter the amount they raised (This does not affect their bill).");
+        for (int i = 0; i<participants.size(); i++) {
+            if (participants.get(i) instanceof AdultMember adultMember) {
+                valid_input = false;
+
+                while (!valid_input) {
+                    try {
+                        System.out.print(adultMember.getName()+" raised: $");
+                        
+                        amount = scan.nextDouble();
+
+                        valid_input = true;
+                    } catch(InputMismatchException ime) {
+                        System.out.println("Invalid amount raised.");
+                        System.out.println("Please try again.");
+                        System.out.println(); // blank line
+                    } 
+                }
+
+                amountRaised += amount;
+            }
+        }
+        System.out.println(); // blank line
+
+        System.out.printf("Goal: $.2f\n",goal);
+        System.out.printf("Total Amount Raised: $.2f\n",amountRaised);
+
+        if (amountRaised > goal) {
+            System.out.println("Goal exceeded!");
+        } else if (amountRaised < goal) {
+            System.out.println("Goal not reached.");
+        } else {
+            System.out.println("Goal matched!");
+        }
+
+        scan.close();
     }
-    
+
     /*
      * toString
      */

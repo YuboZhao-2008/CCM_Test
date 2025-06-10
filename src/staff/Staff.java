@@ -23,7 +23,7 @@ public abstract class Staff {
     public abstract void printPayroll();
 
     public abstract String toString();
-
+  
     public boolean isAvailalbe(TimeBlock block) {
         return shifts.isBlockFree(block);
     }
