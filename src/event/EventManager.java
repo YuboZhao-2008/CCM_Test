@@ -129,12 +129,10 @@ public class EventManager {
                     writer.write("" + f.getGoal() + "\n");
                 }
 
-
                 writer.write("" + event.getFacility().getId() + "\n");
-                writer.write("" + event.getTimeBlock().getDay() + "\n"); // day
-                // month
+                writer.write("" + event.getTimeBlock().getDay() + "\n");
                 writer.write("" + event.getTimeBlock().getMonth() + "\n");
-                // year
+
                 writer.write("" + event.getTimeBlock().getYear() + "\n");
                 writer.write("" + event.getTimeBlock().getStartHour() + "\n");
                 writer.write("" + event.getTimeBlock().duration() + "\n");
