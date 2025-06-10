@@ -25,21 +25,57 @@ public class TimeBlock {
     public static final int DAYS_IN_YEAR = 365;
     public static final Map<Month, Integer> DAYS_BEFORE_MONTH;
     static {
-        Map<Month, Integer> temp = new HashMap<>();
-        temp.put(Month.JAN, 0);
-        temp.put(Month.FEB, 31);
-        temp.put(Month.MAR, 59);
-        temp.put(Month.APR, 90);
-        temp.put(Month.MAY, 120);
-        temp.put(Month.JUN, 151);
-        temp.put(Month.JUL, 181);
-        temp.put(Month.AUG, 212);
-        temp.put(Month.SEP, 243);
-        temp.put(Month.OCT, 273);
-        temp.put(Month.NOV, 304);
-        temp.put(Month.DEC, 334);
+        Map<Month, Integer> foo = new HashMap<>();
+        foo.put(Month.JAN, 0);
+        foo.put(Month.FEB, 31);
+        foo.put(Month.MAR, 59);
+        foo.put(Month.APR, 90);
+        foo.put(Month.MAY, 120);
+        foo.put(Month.JUN, 151);
+        foo.put(Month.JUL, 181);
+        foo.put(Month.AUG, 212);
+        foo.put(Month.SEP, 243);
+        foo.put(Month.OCT, 273);
+        foo.put(Month.NOV, 304);
+        foo.put(Month.DEC, 334);
 
-        DAYS_BEFORE_MONTH = Collections.unmodifiableMap(temp);
+        DAYS_BEFORE_MONTH = Collections.unmodifiableMap(foo);
+    }
+    public static final Map<Month, Integer> DAYS_IN_MONTH;
+    static {
+        Map<Month, Integer> bar = new HashMap<>();
+        bar.put(Month.JAN, 31);
+        bar.put(Month.FEB, 28);
+        bar.put(Month.MAR, 31);
+        bar.put(Month.APR, 30);
+        bar.put(Month.MAY, 31);
+        bar.put(Month.JUN, 30);
+        bar.put(Month.JUL, 31);
+        bar.put(Month.AUG, 31);
+        bar.put(Month.SEP, 30);
+        bar.put(Month.OCT, 31);
+        bar.put(Month.NOV, 30);
+        bar.put(Month.DEC, 31);
+
+        DAYS_IN_MONTH = Collections.unmodifiableMap(bar);
+    }
+    public static final Map<String, Month> ABBR_TO_MONTH;
+    static {
+        Map<String, Month> baz = new HashMap<>();
+        baz.put("JAN", Month.JAN);
+        baz.put("FEB", Month.FEB);
+        baz.put("MAR", Month.MAR);
+        baz.put("APR", Month.APR);
+        baz.put("MAY", Month.MAY);
+        baz.put("JUN", Month.JUN);
+        baz.put("JUL", Month.JUL);
+        baz.put("AUG", Month.AUG);
+        baz.put("SEP", Month.SEP);
+        baz.put("OCT", Month.OCT);
+        baz.put("NOV", Month.NOV);
+        baz.put("DEC", Month.DEC);
+
+        ABBR_TO_MONTH = Collections.unmodifiableMap(baz);
     }
     public static final int HOURS_IN_DAY = 24;
 
@@ -56,6 +92,55 @@ public class TimeBlock {
             return false;
         } else
             return year % 4 == 0;
+    }
+
+    public static Month nextMonth(Month month) {
+        switch (month) {
+            case Month.JAN:
+                return Month.FEB;
+            case Month.FEB:
+                return Month.MAR;
+            case Month.MAR:
+                return Month.APR;
+            case Month.APR:
+                return Month.MAY;
+            case Month.MAY:
+                return Month.JUN;
+            case Month.JUN:
+                return Month.JUL;
+            case Month.JUL:
+                return Month.AUG;
+            case Month.AUG:
+                return Month.SEP;
+            case Month.SEP:
+                return Month.OCT;
+            case Month.OCT:
+                return Month.NOV;
+            case Month.NOV:
+                return Month.DEC;
+            case Month.DEC:
+                return Month.JAN;
+            default:
+                return Month.JAN;
+        }
+
+    }
+
+    public TimeBlock nextDay() {
+        int newDay = day++;
+        Month newMonth = month;
+        int newYear = year;
+
+        if (newDay > DAYS_IN_MONTH.get(month) &&
+                !(month == Month.FEB && isLeapYear(year) && newDay == DAYS_IN_MONTH.get(month) + 1)) {
+            newDay -= DAYS_IN_MONTH.get(month);
+            newMonth = nextMonth(month);
+            if (newMonth == Month.JAN) {
+                newYear++;
+            }
+        }
+
+        return new TimeBlock(newYear, newMonth, newDay);
     }
 
     /**
@@ -103,6 +188,32 @@ public class TimeBlock {
      */
     private double hoursBeforeEnd() {
         return hoursBeforeYear(year) + hoursBeforeMonth(month, year) + (day - 1) * HOURS_IN_DAY + endHour;
+    }
+
+    public boolean isValid() {
+        if (year < 0) {
+            return false;
+        }
+        if (month == null) {
+            return false;
+        }
+        if (day <= 0) {
+            return false;
+        }
+        if (day > DAYS_IN_MONTH.get(month) && !(month == Month.FEB && day == DAYS_IN_MONTH.get(month) + 1)) {
+            return false;
+        }
+        if (startHour < 0) {
+            return false;
+        }
+        if (startHour >= 24) {
+            return false;
+        }
+        if (endHour >= 24) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -284,5 +395,32 @@ public class TimeBlock {
      */
     public double getEndHour() {
         return endHour;
+    }
+
+    /**
+     * accessor for day
+     * 
+     * @return the day
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * accessor for month
+     * 
+     * @return the month
+     */
+    public Month getMonth() {
+        return month;
+    }
+
+    /**
+     * accessor for year
+     * 
+     * @return the year
+     */
+    public int getYear() {
+        return year;
     }
 }
