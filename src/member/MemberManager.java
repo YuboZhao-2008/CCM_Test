@@ -36,20 +36,18 @@ public class MemberManager {
      */
     public MemberManager(String filename) {
         members = new ArrayList<>();
-        Map<Integer, Member> idToMember = new HashMap<>();
-        Map<Integer, List<Integer>> adultChildrenIds = new HashMap<>();
-        Map<Integer, Integer> youthGuardianIds = new HashMap<>();
+        Map<Integer, Member> idToMember      = new HashMap<>();
+        Map<Integer, Integer> youthGuardian  = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             int numMembers = Integer.parseInt(br.readLine().trim());
 
             for (int i = 0; i < numMembers; i++) {
-                int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim().toLowerCase();
-                int age = Integer.parseInt(br.readLine().trim());
-                String name = br.readLine().trim();
-                Member.PlanType planType = Member.PlanType
-                        .valueOf(br.readLine().trim().toUpperCase());
+                int id           = Integer.parseInt(br.readLine().trim());
+                String type      = br.readLine().trim().toLowerCase();
+                int age          = Integer.parseInt(br.readLine().trim());
+                String name      = br.readLine().trim();
+                Member.PlanType pType   = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
 
                 if (type.equals("adult")) {
                     String phone = br.readLine().trim();
@@ -64,40 +62,37 @@ public class MemberManager {
                     }
 
                     AdultMember adult = new AdultMember(
-                            age, name, planType,
+                            age, name, pType,
                             phone, address,
                             totalbillAmount, totalbillPaid);
                     adult.setId(id);
                     members.add(adult);
                     idToMember.put(id, adult);
-                    adultChildrenIds.put(id, childIds);
-
-                } else { // youth
+                    // you can still wire children if you stored their IDs elsewhere
+                }
+                else {  // youth
                     int guardianId = Integer.parseInt(br.readLine().trim());
-
-                    YouthMember youth = new YouthMember(
-                            age, name, planType,
-                            null // wired below
-                    );
+                    YouthMember youth = new YouthMember(age, name, pType, null);
                     youth.setId(id);
                     members.add(youth);
                     idToMember.put(id, youth);
-                    youthGuardianIds.put(id, guardianId);
+                    youthGuardian.put(id, guardianId);
                 }
             }
 
-            // Wire up guardian ↔ children relationships
-            for (Map.Entry<Integer, Integer> entry : youthGuardianIds.entrySet()) {
-                YouthMember youth = (YouthMember) idToMember.get(entry.getKey());
-                AdultMember guardian = (AdultMember) idToMember.get(entry.getValue());
-                youth.setGuardian(guardian);
-                guardian.addChild(youth);
+            // now hook up youth to guardian and guardian to children
+            for (var e : youthGuardian.entrySet()) {
+                YouthMember  y = (YouthMember) idToMember.get(e.getKey());
+                AdultMember  a = (AdultMember) idToMember.get(e.getValue());
+                y.setGuardian(a);
+                a.addChild(y);
             }
 
         } catch (IOException e) {
-            System.out.println("Error loading members: " + e.getMessage());
+            System.out.println(e);
         }
     }
+
 
     /**
      * Generates the next unique member ID (greatest ID + 1).
@@ -112,16 +107,6 @@ public class MemberManager {
         }
 
         return ++maxId;
-    }
-
-    /**
-     * Adds a new member, assigning a unique ID automatically.
-     *
-     * @param member the Member to add
-     */
-    public void addMember(Member member) {
-        member.setId(generateId());
-        members.add(member);
     }
 
     /**
@@ -142,7 +127,7 @@ public class MemberManager {
         if (low > high) {
             return null;
         }
-        int mid = (low + high) / 2;
+        int mid   = (low + high) / 2;
         int midId = members.get(mid).getId();
 
         if (midId == id) {
@@ -175,5 +160,15 @@ public class MemberManager {
         for (String name : sorted) {
             System.out.println(name);
         }
+    }
+
+    /**
+     * Adds a new member, assigning a unique ID automatically.
+     *
+     * @param member the Member to add
+     */
+    public void addMember(Member member) {
+        member.setId(generateId());
+        members.add(member);
     }
 }

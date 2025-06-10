@@ -11,9 +11,9 @@ import event.Event;
  * Provides methods to calculate and pay bills, register for events,
  * and manage children.
  *
- * @author Yubo-Zhao
+ * @author Yubo Zhao
  * @version 1.0
- * @since 2025-06-03
+ * @since 2025-06-10
  */
 public class AdultMember extends Member {
     /** Contact phone number for this adult member. */
@@ -62,13 +62,14 @@ public class AdultMember extends Member {
      * @param contactPhone     phone number for contact
      * @param address          residential address
      * @param totalBillAmount  additional bill amount beyond base fee
+     * @param paidBillAmount   amount already paid toward the bill
      */
     public AdultMember(int age, String name, PlanType planType,
                        String contactPhone, String address,
                        double totalBillAmount, double paidBillAmount) {
         super(age, name, planType);
-        this.contactPhone   = contactPhone;
-        this.address        = address;
+        this.contactPhone    = contactPhone;
+        this.address         = address;
         this.totalBillAmount = totalBillAmount;
         this.paidBillAmount = paidBillAmount;
     }
