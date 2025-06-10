@@ -75,5 +75,9 @@ public class CommunityCentreRunner {
         System.out.println(eventManager.searchById(0));
         System.out.println(member2);
         System.out.println(member.getId());
+
+        eventManager.cancelEvent(0);
+
+System.out.println(eventManager.searchById(0));
     }
 }
