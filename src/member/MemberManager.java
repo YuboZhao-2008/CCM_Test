@@ -1,21 +1,30 @@
 package member;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import facility.Facility;
+import java.util.*;
+import java.io.*;
 
 /**
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
  * and listing names alphabetically.
- * 
+ * <p>
+ * File format:
+ * <num members>
+ * <id>
+ * <type>
+ * <age>
+ * <name>
+ * <planType>
+ *   If adult:
+ *     <contactPhone>
+ *     <address>
+ *     <billAmount>
+ *     <billPaid>
+ *     <num children>
+ *     <child id>...
+ *   If youth:
+ *     <guardian id>
+ *
  * @author Yubo-Zhao
  * @version 1.0
  * @since 2025-06-06
@@ -26,8 +35,6 @@ public class MemberManager {
      */
     public ArrayList<Member> members = new ArrayList<>();
 
-    
-    public MemberManager() {}
     /**
      * Constructs a MemberManager and immediately loads member data
      * from the specified file, wiring up parent/child relationships.
@@ -50,21 +57,18 @@ public class MemberManager {
                 Member.PlanType pType   = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
 
                 if (type.equals("adult")) {
-                    String phone = br.readLine().trim();
-                    String address = br.readLine().trim();
-                    double totalbillAmount = Double.parseDouble(br.readLine().trim());
-                    double totalbillPaid = Double.parseDouble(br.readLine().trim());
-                    int numChildren = Integer.parseInt(br.readLine().trim());
+                    String phone          = br.readLine().trim();
+                    String address        = br.readLine().trim();
+                    double totalAmount    = Double.parseDouble(br.readLine().trim());
+                    double paidAmount     = Double.parseDouble(br.readLine().trim());
+                    int numChildren       = Integer.parseInt(br.readLine().trim());
 
                     List<Integer> childIds = new ArrayList<>();
                     for (int j = 0; j < numChildren; j++) {
                         childIds.add(Integer.parseInt(br.readLine().trim()));
                     }
 
-                    AdultMember adult = new AdultMember(
-                            age, name, pType,
-                            phone, address,
-                            totalbillAmount, totalbillPaid);
+                    AdultMember adult = new AdultMember(age, name, pType, phone, address, totalAmount, paidAmount);
                     adult.setId(id);
                     members.add(adult);
                     idToMember.put(id, adult);
@@ -95,18 +99,15 @@ public class MemberManager {
 
 
     /**
-     * Generates the next unique member ID (greatest ID + 1).
+     * Generates the next unique member ID (last ID + 1).
      *
      * @return the new unique ID
      */
     public int generateId() {
-        int maxId = -1;
-
-        for (Member member : members) {
-            maxId = Math.max(maxId, member.getId());
+        if (members.isEmpty()) {
+            return 1;
         }
-
-        return ++maxId;
+        return members.get(members.size() - 1).getId() + 1;
     }
 
     /**
@@ -170,5 +171,86 @@ public class MemberManager {
     public void addMember(Member member) {
         member.setId(generateId());
         members.add(member);
+    }
+
+    /**
+     * Generates the next unique member ID (last ID + 1).
+     *
+     * @return the new unique ID
+     */
+    public int generateId() {
+        if (members.isEmpty()) {
+            return 1;
+        }
+        return members.get(members.size() - 1).getId() + 1;
+    }
+
+    /**
+     * Searches for a member by ID using binary search.
+     * Assumes the members list is sorted by ID.
+     *
+     * @param id the ID to search for
+     * @return the Member with matching ID, or null if not found
+     */
+    public Member searchById(int id) {
+        return searchByIdRecursive(id, 0, members.size() - 1);
+    }
+
+    /**
+     * Recursive helper for binary search.
+     */
+    private Member searchByIdRecursive(int id, int low, int high) {
+        if (low > high) {
+            return null;
+        }
+        int mid   = (low + high) / 2;
+        int midId = members.get(mid).getId();
+
+        if (midId == id) {
+            return members.get(mid);
+        } else if (midId > id) {
+            return searchByIdRecursive(id, low, mid - 1);
+        } else {
+            return searchByIdRecursive(id, mid + 1, high);
+        }
+    }
+
+    /**
+     * Prints all members' bills to standard output.
+     */
+    public void printAllBills() {
+        for (Member m : members) {
+            m.printBill();
+        }
+    }
+
+    /**
+     * Prints all member names in alphabetical order.
+     */
+    public void printAlphabetical() {
+        ArrayList<String> sorted = new ArrayList<>();
+        for (Member m : members) {
+            sorted.add(m.getName());
+        }
+        Collections.sort(sorted);
+        for (String name : sorted) {
+            System.out.println(name);
+        }
+    }
+
+    /**
+     * Searches for all members whose name matches the given string (case-insensitive).
+     *
+     * @param name the full name to search for
+     * @return a list of Member objects whose names equal the search term; empty if none found
+     */
+    public List<Member> searchByName(String name) {
+        List<Member> matches = new ArrayList<>();
+        for (Member m : members) {
+            if (m.getName().equalsIgnoreCase(name)) {
+                matches.add(m);
+            }
+        }
+        return matches;
     }
 }
