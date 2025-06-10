@@ -2,7 +2,6 @@ package staff;
 
 import event.Event;
 import time.Schedule;
-import time.TimeBlock;
 
 public abstract class Staff {
     private int id;
@@ -23,9 +22,9 @@ public abstract class Staff {
     public abstract void printPayroll();
 
     public abstract String toString();
-  
-    public boolean isAvailalbe(TimeBlock block) {
-        return shifts.isBlockFree(block);
+
+    public Schedule getShifts() {
+        return shifts;
     }
 
     public int getId() {

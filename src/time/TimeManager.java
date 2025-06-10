@@ -12,6 +12,10 @@ import time.TimeBlock.Month;
 public class TimeManager {
     private TimeBlock time;
 
+    public TimeManager() {
+        this.time = new TimeBlock(2025, Month.JUN, 1, 0);
+    }
+
     /**
      * constructor for a time manager
      * 

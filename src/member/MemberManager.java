@@ -1,29 +1,40 @@
 package member;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MemberManager {
-    public ArrayList<Member> members = new ArrayList<>();
+    public ArrayList<Member> members;
+
+    public MemberManager() {
+        members = new ArrayList<Member>();
+    }
 
     public MemberManager(String filename) {
         members = new ArrayList<>();
-        Map<Integer, Member>        idToMember        = new HashMap<>();
-        Map<Integer, List<Integer>> adultChildrenIds  = new HashMap<>();
-        Map<Integer, Integer>       youthGuardianIds  = new HashMap<>();
+        Map<Integer, Member> idToMember = new HashMap<>();
+        Map<Integer, List<Integer>> adultChildrenIds = new HashMap<>();
+        Map<Integer, Integer> youthGuardianIds = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             int numMembers = Integer.parseInt(br.readLine().trim());
             for (int i = 0; i < numMembers; i++) {
-                int    id       = Integer.parseInt(br.readLine().trim());
-                String type     = br.readLine().trim().toLowerCase();
-                int    age      = Integer.parseInt(br.readLine().trim());
-                String name     = br.readLine().trim();
+                int id = Integer.parseInt(br.readLine().trim());
+                String type = br.readLine().trim().toLowerCase();
+                int age = Integer.parseInt(br.readLine().trim());
+                String name = br.readLine().trim();
                 Member.PlanType planType = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
                 if (type.equals("adult")) {
-                    String phone       = br.readLine().trim();
-                    String address     = br.readLine().trim();
-                    double billAmount  = Double.parseDouble(br.readLine().trim());
-                    boolean billPaid   = br.readLine().trim().equalsIgnoreCase("paid");
-                    int numChildren    = Integer.parseInt(br.readLine().trim());
+                    String phone = br.readLine().trim();
+                    String address = br.readLine().trim();
+                    double billAmount = Double.parseDouble(br.readLine().trim());
+                    boolean billPaid = br.readLine().trim().equalsIgnoreCase("paid");
+                    int numChildren = Integer.parseInt(br.readLine().trim());
                     List<Integer> childIds = new ArrayList<>();
                     for (int j = 0; j < numChildren; j++) {
                         childIds.add(Integer.parseInt(br.readLine().trim()));
@@ -52,7 +63,7 @@ public class MemberManager {
             System.out.println(e);
         }
     }
-  
+
     public void addMember(Member member) {
         member.setId(generateId());
         members.add(member);
@@ -73,7 +84,7 @@ public class MemberManager {
         if (low > high) {
             return null;
         }
-        int mid   = (low + high) / 2;
+        int mid = (low + high) / 2;
         int midId = members.get(mid).getId();
 
         if (midId == id) {

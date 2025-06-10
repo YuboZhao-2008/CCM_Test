@@ -1,12 +1,12 @@
 package member;
 
 import event.Event;
-import facility.Schedule;
+import time.Schedule;
 
 public abstract class Member {
     public static final double BIWEEKLY_BASE = 20.00;
-    public static final double MONTHLY_BASE   = 35.00;
-    public static final double ANNUAL_BASE    = 350.00;
+    public static final double MONTHLY_BASE = 35.00;
+    public static final double ANNUAL_BASE = 350.00;
 
     protected int id;
     protected int age;
@@ -21,9 +21,9 @@ public abstract class Member {
     }
 
     public Member(int age, String name, PlanType planType) {
-        this.age           = age;
-        this.name          = name;
-        this.planType      = planType;
+        this.age = age;
+        this.name = name;
+        this.planType = planType;
         this.registrations = new Schedule();
     }
 
@@ -31,9 +31,9 @@ public abstract class Member {
 
     public String membershipDetails() {
         return id
-                + " | age: "   + age
-                + " | name: "  + name
-                + " | plan: "  + planType
+                + " | age: " + age
+                + " | name: " + name
+                + " | plan: " + planType
                 + " | $"
                 + String.format("%.2f", calculateBill());
     }
@@ -53,6 +53,7 @@ public abstract class Member {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -60,6 +61,7 @@ public abstract class Member {
     public int getAge() {
         return age;
     }
+
     public void setAge(int age) {
         this.age = age;
     }
@@ -67,7 +69,7 @@ public abstract class Member {
     public String getName() {
         return name;
     }
-  
+
     public void setName(String name) {
         this.name = name;
     }

@@ -1,12 +1,20 @@
 package staff;
-import java.util.*;
 
-import static java.util.Collections.sort;
+import static java.util.Collections.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import time.TimeBlock;
 
 public class StaffManager {
     public ArrayList<Staff> staffs;
+
+    public StaffManager() {
+        staffs = new ArrayList<>();
+    }
 
     public StaffManager(String filename) {
         staffs = new ArrayList<>();
@@ -28,8 +36,8 @@ public class StaffManager {
                     full.setId(id);
                     staffs.add(full);
                 } else if (type.equals("parttime")) {
-                    int hoursWorked    = Integer.parseInt(br.readLine().trim());
-                    double hourlyRate  = Double.parseDouble(br.readLine().trim());
+                    int hoursWorked = Integer.parseInt(br.readLine().trim());
+                    double hourlyRate = Double.parseDouble(br.readLine().trim());
                     int maxWeeklyHours = Integer.parseInt(br.readLine().trim());
                     PartTimeStaff part = new PartTimeStaff(name, hoursWorked, hourlyRate, maxWeeklyHours);
                     part.setId(id);
@@ -41,8 +49,8 @@ public class StaffManager {
             System.out.println(e);
         }
     }
-  
-    public void addStaff(Staff staff)   {
+
+    public void addStaff(Staff staff) {
         staff.setId(generateId());
         staffs.add(staff);
     }
@@ -56,15 +64,15 @@ public class StaffManager {
     }
 
     private Staff searchByIdRecursive(int id, int low, int high) {
-        if (low > high)    {
+        if (low > high) {
             return null;
         }
         int mid = (low + high) / 2;
         int midId = staffs.get(mid).getId();
-        if (midId == id)  {
+        if (midId == id) {
             return staffs.get(mid);
         } else {
-            if (midId > id)  {
+            if (midId > id) {
                 return searchByIdRecursive(id, low, mid - 1);
             } else {
                 return searchByIdRecursive(id, mid + 1, high);
@@ -72,7 +80,7 @@ public class StaffManager {
         }
     }
 
-    public void printAllPayrolls () {
+    public void printAllPayrolls() {
         for (int i = 0; i < staffs.size(); i++) {
             staffs.get(i).printPayroll();
         }
@@ -82,7 +90,7 @@ public class StaffManager {
         ArrayList<Staff> available = new ArrayList<>();
 
         for (Staff staff : staffs) {
-            if (staff.isAvailable(block)) {
+            if (staff.getShifts().isBlockFree(block)) {
                 available.add(staff);
             }
         }
@@ -90,13 +98,13 @@ public class StaffManager {
         return available;
     }
 
-    public void printAlphabetical ()    {
+    public void printAlphabetical() {
         ArrayList<String> sorted = new ArrayList<>();
         for (int i = 0; i < staffs.size(); i++) {
             sorted.add(staffs.get(i).getName());
         }
         sort(sorted);
-        for (String str : sorted)   {
+        for (String str : sorted) {
             System.out.println(str);
         }
     }
