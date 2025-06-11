@@ -44,10 +44,13 @@ public class TimeManager {
 
             if (prev_month != time.getMonth()) {
                 // bill monthly members
+                main.CommunityCentreRunner.getMemberManager().billMonthlyMembers();
             }
             if (prev_year != time.getYear()) {
                 // bill yearly members
+                main.CommunityCentreRunner.getMemberManager().billAnnualMembers();
                 // pay full-time staff
+                main.CommunityCentreRunner.getStaffManager().payFullTimeStaff();
             }
         }
 
@@ -58,6 +61,7 @@ public class TimeManager {
         while (hoursPassed >= 168) { // 168 hours in one week
             hoursPassed -= 168;
             // pay part-time staff
+            main.CommunityCentreRunner.getStaffManager().payPartTimeStaff();
         }
 
         main.CommunityCentreRunner.getEventManager().advanceTime(time);

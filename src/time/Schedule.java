@@ -20,6 +20,10 @@ public class Schedule {
     public Schedule() {
         eventSchedule = new ArrayList<Event>();
     }
+    
+    public ArrayList<Event> getEventSchedule() {
+        return this.eventSchedule;
+    }
 
     /**
      * whether this block is free within the schedule

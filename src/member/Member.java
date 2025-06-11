@@ -17,8 +17,6 @@ import time.Schedule;
  * @since 2025-06-03
  */
 public abstract class Member {
-    /** Biweekly base fee */
-    public static final double BIWEEKLY_BASE = 20.00;
     /** Monthly base fee */
     public static final double MONTHLY_BASE = 35.00;
     /** Annual base fee */
@@ -39,9 +37,8 @@ public abstract class Member {
      * Enumeration of available billing plans.
      */
     public enum PlanType {
-        BIWEEKLY_BASE,
-        MONTHLY_BASE,
-        ANNUAL_BASE
+        MONTHLY,
+        ANNUAL
     }
 
     /**

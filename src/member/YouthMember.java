@@ -48,18 +48,15 @@ public class YouthMember extends Member {
     @Override
     public double calculateBill() {
         double base;
-        switch (planType) {
-            case BIWEEKLY_BASE:
-                base = BIWEEKLY_BASE;
-                break;
-            case MONTHLY_BASE:
+        switch(planType) {
+            case MONTHLY:
                 base = MONTHLY_BASE;
                 break;
-            case ANNUAL_BASE:
+            case ANNUAL:
                 base = ANNUAL_BASE;
                 break;
             default:
-                base = 0.0;
+                base = 0.00;
                 break;
         }
         return base * (1 - DISCOUNT_RATE);

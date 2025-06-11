@@ -194,27 +194,27 @@ public class MemberManager {
         return matches;
     }
 
-        /**
-     * Applies a billing cycle to all members on the MONTHLY_BASE plan.
+    /**
+     * Applies a billing cycle to all members on the MONTHLY plan.
      * For each AdultMember with a monthly plan, invokes payBill() using
      * the amount returned by calculateBill().
      */
     public void billMonthlyMembers() {
         for (Member m : members) {
-            if (m.getPlanType() == Member.PlanType.MONTHLY_BASE && m instanceof AdultMember) {
+            if (m.getPlanType() == Member.PlanType.MONTHLY && m instanceof AdultMember) {
                 ((AdultMember) m).payBill(m.calculateBill());
             }
         }
     }
 
     /**
-     * Applies a billing cycle to all members on the ANNUAL_BASE plan.
+     * Applies a billing cycle to all members on the ANNUAL plan.
      * For each AdultMember with an annual plan, invokes payBill() using
      * the amount returned by calculateBill().
      */
     public void billAnnualMembers() {
         for (Member m : members) {
-            if (m.getPlanType() == Member.PlanType.ANNUAL_BASE && m instanceof AdultMember) {
+            if (m.getPlanType() == Member.PlanType.ANNUAL && m instanceof AdultMember) {
                 ((AdultMember) m).payBill(m.calculateBill());
             }
         }

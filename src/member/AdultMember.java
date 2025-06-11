@@ -7,7 +7,7 @@ package member;
 import java.util.ArrayList;
 import java.util.List;
 
-import event.Event;
+import event.*;
 
 /**
  * Represents an adult member with contact information, billing details,
@@ -86,7 +86,7 @@ public class AdultMember extends Member {
      */
     @Override
     public double calculateBill() {
-        return totalBillAmount - paidBillAmount;
+        return calculateTotalBill() - paidBillAmount;
     }
 
     /**
@@ -96,31 +96,36 @@ public class AdultMember extends Member {
      * @return the total bill
      */
     public double calculateTotalBill() {
-        return 1;
-/*
- *   switch(planType)
-   case(BIWEEKLY):
-	base = BIWEEKLY_BASE
-	break
-   case(MONTHLY):
-   	base = MONTHLY_BASE
-	break
-   case(ANNUAL):
-	base = ANNUAL_BASE
-	break
-   default:
-base = 0.00
-break
+        double base;
 
-    for each event in registrations:
-        if event instanceof Competition:
-            base += event.getParticipationCost()
-	if (event.getWinner().equals(Member)):
-		eventCost -= event.getPrize()
-        Else if 
-    return base
+        switch(planType) {
+            case MONTHLY:
+                base = MONTHLY_BASE;
+                break;
+            case ANNUAL:
+                base = ANNUAL_BASE;
+                break;
+            default:
+                base = 0.00;
+                break;
+        }
 
- */
+        for (Event event : registrations.getEventSchedule()) {
+            if (event instanceof Competition c) {
+                base += c.getParticipationCost();
+                if (c.getWinner().equals(this)) {
+                    base -= c.getPrize();
+                }
+            }
+        }
+
+        if (children.size() > 0) {
+            for (YouthMember child : children) {
+                base += child.calculateBill();
+            }
+        }
+
+        return base;
     }
 
     /**
