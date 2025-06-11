@@ -1,3 +1,7 @@
+/**
+ * Yubo
+ */
+
 package member;
 
 import java.util.*;

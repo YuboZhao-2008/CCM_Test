@@ -2,19 +2,14 @@ package main;
 
 import static java.util.Collections.newSetFromMap;
 
-import java.time.Month;
-
-import event.Competition;
-import event.EventManager;
-import facility.FacilityManager;
-import facility.SportsFacility;
-import member.AdultMember;
-import member.Member.PlanType;
-import member.MemberManager;
-import member.YouthMember;
-import staff.FullTimeStaff;
-import staff.StaffManager;
+import event.*;
+import facility.*;
+import member.*;
+import staff.*;
 import time.*;
+
+import member.Member.PlanType;
+import time.TimeBlock.Month;
 
 public class CommunityCentreRunner {
     public static final String EVENTS_FILEPATH = "data/events.txt";
@@ -49,6 +44,7 @@ public class CommunityCentreRunner {
     }
 
     public static void main(String[] args) {
+        /*
         System.out.println("Hello world");
 
         AdultMember member = new AdultMember(30, "John Doe", PlanType.ANNUAL_BASE, "647-999-9999", "494 Chair Rd.", 1000, 400);
@@ -67,7 +63,7 @@ public class CommunityCentreRunner {
         SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
         facilityManager.addFacility(sportsFacility);
 
-        TimeBlock timeBlock = new TimeBlock(2000, TimeBlock.Month.APR, 10, 12.0, 2.0);
+        TimeBlock timeBlock = new TimeBlock(2000, Month.APR, 10, 12.0, 2.0);
         Competition competition = new Competition(sportsFacility, timeBlock, member, 1000, 10);
         eventManager.book(competition);
         eventManager.searchById(0).registerParticipant(member2);
@@ -78,6 +74,6 @@ public class CommunityCentreRunner {
 
         eventManager.cancelEvent(0);
 
-System.out.println(eventManager.searchById(0));
+System.out.println(eventManager.searchById(0));*/
     }
 }
