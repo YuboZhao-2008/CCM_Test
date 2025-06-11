@@ -240,8 +240,16 @@ public class FacilityManager {
         facilities.add(facility);
     }
 
-    // accessor for facilities
-    public ArrayList<Facility> getFacilities() {
-        return facilities;
+    /**
+     * Removes a facility with the given ID from the list.
+     */
+    public boolean removeFacility(int id) {
+        for (int i = 0; i < facilities.size(); i++) {
+            if (facilities.get(i).getId() == id) {
+                facilities.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 }

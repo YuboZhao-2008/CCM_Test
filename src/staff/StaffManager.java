@@ -27,7 +27,7 @@ public class StaffManager {
     /**
      * The list of all staff members managed by this class.
      */
-    public ArrayList<Staff> staffs;
+    private ArrayList<Staff> staffs;
 
     /**
      * Default constructor for StaffManager.
@@ -250,8 +250,25 @@ public class StaffManager {
                 String.CASE_INSENSITIVE_ORDER));
     }
 
-    // accessor for staffs
     public ArrayList<Staff> getStaffs() {
         return staffs;
     }
+
+    public void setStaffs(ArrayList<Staff> staffs) {
+        this.staffs = staffs;
+    }
+
+    /**
+     * Removes a staff member by ID.
+     */
+    public boolean removeStaff(int id) {
+        for (int i = 0; i < staffs.size(); i++) {
+            if (staffs.get(i).getId() == id) {
+                staffs.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -30,6 +30,15 @@ import java.util.Map;
  * <child id>...
  * If youth:
  * <guardian id>
+ * If adult:
+ * <contactPhone>
+ * <address>
+ * <billAmount>
+ * <billPaid>
+ * <num children>
+ * <child id>...
+ * If youth:
+ * <guardian id>
  *
  * @author Yubo-Zhao
  * @version 1.0
@@ -42,6 +51,7 @@ public class MemberManager {
     private ArrayList<Member> members = new ArrayList<>();
 
     public MemberManager() {
+        members = new ArrayList<>();
     }
 
     /**
@@ -113,6 +123,35 @@ public class MemberManager {
     public void addMember(Member member) {
         member.setId(generateId());
         members.add(member);
+    }
+
+    /**
+     * Removes a member by ID. If the member is an AdultMember,
+     * also removes parent reference from any of their children.
+     * If the member is a YouthMember, also removes the child from the guardian.
+     *
+     * @param id the ID of the member to remove
+     * @return true if the member was found and removed, false otherwise
+     */
+    public boolean removeMember(int id) {
+        Member target = searchById(id);
+        if (target == null) {
+            return false;
+        }
+
+        if (target instanceof AdultMember) {
+            AdultMember adult = (AdultMember) target;
+            for (YouthMember child : adult.getChildren()) {
+                child.setGuardian(null);
+            }
+        } else if (target instanceof YouthMember) {
+            YouthMember youth = (YouthMember) target;
+            AdultMember guardian = youth.getGuardian();
+            if (guardian != null) {
+                guardian.getChildren().remove(youth);
+            }
+        }
+        return members.remove(target);
     }
 
     /**
@@ -220,8 +259,12 @@ public class MemberManager {
     /**
      * Searches for all members whose name matches the given string
      * (case-insensitive).
+     * Searches for all members whose name matches the given string
+     * (case-insensitive).
      *
      * @param name the full name to search for
+     * @return a list of Member objects whose names equal the search term; empty if
+     *         none found
      * @return a list of Member objects whose names equal the search term; empty if
      *         none found
      */
@@ -261,8 +304,11 @@ public class MemberManager {
         }
     }
 
-    // accessor for members
     public ArrayList<Member> getMembers() {
         return members;
+    }
+
+    public void setMembers(ArrayList<Member> members) {
+        this.members = members;
     }
 }

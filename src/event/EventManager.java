@@ -175,6 +175,13 @@ public class EventManager {
     }
 
     /**
+     * Removes the given event from the EventManager without cleanup.
+     */
+    public boolean removeEvent(Event event) {
+        return events.remove(event);
+    }
+
+    /**
      * generateId
      * generates a unique integer ID to be assigned to an event.
      * Only called in the book method.
