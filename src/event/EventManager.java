@@ -327,8 +327,4 @@ public class EventManager {
         }
         return true;
     }
-
-    public void advanceHours(double hours) {
-        return;
-    }
 }

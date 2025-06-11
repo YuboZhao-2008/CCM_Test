@@ -11,23 +11,6 @@ import java.io.*;
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
  * and listing names alphabetically.
- * <p>
- * File format:
- * <num members>
- * <id>
- * <type>
- * <age>
- * <name>
- * <planType>
- *   If adult:
- *     <contactPhone>
- *     <address>
- *     <billAmount>
- *     <billPaid>
- *     <num children>
- *     <child id>...
- *   If youth:
- *     <guardian id>
  *
  * @author Yubo-Zhao
  * @version 1.0

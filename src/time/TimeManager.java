@@ -14,7 +14,7 @@ public class TimeManager {
 
     // default time manager constructor
     public TimeManager() {
-        this.time = new TimeBlock(2025, Month.JUN, 1, 0);
+        this.time = new TimeBlock(2025, Month.JUN, 1, 12);
     }
   
     /**
@@ -39,9 +39,11 @@ public class TimeManager {
             newHour -= 24;
         }
 
-        time = new TimeBlock(time, newHour, 0);
+        TimeBlock new_time = new TimeBlock(time, newHour, 0);
 
-        main.CommunityCentreRunner.getEventManager().advanceHours(hours);
+        main.CommunityCentreRunner.getEventManager().advanceTime(new_time);
+
+        time = new_time;
     }
 
     /**

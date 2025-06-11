@@ -12,17 +12,20 @@ import member.Member.PlanType;
 import time.TimeBlock.Month;
 
 public class CommunityCentreRunner {
+    // file paths
     public static final String EVENTS_FILEPATH = "data/events.txt";
     public static final String FACILITIES_FILEPATH = "data/facilites.txt";
     public static final String MEMBERS_FILEPATH = "data/members.txt";
     public static final String STAFF_FILEPATH = "data/staff.txt";
 
+    // initialize managers
     private static MemberManager memberManager = new MemberManager();
     private static TimeManager timeManager = new TimeManager();
     private static EventManager eventManager = new EventManager();
     private static FacilityManager facilityManager = new FacilityManager();
     private static StaffManager staffManager = new StaffManager();
 
+    // accessor methods for managers
     public static MemberManager getMemberManager() {
         return memberManager;
     }
@@ -42,7 +45,7 @@ public class CommunityCentreRunner {
     public static FacilityManager getFacilityManager() {
         return facilityManager;
     }
-
+    
     public static void main(String[] args) {
         /*
         System.out.println("Hello world");
@@ -75,5 +78,14 @@ public class CommunityCentreRunner {
         eventManager.cancelEvent(0);
 
 System.out.println(eventManager.searchById(0));*/
+        // separator for formatting
+        String separator = "------------------------------------------";
+        
+        System.out.println(separator);
+        System.out.println("It is currently "+timeManager.getCurrentTime()+".");
+        System.out.println(separator);
+        System.out.println(); // blank line
+        
+
     }
 }
