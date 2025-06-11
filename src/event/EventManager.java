@@ -286,7 +286,7 @@ public class EventManager {
         boolean found = false;
 
         for (Event event : events) {
-            if (!event.hasCompleted()) {
+            if (!event.hasCompleted() && main.CommunityCentreRunner.getTimeManager().isOngoing(event.getTimeBlock())) {
                 found = true;
                 System.out.println(event);
             }
@@ -317,7 +317,7 @@ public class EventManager {
 
     /**
      * advanceTime
-     * advances the time of all events within EventManager to a certain timeblock.
+     * advances the time of all events within EventManager to a certain time block.
      * Is called within TimeManager.
      * 
      * @param newTime

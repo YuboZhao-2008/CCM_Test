@@ -132,14 +132,14 @@ public class FacilityManager {
      */
     public boolean printAllFacilities() {
         if (facilities.isEmpty()) {
-            return true;
+            return false;
         }
 
         for (Facility facility : facilities) {
             System.out.println(facility);
         }
 
-        return false;
+        return true;
     }
 
     /**

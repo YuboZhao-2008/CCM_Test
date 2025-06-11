@@ -1,0 +1,21 @@
+4
+1
+fulltime
+Sarah Miller
+5
+2
+parttime
+Jason Lee
+25
+18.5
+30
+3
+fulltime
+Monica Reyes
+8
+4
+parttime
+Kevin Brown
+20
+20.0
+25

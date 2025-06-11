@@ -68,7 +68,7 @@ public class TimeManager {
     }
 
     /**
-     * advances the time until a specified date
+     * advances the time until a specified date at 12:00 AM
      * 
      * @param year
      * @param month

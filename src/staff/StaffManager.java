@@ -58,11 +58,7 @@ public class StaffManager {
             int numStaff = Integer.parseInt(br.readLine().trim());
 
             for (int i = 0; i < numStaff; i++) {
-                String line;
-                while ((line = br.readLine()) != null
-                        && (line.trim().isEmpty() || line.trim().equals("##"))) {
-                }
-                int id = Integer.parseInt(line.trim());
+                int id = Integer.parseInt(br.readLine().trim());
                 String type = br.readLine().trim().toLowerCase();
                 String name = br.readLine().trim();
 
