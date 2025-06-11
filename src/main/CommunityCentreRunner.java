@@ -147,8 +147,9 @@ public class CommunityCentreRunner {
         System.out.println("(2) Search");
         System.out.println("(3) Create");
         System.out.println("(4) Modify");
-        System.out.println("(5) Delete");
-        System.out.println("(6) Advance Time");
+        System.out.println("(5) Book");
+        System.out.println("(6) Delete");
+        System.out.println("(7) Advance Time");
         
         choice = menuInputValidation(6);
 
@@ -188,16 +189,6 @@ public class CommunityCentreRunner {
                 // back
                 System.out.println("(0) Back");
 
-                int viewChoice = menuInputValidation(15);
-
-                switch (viewChoice) {
-                    case 1:
-                        for (Facility facility : facilityManagerl.)
-                        break;
-                    case 2:
-                        
-                }
-
                 break;
             case 2:
                 System.out.println("What would you like to search for?");
@@ -219,70 +210,93 @@ public class CommunityCentreRunner {
                 // search members
                 System.out.println("(8) Members using ID");
                 System.out.println("(9) Members using Name");
+                System.out.println("-");
    
                 // search staff
-                System.out.println("(10) Members ");
+                System.out.println("(10) Staff using ID");
+                System.out.println("(11) Staff using Name");
+                System.out.println("-");
+
                 // back
+                System.out.println("(0) Back");
+                // code
+
                 break;
             case 3:
                 System.out.println("What would you like to create?");
                 // all options for creating
+
                 // create facilities
+                System.out.println("(1) New Sports Facility");
+                System.out.println("(2) New Meeting Facility");
+                System.out.println("-");
+
                 // create events
+                System.out.println("(3) New Competition Event");
+                System.out.println("(4) New Fundraiser Event");
+                System.out.println("-");
+
                 // create members
+                System.out.println("(5) New Adult Member");
+                System.out.println("(6) New Youth Member");
+                System.out.println("-");
+
                 // create staff
+                System.out.println("(7) New Full-Time Staff");
+                System.out.println("(8) New Part-Time Staff");
+                System.out.println("-");
+
                 // back
+                System.out.println("(0) Back");
+                
                 break;
             case 4:
-                System.out.println("What would you like to modify?");
-                // all options for modifying
-                // modify facilities
-                // modify events
-                // modify members
-                // modify staff
-                // back
+                // first search for the event to book for
+                // then list options to book a member or assign a staff
                 break;
             case 5:
+                System.out.println("What would you like to modify?");
+                // all options for modifying
+
+                // modify facilities
+                System.out.println("(1) Facility Room Num.");
+                System.out.println("(2) Sports Facility Rating");
+                System.out.println("(3) Meeting Facility Size");
+                System.out.println("(4) ");
+
+                // modify events
+
+                // modify members
+
+                // modify staff
+
+                // back
+                System.out.println("(0) Back");
+
+                break;
+            case 6:
                 System.out.println("What would you like to delete?");
                 System.out.println("1. Delete Member");
                 System.out.println("2. Delete Staff");
                 System.out.println("3. Delete Facility");
                 System.out.println("4. Delete Event");
-                int deleteChoice = scan.nextInt();
-                scan.nextLine();
-                
-                switch(deleteChoice) {
-                    case 1:
-                        System.out.print("Enter the member ID to delete: ");
-                        int memberId = scan.nextInt();
-                        scan.nextLine();
 
-                        Member membertoDelete = CommunityCentreRunner.getMemberManager().searchById(memberId);
-                        if (membertoDelete != null) {
-                            CommunityCentreRunner.getMemberManager().members.remove(membertoDelete);
-                            System.out.println("Member with ID " + memberId + " has been deleted.");
-                        } else {
-                            System.out.println("Member with ID " + memberId + " not found.");
-                        }
-                        break;
-                    case 2:
-                        System.out.print("Enter the staff ID to delete: ");
-                        int staffId = scan.nextInt();
-                        scan.nextLine
-                }
                 // all options for deleting
                 // delete facilities
                 // delete events
                 // delete members
                 // delete staff
                 // back
+                System.out.println("(0) Back");
                 break;
-            case 6:
+            case 7:
                 System.out.println("What time would you like to advance to?");
                 // options to advance time
                 // advance time by specified hours
                 // advance time by an hour
                 // advance time to a date
+                // back
+                System.out.println("(0) Back");
                 break;
         }
         scan.close();
