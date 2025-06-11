@@ -201,7 +201,7 @@ public class MemberManager {
      */
     public void billMonthlyMembers() {
         for (Member m : members) {
-            if (m.getPlanType() == PlanType.MONTHLY_BASE && m instanceof AdultMember) {
+            if (m.getPlanType() == Member.PlanType.MONTHLY_BASE && m instanceof AdultMember) {
                 ((AdultMember) m).payBill(m.calculateBill());
             }
         }
@@ -214,7 +214,7 @@ public class MemberManager {
      */
     public void billAnnualMembers() {
         for (Member m : members) {
-            if (m.getPlanType() == PlanType.ANNUAL_BASE && m instanceof AdultMember) {
+            if (m.getPlanType() == Member.PlanType.ANNUAL_BASE && m instanceof AdultMember) {
                 ((AdultMember) m).payBill(m.calculateBill());
             }
         }
