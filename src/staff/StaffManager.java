@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import member.AdultMember;
 import time.TimeBlock;
 
 /**
@@ -194,7 +193,7 @@ public class StaffManager {
     public void payFullTimeStaff() {
         for (Staff s : staffs) {
             if (s instanceof FullTimeStaff fs) {
-                System.out.println(fs+" was paid "+fs.calculatePay());
+                System.out.println(fs + " was paid " + fs.calculatePay());
             }
         }
     }
@@ -205,7 +204,7 @@ public class StaffManager {
     public void payPartTimeStaff() {
         for (Staff s : staffs) {
             if (s instanceof PartTimeStaff ps) {
-                System.out.println(ps+" was paid "+ps.calculatePay());
+                System.out.println(ps + " was paid " + ps.calculatePay());
             }
         }
     }

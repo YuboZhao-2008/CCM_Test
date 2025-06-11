@@ -1,15 +1,10 @@
 package main;
 
-import static java.util.Collections.newSetFromMap;
-
-import event.*;
-import facility.*;
-import member.*;
-import staff.*;
-import time.*;
-
-import member.Member.PlanType;
-import time.TimeBlock.Month;
+import event.EventManager;
+import facility.FacilityManager;
+import member.MemberManager;
+import staff.StaffManager;
+import time.TimeManager;
 
 public class CommunityCentreRunner {
     // file paths
@@ -45,47 +40,50 @@ public class CommunityCentreRunner {
     public static FacilityManager getFacilityManager() {
         return facilityManager;
     }
-    
+
     public static void main(String[] args) {
         /*
-        System.out.println("Hello world");
-
-        AdultMember member = new AdultMember(30, "John Doe", PlanType.ANNUAL_BASE, "647-999-9999", "494 Chair Rd.", 1000, 400);
-        memberManager.addMember(member);
-        YouthMember member2 = new YouthMember(4, "Baby Boy", PlanType.ANNUAL_BASE, member);
-        memberManager.addMember(member2);
-
-        System.out.println(memberManager.searchById(0));
-        System.out.println(memberManager.searchById(1));
-
-        FullTimeStaff staff = new FullTimeStaff("John Cena", 20);
-        staffManager.addStaff(staff);
-
-        System.out.println(staffManager.searchById(0));
-
-        SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
-        facilityManager.addFacility(sportsFacility);
-
-        TimeBlock timeBlock = new TimeBlock(2000, Month.APR, 10, 12.0, 2.0);
-        Competition competition = new Competition(sportsFacility, timeBlock, member, 1000, 10);
-        eventManager.book(competition);
-        eventManager.searchById(0).registerParticipant(member2);
-
-        System.out.println(eventManager.searchById(0));
-        System.out.println(member2);
-        System.out.println(member.getId());
-
-        eventManager.cancelEvent(0);
-
-System.out.println(eventManager.searchById(0));*/
+         * System.out.println("Hello world");
+         * 
+         * AdultMember member = new AdultMember(30, "John Doe", PlanType.ANNUAL_BASE,
+         * "647-999-9999", "494 Chair Rd.", 1000, 400);
+         * memberManager.addMember(member);
+         * YouthMember member2 = new YouthMember(4, "Baby Boy", PlanType.ANNUAL_BASE,
+         * member);
+         * memberManager.addMember(member2);
+         * 
+         * System.out.println(memberManager.searchById(0));
+         * System.out.println(memberManager.searchById(1));
+         * 
+         * FullTimeStaff staff = new FullTimeStaff("John Cena", 20);
+         * staffManager.addStaff(staff);
+         * 
+         * System.out.println(staffManager.searchById(0));
+         * 
+         * SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
+         * facilityManager.addFacility(sportsFacility);
+         * 
+         * TimeBlock timeBlock = new TimeBlock(2000, Month.APR, 10, 12.0, 2.0);
+         * Competition competition = new Competition(sportsFacility, timeBlock, member,
+         * 1000, 10);
+         * eventManager.book(competition);
+         * eventManager.searchById(0).registerParticipant(member2);
+         * 
+         * System.out.println(eventManager.searchById(0));
+         * System.out.println(member2);
+         * System.out.println(member.getId());
+         * 
+         * eventManager.cancelEvent(0);
+         * 
+         * System.out.println(eventManager.searchById(0));
+         */
         // separator for formatting
         String separator = "------------------------------------------";
-        
+
         System.out.println(separator);
-        System.out.println("It is currently "+timeManager.getCurrentTime()+".");
+        System.out.println("It is currently " + timeManager.getCurrentTime() + ".");
         System.out.println(separator);
         System.out.println(); // blank line
-        
 
     }
 }
