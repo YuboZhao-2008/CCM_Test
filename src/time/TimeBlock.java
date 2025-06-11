@@ -78,10 +78,11 @@ public class TimeBlock {
         ABBR_TO_MONTH = Collections.unmodifiableMap(baz);
     }
     public static final int HOURS_IN_DAY = 24;
-    
+
     public TimeBlock() {
-        
+
     }
+
     /**
      * TimeBlock constructor for a whole-day event
      * 
@@ -349,9 +350,14 @@ public class TimeBlock {
     public String toString() {
         int startMinute = (int) Math.round(startHour % 1 * 60);
         int endMinute = (int) Math.round(endHour % 1 * 60);
-        return String.format("%s %d, %d %02d:%02d - %02d:%02d", month, day, year, (int) startHour, startMinute,
-                (int) endHour,
-                endMinute);
+
+        String s = String.format("%s %d, %d %02d:%02d", month, day, year, (int) startHour, startMinute);
+
+        if (duration() > 0) {
+            s += String.format(" - %02d:%02d", (int) endHour, endMinute);
+        }
+
+        return s;
     }
 
     /**
