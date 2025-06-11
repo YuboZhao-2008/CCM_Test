@@ -257,7 +257,7 @@ public class CommunityCentreRunner {
                 // modify staff
                 // back
                 break;
-            case 5:
+            case 6:
                 // all options for deleting
                 // delete facilities
                 // delete events
@@ -338,12 +338,58 @@ public class CommunityCentreRunner {
                         break;
                 // back
                 break;
-            case 6:
+            case 7:
                 System.out.println("What time would you like to advance to?");
                 // options to advance time
                 // advance time by specified hours
                 // advance time by an hour
                 // advance time to a date
+                System.out.println("(1) Advance by specified hours");
+                System.out.println("(2) Advance by an hour");
+                System.out.println("(3) Advance to a specific date");
+                System.out.println("(0) Back");
+                int advanceChoice = menuInputValidation(3);
+                switch (advanceChoice) {
+                    case 1:
+                        System.out.print("Enter the number of hours to advance: ");
+                        int hours = numberInputValidation();
+                        timeManager.advanceHours(hours);
+                        System.out.println("Time advanced by " + hours + " hours.");
+                        break;
+                    case 2:
+                        timeManager.advanceHour();
+                        System.out.println("Time advanced by one hour.");
+                        break;
+                    case 3:
+                        System.out.print("Enter the year: ");
+                        int year = numberInputValidation();
+
+                        System.out.print("Enter the month (1-12): ");
+                        int monthInput = numberInputValidation();
+
+                        // Convert int (1–12) to enum (0-based index)
+                        TimeBlock.Month month;
+                        if (monthInput >= 1 && monthInput <= 12) {
+                            month = TimeBlock.Month.values()[monthInput - 1];
+                        } else {
+                            System.out.println("Invalid month. Please enter a number between 1 and 12.");
+                            break;
+                        }
+
+                        System.out.print("Enter the day: ");
+                        int day = numberInputValidation();
+
+                        timeManager.advanceToDay(year, month, day);
+                        System.out.println("Time set to " + timeManager.getCurrentTime() + ".");
+                        break;
+
+                    case 0:
+                        System.out.println("Returning to main menu.");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
                 break;
         }
         scan.close();
