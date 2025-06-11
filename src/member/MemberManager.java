@@ -1,7 +1,3 @@
-/**
- * Yubo
- */
-
 package member;
 
 import java.util.*;
@@ -11,6 +7,23 @@ import java.io.*;
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
  * and listing names alphabetically.
+ * <p>
+ * File format:
+ * <num members>
+ * <id>
+ * <type>
+ * <age>
+ * <name>
+ * <planType>
+ *   If adult:
+ *     <contactPhone>
+ *     <address>
+ *     <billAmount>
+ *     <billPaid>
+ *     <num children>
+ *     <child id>...
+ *   If youth:
+ *     <guardian id>
  *
  * @author Yubo-Zhao
  * @version 1.0
@@ -180,4 +193,31 @@ public class MemberManager {
         }
         return matches;
     }
+
+        /**
+     * Applies a billing cycle to all members on the MONTHLY_BASE plan.
+     * For each AdultMember with a monthly plan, invokes payBill() using
+     * the amount returned by calculateBill().
+     */
+    public void billMonthlyMembers() {
+        for (Member m : members) {
+            if (m.getPlanType() == PlanType.MONTHLY_BASE && m instanceof AdultMember) {
+                ((AdultMember) m).payBill(m.calculateBill());
+            }
+        }
+    }
+
+    /**
+     * Applies a billing cycle to all members on the ANNUAL_BASE plan.
+     * For each AdultMember with an annual plan, invokes payBill() using
+     * the amount returned by calculateBill().
+     */
+    public void billAnnualMembers() {
+        for (Member m : members) {
+            if (m.getPlanType() == PlanType.ANNUAL_BASE && m instanceof AdultMember) {
+                ((AdultMember) m).payBill(m.calculateBill());
+            }
+        }
+    }
+
 }
