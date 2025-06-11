@@ -51,7 +51,7 @@ public class EventManager {
             // read event information
             int numEvents = Integer.parseInt(reader.readLine());
             for (int i = 0; i < numEvents; i++) {
-                String eventType = reader.readLine();
+                String eventType = reader.readLine().trim().toLowerCase();
 
                 double prizeOrGoal = Double.parseDouble(reader.readLine().trim());
                 double participationCost = 0;
@@ -60,8 +60,8 @@ public class EventManager {
                 }
 
                 int facilityId = Integer.parseInt(reader.readLine().trim());
-                int day = Integer.parseInt(reader.readLine().trim());
                 Month month = TimeBlock.Month.valueOf(reader.readLine().trim().toUpperCase());
+                int day = Integer.parseInt(reader.readLine().trim());
                 int year = Integer.parseInt(reader.readLine().trim());
                 double startHour = Double.parseDouble(reader.readLine().trim());
                 double duration = Double.parseDouble(reader.readLine().trim());
@@ -69,6 +69,11 @@ public class EventManager {
 
                 Facility facility = main.CommunityCentreRunner.getFacilityManager().searchById(facilityId);
                 TimeBlock timeBlock = new TimeBlock(year, month, day, startHour, duration);
+
+                if (!timeBlock.isValid()) {
+                    timeBlock = new TimeBlock(2025, Month.JUN, 1, 0);
+                }
+
                 Member host = main.CommunityCentreRunner.getMemberManager().searchById(host_id);
                 Event event;
                 if (eventType.equals("competition")) {
@@ -114,14 +119,12 @@ public class EventManager {
      * saves all of EventManager's information to a text file.
      * 
      * @param filePath
-     * @return if the save was successful, usually determined by if the file path is
-     *         correct
      */
-    public boolean save(String filePath) {
+    public void save(String filePath) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
-            writer.write("" + events.size());
+            writer.write(events.size() + "\n");
             for (Event event : events) {
                 if (event instanceof Competition c) {
                     writer.write("competition\n");
@@ -133,9 +136,8 @@ public class EventManager {
                 }
 
                 writer.write(event.getFacility().getId() + "\n");
-                writer.write(event.getTimeBlock().getDay() + "\n");
                 writer.write(event.getTimeBlock().getMonth() + "\n");
-
+                writer.write(event.getTimeBlock().getDay() + "\n");
                 writer.write(event.getTimeBlock().getYear() + "\n");
                 writer.write(event.getTimeBlock().getStartHour() + "\n");
                 writer.write(event.getTimeBlock().duration() + "\n");
@@ -158,9 +160,8 @@ public class EventManager {
             }
 
             writer.close();
-            return true;
-        } catch (IOException ioe) {
-            return false;
+        } catch (IOException iox) {
+            System.out.println("Error writing to event file: " + iox.getMessage());
         }
     }
 

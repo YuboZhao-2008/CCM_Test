@@ -40,7 +40,7 @@ public class FacilityManager {
 
             for (int i = 0; i < numFacilities; i++) {
                 int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim();
+                String type = br.readLine().trim().toLowerCase();
                 int roomNum = Integer.parseInt(br.readLine().trim());
                 int maxCapacity = Integer.parseInt(br.readLine().trim());
                 double ratingOrSize = Double.parseDouble(br.readLine().trim());
@@ -90,7 +90,7 @@ public class FacilityManager {
 
             bw.close();
         } catch (IOException iox) {
-            System.out.println("Error writing to file");
+            System.out.println("Error writing to facilities file: " + iox.getMessage());
         }
     }
 

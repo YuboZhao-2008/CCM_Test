@@ -1,7 +1,9 @@
 package member;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,8 +80,8 @@ public class MemberManager {
                     String address = br.readLine().trim();
                     double totalAmount = Double.parseDouble(br.readLine().trim());
                     double paidAmount = Double.parseDouble(br.readLine().trim());
-                    int numChildren = Integer.parseInt(br.readLine().trim());
 
+                    int numChildren = Integer.parseInt(br.readLine().trim());
                     List<Integer> childIds = new ArrayList<>();
                     for (int j = 0; j < numChildren; j++) {
                         childIds.add(Integer.parseInt(br.readLine().trim()));
@@ -106,8 +108,45 @@ public class MemberManager {
                 a.addChild(y);
             }
 
+            br.close();
         } catch (IOException iox) {
-            System.out.println("Error loading member file: " + iox.getMessage());
+            System.out.println("Error reading member file: " + iox.getMessage());
+        }
+    }
+
+    /**
+     * saves to file
+     * 
+     * @param filepath
+     */
+    public void save(String filepath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+            bw.write(members.size() + "\n");
+
+            for (Member member : members) {
+                bw.write(member.id + "\n");
+                bw.write(member.age + "\n");
+                bw.write(member.name + "\n");
+                bw.write(member.planType + "\n");
+
+                if (member instanceof AdultMember adult) {
+                    bw.write(adult.getContactPhone() + "\n");
+                    bw.write(adult.getAddress() + "\n");
+                    bw.write(adult.getTotalBillAmount() + "\n");
+                    bw.write(adult.getPaidBillAmount() + "\n");
+
+                    bw.write(adult.getChildren().size() + "\n");
+                    for (YouthMember child : adult.getChildren()) {
+                        bw.write(child.id + "\n");
+                    }
+                } else if (member instanceof YouthMember youth) {
+                    bw.write(youth.getGuardian().id + "\n");
+                }
+            }
+
+            bw.close();
+        } catch (IOException iox) {
+            System.out.println("Error writing to member file: " + iox.getMessage());
         }
     }
 

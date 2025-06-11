@@ -28,7 +28,8 @@ public class CommunityCentreRunner {
     public static final String EVENTS_FILEPATH = "data/events.txt";
     public static final String FACILITIES_FILEPATH = "data/facilities.txt";
     public static final String MEMBERS_FILEPATH = "data/members.txt";
-    public static final String STAFF_FILEPATH = "data/staffs.txt";
+    public static final String STAFFS_FILEPATH = "data/staffs.txt";
+    public static final String TIME_FILEPATH = "data/time.txt";
 
     // initialize managers
     private static MemberManager memberManager = new MemberManager();
@@ -493,11 +494,12 @@ public class CommunityCentreRunner {
     }
 
     public static void main(String[] args) {
-        // load data from files
+        // load data from files=
         memberManager = new MemberManager(MEMBERS_FILEPATH);
         eventManager = new EventManager(EVENTS_FILEPATH);
         facilityManager = new FacilityManager(FACILITIES_FILEPATH);
-        staffManager = new StaffManager(STAFF_FILEPATH);
+        staffManager = new StaffManager(STAFFS_FILEPATH);
+        timeManager = new TimeManager(TIME_FILEPATH);
 
         boolean exit = false;
 
@@ -509,6 +511,11 @@ public class CommunityCentreRunner {
             System.out.println("Enter (Q) to quit or any other key to continue.");
             String continueChoice = scan.nextLine().trim().toUpperCase();
             if (continueChoice.equals("Q")) {
+                eventManager.save(EVENTS_FILEPATH);
+                memberManager.save(MEMBERS_FILEPATH);
+                staffManager.save(STAFFS_FILEPATH);
+                facilityManager.save(FACILITIES_FILEPATH);
+                timeManager.save(TIME_FILEPATH);
                 exit = true; // exit the loop
             }
         }

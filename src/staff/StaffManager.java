@@ -7,7 +7,9 @@ package staff;
 import static java.util.Collections.*;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -78,8 +80,42 @@ public class StaffManager {
                 }
             }
 
+            br.close();
         } catch (IOException iox) {
-            System.out.println("Error loading staff file: " + iox.getMessage());
+            System.out.println("Error reading staff file: " + iox.getMessage());
+        }
+    }
+
+    /**
+     * saves staff to file
+     * 
+     * @param filepath
+     */
+    public void save(String filepath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+            bw.write(staffs.size() + "\n");
+
+            for (Staff staff : staffs) {
+                bw.write(staff.id + "\n");
+                if (staff instanceof FullTimeStaff) {
+                    bw.write("fulltime\n");
+                } else {
+                    bw.write("parttime\n");
+                }
+                bw.write(staff.name + "\n");
+
+                if (staff instanceof FullTimeStaff fts) {
+                    bw.write(fts.getYearsWorked() + "\n");
+                } else if (staff instanceof PartTimeStaff pts) {
+                    bw.write(pts.getHoursWorked() + "\n");
+                    bw.write(pts.getHourlySalary() + "\n");
+                    bw.write(pts.getMaxMonthlyHours() + "\n");
+                }
+            }
+
+            bw.close();
+        } catch (IOException iox) {
+            System.out.println("Error writing to staff file: " + iox.getMessage());
         }
     }
 
