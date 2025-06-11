@@ -229,59 +229,7 @@ public class CommunityCentreRunner {
                 System.out.println("0. Go back to main menu");
                 int modifyChoice = menuInputValidation(4);
 
-                switch (modifyChoice) {
-                    case 1 -> {
-                        System.out.print("Enter the member ID to modify: ");
-                        int memberId = numberInputValidation();
-                        Member member = CommunityCentreRunner.getMemberManager().searchById(memberId);
-                        if (member != null) {
-                            // TODO: interactively prompt for which member fields to change
-                            CommunityCentreRunner.getMemberManager().modifyMember(member);
-                            System.out.println("Member updated.");
-                        } else {
-                            System.out.println("Member with ID " + memberId + " not found.");
-                        }
-                    }
-                    case 2 -> {
-                        System.out.print("Enter the staff ID to modify: ");
-                        int staffId = numberInputValidation();
-                        Staff staff = CommunityCentreRunner.getStaffManager().searchById(staffId);
-                        if (staff != null) {
-                            // TODO: interactively prompt for which staff fields to change
-                            CommunityCentreRunner.getStaffManager().modifyStaff(staff);
-                            System.out.println("Staff updated.");
-                        } else {
-                            System.out.println("Staff with ID " + staffId + " not found.");
-                        }
-                    }
-                    case 3 -> {
-                        System.out.print("Enter the facility ID to modify: ");
-                        int facilityId = numberInputValidation();
-                        Facility facility = CommunityCentreRunner.getFacilityManager().searchById(facilityId);
-                        if (facility != null) {
-                            // TODO: interactively prompt for which facility fields to change
-                            CommunityCentreRunner.getFacilityManager().modifyFacility(facility);
-                            System.out.println("Facility updated.");
-                        } else {
-                            System.out.println("Facility with ID " + facilityId + " not found.");
-                        }
-                    }
-                    case 4 -> {
-                        System.out.print("Enter the event ID to modify: ");
-                        int eventId = numberInputValidation();
-                        Event event = CommunityCentreRunner.getEventManager().searchById(eventId);
-                        if (event != null) {
-                            // TODO: interactively prompt for which event fields to change
-                            CommunityCentreRunner.getEventManager().modifyEvent(event);
-                            System.out.println("Event updated.");
-                        } else {
-                            System.out.println("Event with ID " + eventId + " not found.");
-                        }
-                    }
-                    case 0 -> System.out.println("Returning to main menu.");
-                    default -> System.out.println("Invalid choice. Please try again.");
-                }
-                break;
+                
 
             case 5:
                 // you guys add it
@@ -296,7 +244,7 @@ public class CommunityCentreRunner {
                 int deleteChoice = menuInputValidation(4);
 
                 switch (deleteChoice) {
-                    case 1 -> {
+                    case 1:
                         System.out.print("Enter the member ID to delete: ");
                         int memberId = numberInputValidation();
                         boolean removedMember = CommunityCentreRunner
@@ -307,8 +255,8 @@ public class CommunityCentreRunner {
                         } else {
                             System.out.println("Member with ID " + memberId + " not found.");
                         }
-                    }
-                    case 2 -> {
+                        break;
+                    case 2:
                         System.out.print("Enter the staff ID to delete: ");
                         int staffId = numberInputValidation();
                         boolean removedStaff = CommunityCentreRunner
@@ -319,8 +267,8 @@ public class CommunityCentreRunner {
                         } else {
                             System.out.println("Staff with ID " + staffId + " not found.");
                         }
-                    }
-                    case 3 -> {
+                        break;
+                    case 3:
                         System.out.print("Enter the facility ID to delete: ");
                         int facilityId = numberInputValidation();
                         boolean removedFacility = CommunityCentreRunner
@@ -331,8 +279,8 @@ public class CommunityCentreRunner {
                         } else {
                             System.out.println("Facility with ID " + facilityId + " not found.");
                         }
-                    }
-                    case 4 -> {
+                        break;
+                    case 4:
                         System.out.print("Enter the event ID to delete: ");
                         int eventId = numberInputValidation();
                         boolean cancelled = CommunityCentreRunner
@@ -343,12 +291,15 @@ public class CommunityCentreRunner {
                         } else {
                             System.out.println("Event with ID " + eventId + " not found.");
                         }
-                    }
-                    case 0 -> System.out.println("Returning to main menu.");
-                    default -> System.out.println("Invalid choice. Please try again.");
+                        break;
+                    case 0:
+                        System.out.println("Returning to main menu.");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
                 }
                 break;
-
             case 7:
                 System.out.println("What time would you like to advance to?");
                 // options to advance time
