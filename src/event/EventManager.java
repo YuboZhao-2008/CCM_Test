@@ -98,8 +98,8 @@ public class EventManager {
             }
 
             reader.close();
-        } catch (IOException ioe) {
-            System.out.println("Error accessing file " + filePath);
+        } catch (IOException iox) {
+            System.out.println("Error reading event file: " + iox.getMessage());
         }
     }
 

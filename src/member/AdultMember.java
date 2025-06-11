@@ -45,11 +45,8 @@ public class AdultMember extends Member {
      * @param planType         the membership billing plan
      * @param contactPhone     phone number for contact
      * @param address          residential address
-     * @param totalBillAmount  additional bill amount beyond base fee
-     * @param paidBillAmount
      */
-    public AdultMember(int age, String name, PlanType planType,
-                       String contactPhone, String address) {
+    public AdultMember(int age, String name, PlanType planType, String contactPhone, String address) {
         super(age, name, planType);
         this.contactPhone   = contactPhone;
         this.address        = address;
@@ -96,19 +93,10 @@ public class AdultMember extends Member {
      * @return the total bill
      */
     public double calculateTotalBill() {
-        double base;
-
-        switch(planType) {
-            case MONTHLY:
-                base = MONTHLY_BASE;
-                break;
-            case ANNUAL:
-                base = ANNUAL_BASE;
-                break;
-            default:
-                base = 0.00;
-                break;
-        }
+        double base = switch (planType) {
+            case MONTHLY -> MONTHLY_BASE;
+            case ANNUAL -> ANNUAL_BASE;
+        };
 
         for (Event event : registrations.getEventSchedule()) {
             if (event instanceof Competition c) {
@@ -119,7 +107,7 @@ public class AdultMember extends Member {
             }
         }
 
-        if (children.size() > 0) {
+        if (!children.isEmpty()) {
             for (YouthMember child : children) {
                 base += child.calculateBill();
             }

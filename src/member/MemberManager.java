@@ -62,7 +62,6 @@ public class MemberManager {
      */
     public MemberManager(String filename) {
         members = new ArrayList<>();
-        Map<Integer, Member> idToMember = new HashMap<>();
         Map<Integer, Integer> youthGuardian = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -70,12 +69,11 @@ public class MemberManager {
 
             for (int i = 0; i < numMembers; i++) {
                 int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim().toLowerCase();
                 int age = Integer.parseInt(br.readLine().trim());
                 String name = br.readLine().trim();
                 Member.PlanType pType = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
 
-                if (type.equals("adult")) {
+                if (age >= Member.ADULT_AGE) {
                     String phone = br.readLine().trim();
                     String address = br.readLine().trim();
                     double totalAmount = Double.parseDouble(br.readLine().trim());
@@ -90,28 +88,26 @@ public class MemberManager {
                     AdultMember adult = new AdultMember(age, name, pType, phone, address, totalAmount, paidAmount);
                     adult.setId(id);
                     members.add(adult);
-                    idToMember.put(id, adult);
                     // you can still wire children if you stored their IDs elsewhere
                 } else { // youth
                     int guardianId = Integer.parseInt(br.readLine().trim());
                     YouthMember youth = new YouthMember(age, name, pType, null);
                     youth.setId(id);
                     members.add(youth);
-                    idToMember.put(id, youth);
                     youthGuardian.put(id, guardianId);
                 }
             }
 
             // now hook up youth to guardian and guardian to children
             for (var e : youthGuardian.entrySet()) {
-                YouthMember y = (YouthMember) idToMember.get(e.getKey());
-                AdultMember a = (AdultMember) idToMember.get(e.getValue());
+                YouthMember y = (YouthMember) main.CommunityCentreRunner.getMemberManager().searchById(e.getKey());
+                AdultMember a = (AdultMember) main.CommunityCentreRunner.getMemberManager().searchById(e.getValue());
                 y.setGuardian(a);
                 a.addChild(y);
             }
 
-        } catch (IOException e) {
-            System.out.println(e);
+        } catch (IOException iox) {
+            System.out.println("Error loading member file: " + iox.getMessage());
         }
     }
 

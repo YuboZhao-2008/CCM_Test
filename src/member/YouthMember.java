@@ -35,8 +35,10 @@ public class YouthMember extends Member {
      */
     public YouthMember(int age, String name, PlanType planType, AdultMember guardian) {
         super(age, name, planType);
-        this.guardian = guardian;
-        guardian.addChild(this);
+        if (guardian != null) {
+            this.guardian = guardian;
+            guardian.addChild(this);
+        }
     }
 
     /**

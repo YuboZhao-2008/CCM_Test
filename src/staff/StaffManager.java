@@ -78,8 +78,8 @@ public class StaffManager {
                 }
             }
 
-        } catch (IOException e) {
-            System.out.println("Error loading staff file: " + e.getMessage());
+        } catch (IOException iox) {
+            System.out.println("Error loading staff file: " + iox.getMessage());
         }
     }
 

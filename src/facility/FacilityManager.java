@@ -58,7 +58,7 @@ public class FacilityManager {
 
             br.close();
         } catch (IOException iox) {
-            System.out.println("Error reading from file");
+            System.out.println("Error reading facility file: " + iox.getMessage());
         }
     }
 

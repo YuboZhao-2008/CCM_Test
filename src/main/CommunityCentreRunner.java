@@ -494,12 +494,10 @@ public class CommunityCentreRunner {
 
     public static void main(String[] args) {
         // load data from files
-        /*
         memberManager = new MemberManager(MEMBERS_FILEPATH);
         eventManager = new EventManager(EVENTS_FILEPATH);
         facilityManager = new FacilityManager(FACILITIES_FILEPATH);
         staffManager = new StaffManager(STAFF_FILEPATH);
-         */
 
         boolean exit = false;
 

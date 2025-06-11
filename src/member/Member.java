@@ -21,6 +21,8 @@ public abstract class Member {
     public static final double MONTHLY_BASE = 35.00;
     /** Annual base fee */
     public static final double ANNUAL_BASE = 350.00;
+    /** Minimum age for adult membership */
+    public static final int ADULT_AGE = 18;
 
     /** Unique identifier for this member */
     protected int id;
