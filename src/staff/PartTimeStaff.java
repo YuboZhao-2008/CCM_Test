@@ -6,7 +6,7 @@ package staff;
 
 /**
  * Represents a part-time staff member who is paid by the hour.
- * Calculates weekly pay up to a maximum number of hours.
+ * Calculates monthly pay up to a maximum number of hours.
  *
  * @author Yubo-Zhao
  * @version 1.0
@@ -14,7 +14,7 @@ package staff;
  */
 public class PartTimeStaff extends Staff {
     /**
-     * The number of hours this staff has worked in the week.
+     * The number of hours this staff has worked in the month.
      */
     private int hoursWorked;
 
@@ -24,9 +24,9 @@ public class PartTimeStaff extends Staff {
     private double hourlySalary;
 
     /**
-     * The maximum number of hours this staff is allowed to work per week.
+     * The maximum number of hours this staff is allowed to work per month.
      */
-    private int maxWeeklyHours;
+    private int maxMonthlyHours;
 
     /**
      * Constructs a new PartTimeStaff with the given name and pay parameters.
@@ -34,25 +34,25 @@ public class PartTimeStaff extends Staff {
      * @param name           the staff member's name
      * @param hoursWorked    the initial hours worked
      * @param hourlySalary   the wage per hour
-     * @param maxWeeklyHours the cap on hours per week
+     * @param maxMonthlyHours the cap on hours per month
      */
-    public PartTimeStaff(String name, int hoursWorked, double hourlySalary, int maxWeeklyHours) {
+    public PartTimeStaff(String name, int hoursWorked, double hourlySalary, int maxMonthlyHours) {
         super(name);
         this.hoursWorked = hoursWorked;
         this.hourlySalary = hourlySalary;
-        this.maxWeeklyHours = maxWeeklyHours;
+        this.maxMonthlyHours = maxMonthlyHours;
     }
 
     /**
-     * Calculates the weekly pay. If hoursWorked exceeds maxWeeklyHours,
+     * Calculates the monthly pay. If hoursWorked exceeds maxMonthlyHours,
      * it is capped before calculating pay.
      *
-     * @return the total pay for this week
+     * @return the total pay for this month
      */
     @Override
     public double calculatePay() {
-        if (hoursWorked > maxWeeklyHours) {
-            hoursWorked = maxWeeklyHours;
+        if (hoursWorked > maxMonthlyHours) {
+            hoursWorked = maxMonthlyHours;
         }
         return hoursWorked * hourlySalary;
     }
@@ -76,13 +76,13 @@ public class PartTimeStaff extends Staff {
         return "Staff #" + id +
                 " | name: " + name +
                 " | hourly salary: " + hourlySalary +
-                " | max weekly hours: " + maxWeeklyHours;
+                " | max monthly hours: " + maxMonthlyHours;
     }
 
     /**
      * Gets the number of hours worked.
      *
-     * @return hours worked this week
+     * @return hours worked this month
      */
     public int getHoursWorked() {
         return hoursWorked;
@@ -116,20 +116,20 @@ public class PartTimeStaff extends Staff {
     }
 
     /**
-     * Gets the maximum weekly hours allowed.
+     * Gets the maximum monthly hours allowed.
      *
-     * @return the max weekly hours
+     * @return the max monthly hours
      */
-    public int getMaxWeeklyHours() {
-        return maxWeeklyHours;
+    public int getMaxMonthlyHours() {
+        return maxMonthlyHours;
     }
 
     /**
-     * Sets the maximum weekly hours allowed.
+     * Sets the maximum monthly hours allowed.
      *
-     * @param maxWeeklyHours the new max weekly hours
+     * @param maxMonthlyHours the new max monthly hours
      */
-    public void setMaxWeeklyHours(int maxWeeklyHours) {
-        this.maxWeeklyHours = maxWeeklyHours;
+    public void setMaxMonthlyHours(int maxMonthlyHours) {
+        this.maxMonthlyHours = maxMonthlyHours;
     }
 }

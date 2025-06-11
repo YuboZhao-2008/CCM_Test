@@ -1,9 +1,24 @@
+/**
+ * CommunityCentreRunner
+ * runs and implements all features of TimeManager, EventManager, MemberManager, FacilityManager,
+ * and StaffManager, in a GUI for user interaction.
+ *
+ * @author Mansour Abdelsalam, Sean Yang, Yubo Zhao
+ * @version 1.1
+ * @since 2025-06-11
+ */
+
 package main;
 
+// import scanner
 import event.EventManager;
+import facility.Facility;
 import facility.FacilityManager;
+import java.util.Scanner;
+import member.Member;
 import member.MemberManager;
 import staff.StaffManager;
+import time.TimeBlock;
 import time.TimeManager;
 
 public class CommunityCentreRunner {
@@ -19,6 +34,18 @@ public class CommunityCentreRunner {
     private static EventManager eventManager = new EventManager();
     private static FacilityManager facilityManager = new FacilityManager();
     private static StaffManager staffManager = new StaffManager();
+
+    // scanner
+    public static Scanner scan = new Scanner(System.in);
+
+    // separator for formatting
+    public static final String separator = "------------------------------------------/------------------------------------------";
+
+    // scanner
+    public static Scanner scan = new Scanner(System.in);
+
+    // separator for formatting
+    public static final String separator = "------------------------------------------/------------------------------------------";
 
     // accessor methods for managers
     public static MemberManager getMemberManager() {
@@ -41,49 +68,226 @@ public class CommunityCentreRunner {
         return facilityManager;
     }
 
-    public static void main(String[] args) {
-        /*
-         * System.out.println("Hello world");
-         * 
-         * AdultMember member = new AdultMember(30, "John Doe", PlanType.ANNUAL_BASE,
-         * "647-999-9999", "494 Chair Rd.", 1000, 400);
-         * memberManager.addMember(member);
-         * YouthMember member2 = new YouthMember(4, "Baby Boy", PlanType.ANNUAL_BASE,
-         * member);
-         * memberManager.addMember(member2);
-         * 
-         * System.out.println(memberManager.searchById(0));
-         * System.out.println(memberManager.searchById(1));
-         * 
-         * FullTimeStaff staff = new FullTimeStaff("John Cena", 20);
-         * staffManager.addStaff(staff);
-         * 
-         * System.out.println(staffManager.searchById(0));
-         * 
-         * SportsFacility sportsFacility = new SportsFacility(101, 50, 9);
-         * facilityManager.addFacility(sportsFacility);
-         * 
-         * TimeBlock timeBlock = new TimeBlock(2000, Month.APR, 10, 12.0, 2.0);
-         * Competition competition = new Competition(sportsFacility, timeBlock, member,
-         * 1000, 10);
-         * eventManager.book(competition);
-         * eventManager.searchById(0).registerParticipant(member2);
-         * 
-         * System.out.println(eventManager.searchById(0));
-         * System.out.println(member2);
-         * System.out.println(member.getId());
-         * 
-         * eventManager.cancelEvent(0);
-         * 
-         * System.out.println(eventManager.searchById(0));
-         */
-        // separator for formatting
-        String separator = "------------------------------------------";
+    public static int numberInputValidation() {
+        int choice = -1;
 
+        while (choice < 0) {
+            // input
+            System.out.print(" > ");
+            String userInput = scan.nextLine();
+            // validate the input to a choice
+            try {
+                choice = Integer.parseInt(userInput);
+            } catch (NumberFormatException nfe) {
+                System.out.println("Must enter a number");
+            }
+        }
+
+        System.out.println(); // blank line
+        System.out.println(separator);
+        System.out.println(); // blank line
+
+        return choice;
+    }
+
+    public static int menuInputValidation(int max) {
+        int choice = -1;
+
+        while (choice < 0) {
+            // input
+            System.out.print(" > ");
+            String userInput = scan.nextLine();
+            // validate the input to a choice
+            try {
+                choice = Integer.parseInt(userInput);
+                if (choice > max) {
+                    choice = -1;
+                    System.out.println("Not an option");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Must enter a number");
+            }
+        }
+
+        System.out.println(); // blank line
+        System.out.println(separator);
+        System.out.println(); // blank line
+
+        return choice;
+    }
+
+    public static void main(String[] args) {
+        // variables
+        TimeBlock currentTime = timeManager.getCurrentTime(); // initialize current time at beginning of program
+
+        // separator for formatting
+        String userInput = "";
+        int choice = -1;
+        
+        // GUI main loop ----
         System.out.println(separator);
         System.out.println("It is currently " + timeManager.getCurrentTime() + ".");
         System.out.println(separator);
         System.out.println(); // blank line
+        
+        // show events occuring soon
+        System.out.println("Events occuring within this month:");
+        TimeBlock next_month = new TimeBlock(currentTime.getYear(), TimeBlock.nextMonth(currentTime.getMonth()), currentTime.getDay());
+        if (!eventManager.printFutureEventsBefore(next_month)) {
+            System.out.println("No events.");
+        }
+        System.out.println(); // blank line
+        System.out.println("Events ongoing now:");
+        if (!eventManager.printOngoingEvents()) {
+            System.out.println("No events.");
+        }
+        System.out.println(); // blank line
 
+        System.out.println(separator);
+        System.out.println(); // blank line
+        System.out.println("What would you like to do?");
+        System.out.println("(1) List");
+        System.out.println("(2) Search");
+        System.out.println("(3) Create");
+        System.out.println("(4) Modify");
+        System.out.println("(5) Delete");
+        System.out.println("(6) Advance Time");
+        
+        choice = menuInputValidation(6);
+
+        // if valid input
+        switch (choice) {
+            case 1:
+                facilityManager.printAllFacilities();
+
+                System.out.println("What would you like to view?");
+                // all options for listing
+                // list facilities
+                System.out.println("(1) Facilities by ID");
+                System.out.println("(2) Sports Facilities by Rating");
+                System.out.println("(3) Meeting Faciltiies by Size");
+                System.out.println("(4) Facilties by Cost to Rent");
+                System.out.println("-");
+                
+                // list events
+                System.out.println("(5) Events by ID");
+                System.out.println("(6) Events in Chronological Order");
+                System.out.println("(7) Future Events");
+                System.out.println("(8) Past Events");
+                System.out.println("-");
+
+                // list members
+                System.out.println("(9) Members by ID");
+                System.out.println("(10) Members by Alphabet");
+                System.out.println("(12) Members by Bill");
+                System.out.println("-");
+
+                // list staff
+                System.out.println("(13) Staff by ID");
+                System.out.println("(14) Staff by Alphabet");
+                System.out.println("(15) Full-Time Staff by Pay");
+                System.out.println("-");
+
+                // back
+                System.out.println("(0) Back");
+
+                int viewChoice = menuInputValidation(15);
+
+                switch (viewChoice) {
+                    case 1:
+                        for (Facility facility : facilityManagerl.)
+                        break;
+                    case 2:
+                        
+                }
+
+                break;
+            case 2:
+                System.out.println("What would you like to search for?");
+                // all options for searching
+                
+                // search facilities
+                System.out.println("(1) Facility using ID");
+                System.out.println("(2) Facility using Room Num.");
+                System.out.println("(3) Facilities above Capacity");
+                System.out.println("(4) Facilities Available using Time");
+                System.out.println("(5) Facilties Available using Time above Capacity");
+                System.out.println("-");
+                
+                // search events
+                System.out.println("(6) Event using ID");
+                System.out.println("(7) Events using Time");
+                System.out.println("-");
+
+                // search members
+                System.out.println("(8) Members using ID");
+                System.out.println("(9) Members using Name");
+   
+                // search staff
+                System.out.println("(10) Members ");
+                // back
+                break;
+            case 3:
+                System.out.println("What would you like to create?");
+                // all options for creating
+                // create facilities
+                // create events
+                // create members
+                // create staff
+                // back
+                break;
+            case 4:
+                System.out.println("What would you like to modify?");
+                // all options for modifying
+                // modify facilities
+                // modify events
+                // modify members
+                // modify staff
+                // back
+                break;
+            case 5:
+                System.out.println("What would you like to delete?");
+                System.out.println("1. Delete Member");
+                System.out.println("2. Delete Staff");
+                System.out.println("3. Delete Facility");
+                System.out.println("4. Delete Event");
+                int deleteChoice = scan.nextInt();
+                scan.nextLine();
+                
+                switch(deleteChoice) {
+                    case 1:
+                        System.out.print("Enter the member ID to delete: ");
+                        int memberId = scan.nextInt();
+                        scan.nextLine();
+
+                        Member membertoDelete = CommunityCentreRunner.getMemberManager().searchById(memberId);
+                        if (membertoDelete != null) {
+                            CommunityCentreRunner.getMemberManager().members.remove(membertoDelete);
+                            System.out.println("Member with ID " + memberId + " has been deleted.");
+                        } else {
+                            System.out.println("Member with ID " + memberId + " not found.");
+                        }
+                        break;
+                    case 2:
+                        System.out.print("Enter the staff ID to delete: ");
+                        int staffId = scan.nextInt();
+                        scan.nextLine
+                }
+                // all options for deleting
+                // delete facilities
+                // delete events
+                // delete members
+                // delete staff
+                // back
+                break;
+            case 6:
+                System.out.println("What time would you like to advance to?");
+                // options to advance time
+                // advance time by specified hours
+                // advance time by an hour
+                // advance time to a date
+                break;
+        }
+        scan.close();
     }
 }
