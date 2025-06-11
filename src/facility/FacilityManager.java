@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import time.TimeBlock;
 
@@ -151,33 +150,22 @@ public class FacilityManager {
     }
 
     /**
-     * sorts sports facilities by rating (highest first)
-     * 
-     * @return an ArrayList of sports facilities
-     */
-    public ArrayList<SportsFacility> sportsFacilitiesByRating() {
-        ArrayList<SportsFacility> sportsFacilities = new ArrayList<SportsFacility>();
-
-        for (Facility facility : facilities) {
-            if (facility instanceof SportsFacility sportsFacility) {
-                sportsFacilities.add(sportsFacility);
-            }
-        }
-
-        sportsFacilities.sort(Comparator.comparingDouble(SportsFacility::getRating).reversed());
-
-        return sportsFacilities;
-    }
-
-    /**
      * adds a facility to the facilities arraylist
      */
     public void addFacility(Facility facility) {
         facilities.add(facility);
     }
 
-    // accessor for facilities
-    public ArrayList<Facility> getFacilities() {
-        return facilities;
+    /**
+     * Removes a facility with the given ID from the list.
+     */
+    public boolean removeFacility(int id) {
+        for (int i = 0; i < facilities.size(); i++) {
+            if (facilities.get(i).getId() == id) {
+                facilities.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 }
