@@ -249,4 +249,9 @@ public class StaffManager {
         sort(staffs, Comparator.comparingDouble(Staff::calculatePay).reversed().thenComparing(Staff::getName,
                 String.CASE_INSENSITIVE_ORDER));
     }
+
+    // accessor for staffs
+    public ArrayList<Staff> getStaffs() {
+        return staffs;
+    }
 }

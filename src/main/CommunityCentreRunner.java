@@ -10,14 +10,20 @@
 
 package main;
 
+// import scanner
 import java.util.Scanner;
 
+import event.Event;
+// import folders
 import event.EventManager;
+import facility.Facility;
 import facility.FacilityManager;
 import member.Member;
 import member.MemberManager;
+import staff.Staff;
 import staff.StaffManager;
 import time.TimeBlock;
+import time.TimeBlock.Month;
 import time.TimeManager;
 
 public class CommunityCentreRunner {
@@ -61,7 +67,32 @@ public class CommunityCentreRunner {
         return facilityManager;
     }
 
-    public static int numberInputValidation() {
+    public static Month monthInputValidation() {
+        Month choice = null;
+
+        while (choice == null) {
+            // input
+            System.out.print(" > ");
+            String userInput = scan.nextLine();
+            if (userInput.length() != 3) {
+                System.out.println("Must be 3 letters");
+                continue;
+            }
+            // validate the input to a month
+            choice = TimeBlock.ABBR_TO_MONTH.get(userInput.toUpperCase());
+            if (choice == null) {
+                System.out.println("Must enter a valid month");
+            }
+        }
+
+        System.out.println(); // blank line
+        System.out.println(SEPARATOR);
+        System.out.println(); // blank line
+
+        return choice;
+    }
+
+    public static int intInputValidation() {
         int choice = -1;
 
         while (choice < 0) {
@@ -113,10 +144,6 @@ public class CommunityCentreRunner {
         // variables
         TimeBlock currentTime = timeManager.getCurrentTime(); // initialize current time at beginning of program
 
-        // separator for formatting
-        String userInput = "";
-        int choice = -1;
-
         // GUI main loop ----
         System.out.println(SEPARATOR);
         System.out.println("It is currently " + timeManager.getCurrentTime() + ".");
@@ -144,10 +171,11 @@ public class CommunityCentreRunner {
         System.out.println("(2) Search");
         System.out.println("(3) Create");
         System.out.println("(4) Modify");
-        System.out.println("(5) Delete");
-        System.out.println("(6) Advance Time");
+        System.out.println("(5) Book");
+        System.out.println("(6) Delete");
+        System.out.println("(7) Advance Time");
 
-        choice = menuInputValidation(6);
+        int choice = menuInputValidation(6);
 
         // if valid input
         switch (choice) {
@@ -281,61 +309,174 @@ public class CommunityCentreRunner {
                 System.out.println("(8) Members using ID");
                 System.out.println("(9) Members using Name");
                 // search staff
-                System.out.println("(10) Members ");
-                // back
-            }
-            case 3 -> System.out.println("What would you like to create?");
-            // all options for creating
-            // create facilities
-            // create events
-            // create members
-            // create staff
-            // back
-            case 4 -> System.out.println("What would you like to modify?");
-            // all options for modifying
-            // modify facilities
-            // modify events
-            // modify members
-            // modify staff
-            // back
-            case 5 -> {
-                System.out.println("What would you like to delete?");
-                System.out.println("1. Delete Member");
-                System.out.println("2. Delete Staff");
-                System.out.println("3. Delete Facility");
-                System.out.println("4. Delete Event");
-                int deleteChoice = scan.nextInt();
-                scan.nextLine();
-                switch (deleteChoice) {
-                    case 1:
-                        System.out.print("Enter the member ID to delete: ");
-                        int memberId = scan.nextInt();
-                        scan.nextLine();
+                System.out.println("(10) Staff using ID");
+                System.out.println("(11) Staff using Name");
+                System.out.println("-");
 
-                        Member membertoDelete = CommunityCentreRunner.getMemberManager().searchById(memberId);
-                        if (membertoDelete != null) {
-                            CommunityCentreRunner.getMemberManager().members.remove(membertoDelete);
-                            System.out.println("Member with ID " + memberId + " has been deleted.");
-                        } else {
-                            System.out.println("Member with ID " + memberId + " not found.");
-                        }
-                        break;
-                    case 2:
-                        System.out.print("Enter the staff ID to delete: ");
-                        int staffId = scan.nextInt();
-                }
+                // back
+                System.out.println("(0) Back");
+                // code
+            }
+
+            case 3 -> {
+                System.out.println("What would you like to create?");
+                // all options for creating
+
+                // create facilities
+                System.out.println("(1) New Sports Facility");
+                System.out.println("(2) New Meeting Facility");
+                System.out.println("-");
+
+                // create events
+                System.out.println("(3) New Competition Event");
+                System.out.println("(4) New Fundraiser Event");
+                System.out.println("-");
+
+                // create members
+                System.out.println("(5) New Adult Member");
+                System.out.println("(6) New Youth Member");
+                System.out.println("-");
+
+                // create staff
+                System.out.println("(7) New Full-Time Staff");
+                System.out.println("(8) New Part-Time Staff");
+                System.out.println("-");
+
+                // back
+                System.out.println("(0) Back");
+            }
+
+            case 4 -> {
+                // first search for the event to book for
+                // then list options to book a member or assign a staff
+            }
+
+            case 5 -> {
+                System.out.println("What would you like to modify?");
+                // all options for modifying
+
+                // modify facilities
+                System.out.println("(1) Facility Room Num.");
+                System.out.println("(2) Sports Facility Rating");
+                System.out.println("(3) Meeting Facility Size");
+                System.out.println("(4) ");
+
+                // modify events
+
+                // modify members
+
+                // modify staff
+
+                // back
+                System.out.println("(0) Back");
+            }
+
+            case 6 -> {
                 // all options for deleting
                 // delete facilities
                 // delete events
                 // delete members
                 // delete staff
                 // back
+                System.out.println("What would you like to delete?");
+                System.out.println("(1) Delete Member");
+                System.out.println("(2) Delete Staff");
+                System.out.println("(3) Delete Facility");
+                System.out.println("(4) Delete Event");
+                System.out.println("(0) Back");
+                int deleteChoice = menuInputValidation(4);
+
+                switch (deleteChoice) {
+                    case 1 -> {
+                        System.out.print("Enter the member ID to delete: ");
+                        int memberId = intInputValidation();
+
+                        Member membertoDelete = CommunityCentreRunner.getMemberManager().searchById(memberId);
+                        if (membertoDelete != null) {
+                            CommunityCentreRunner.getMemberManager().getMembers().remove(membertoDelete);
+                            System.out.println("Member with ID " + memberId + " has been deleted.");
+                        } else {
+                            System.out.println("Member with ID " + memberId + " not found.");
+                        }
+                    }
+                    case 2 -> {
+                        System.out.print("Enter the staff ID to delete: ");
+                        int staffId = intInputValidation();
+
+                        Staff staffToDelete = CommunityCentreRunner.getStaffManager().searchById(staffId);
+                        if (staffToDelete != null) {
+                            CommunityCentreRunner.getStaffManager().getStaffs().remove(staffToDelete);
+                            System.out.println("Staff with ID " + staffId + " has been deleted.");
+                        } else {
+                            System.out.println("Staff with ID " + staffId + " not found.");
+                        }
+                    }
+                    case 3 -> {
+                        System.out.print("Enter the facility ID to delete: ");
+                        int facilityId = intInputValidation();
+
+                        Facility facilityToDelete = CommunityCentreRunner.getFacilityManager().searchById(facilityId);
+                        if (facilityToDelete != null) {
+                            CommunityCentreRunner.getFacilityManager().getFacilities().remove(facilityToDelete);
+                            System.out.println("Facility with ID " + facilityId + " has been deleted.");
+                        } else {
+                            System.out.println("Facility with ID " + facilityId + " not found.");
+                        }
+                    }
+                    case 4 -> {
+                        System.out.print("Enter the event ID to delete: ");
+                        int eventId = intInputValidation();
+
+                        Event eventToDelete = CommunityCentreRunner.getEventManager().searchById(eventId);
+                        if (eventToDelete != null) {
+                            CommunityCentreRunner.getEventManager().getEvents().remove(eventToDelete);
+                            System.out.println("Event with ID " + eventId + " has been deleted.");
+                        } else {
+                            System.out.println("Event with ID " + eventId + " not found.");
+                        }
+                    }
+                    case 0 -> System.out.println("Returning to main menu.");
+                }
             }
-            case 6 -> System.out.println("What time would you like to advance to?");
-            // options to advance time
-            // advance time by specified hours
-            // advance time by an hour
-            // advance time to a date
+
+            case 7 -> {
+                System.out.println("What time would you like to advance to?");
+                // options to advance time
+                // advance time by specified hours
+                // advance time by an hour
+                // advance time to a date
+                System.out.println("(1) Advance by specified hours");
+                System.out.println("(2) Advance by an hour");
+                System.out.println("(3) Advance to a specific date");
+                System.out.println("(0) Back");
+                int advanceChoice = menuInputValidation(3);
+                switch (advanceChoice) {
+                    case 1 -> {
+                        System.out.print("Enter the number of hours to advance: ");
+                        int hours = intInputValidation();
+                        timeManager.advanceHours(hours);
+                        System.out.println("Time advanced by " + hours + " hours.");
+                    }
+                    case 2 -> {
+                        timeManager.advanceHour();
+                        System.out.println("Time advanced by one hour.");
+                    }
+                    case 3 -> {
+                        System.out.print("Enter the year: ");
+                        int year = intInputValidation();
+
+                        System.out.print("Enter the month (3 letter abbreviation): ");
+                        Month month = monthInputValidation();
+
+                        System.out.print("Enter the day: ");
+                        int day = intInputValidation();
+
+                        timeManager.advanceToDay(year, month, day);
+                        System.out.println("Time set to " + timeManager.getCurrentTime() + ".");
+                    }
+                    case 0 -> System.out.println("Returning to main menu.");
+                }
+            }
         }
         scan.close();
     }

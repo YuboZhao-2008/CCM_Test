@@ -39,7 +39,7 @@ public class MemberManager {
     /**
      * The list of all members managed by this class.
      */
-    public ArrayList<Member> members = new ArrayList<>();
+    private ArrayList<Member> members = new ArrayList<>();
 
     public MemberManager() {
     }
@@ -261,4 +261,8 @@ public class MemberManager {
         }
     }
 
+    // accessor for members
+    public ArrayList<Member> getMembers() {
+        return members;
+    }
 }
