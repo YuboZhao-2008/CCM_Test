@@ -32,7 +32,7 @@ public class EventManager {
      * Schedule events using this class.
      */
     public EventManager() {
-        events = new ArrayList<Event>();
+        events = new ArrayList<>();
     }
 
     /**
@@ -43,7 +43,7 @@ public class EventManager {
      * @param filePath
      */
     public EventManager(String filePath) {
-        events = new ArrayList<Event>();
+        events = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -53,19 +53,19 @@ public class EventManager {
             for (int i = 0; i < numEvents; i++) {
                 String eventType = reader.readLine();
 
-                double prizeOrGoal = Double.parseDouble(reader.readLine());
+                double prizeOrGoal = Double.parseDouble(reader.readLine().trim());
                 double participationCost = 0;
                 if (eventType.equals("competition")) {
-                    participationCost = Double.parseDouble(reader.readLine());
+                    participationCost = Double.parseDouble(reader.readLine().trim());
                 }
 
-                int facilityId = Integer.parseInt(reader.readLine());
-                int day = Integer.parseInt(reader.readLine());
-                Month month = TimeBlock.ABBR_TO_MONTH.get(reader.readLine());
-                int year = Integer.parseInt(reader.readLine());
-                double startHour = Double.parseDouble(reader.readLine());
-                double duration = Double.parseDouble(reader.readLine());
-                int host_id = Integer.parseInt(reader.readLine());
+                int facilityId = Integer.parseInt(reader.readLine().trim());
+                int day = Integer.parseInt(reader.readLine().trim());
+                Month month = TimeBlock.Month.valueOf(reader.readLine().trim().toUpperCase());
+                int year = Integer.parseInt(reader.readLine().trim());
+                double startHour = Double.parseDouble(reader.readLine().trim());
+                double duration = Double.parseDouble(reader.readLine().trim());
+                int host_id = Integer.parseInt(reader.readLine().trim());
 
                 Facility facility = main.CommunityCentreRunner.getFacilityManager().searchById(facilityId);
                 TimeBlock timeBlock = new TimeBlock(year, month, day, startHour, duration);
@@ -78,17 +78,17 @@ public class EventManager {
                 }
 
                 // read staff and member information registered to the event
-                int numStaffSupervising = Integer.parseInt(reader.readLine());
+                int numStaffSupervising = Integer.parseInt(reader.readLine().trim());
                 for (int j = 0; j < numStaffSupervising; j++) {
                     Staff staff = main.CommunityCentreRunner.getStaffManager()
-                            .searchById(Integer.parseInt(reader.readLine()));
+                            .searchById(Integer.parseInt(reader.readLine().trim()));
                     event.assignStaff(staff);
                 }
 
-                int numParticipants = Integer.parseInt(reader.readLine());
+                int numParticipants = Integer.parseInt(reader.readLine().trim());
                 for (int k = 0; k < numParticipants; k++) {
                     Member member = main.CommunityCentreRunner.getMemberManager()
-                            .searchById(Integer.parseInt(reader.readLine()));
+                            .searchById(Integer.parseInt(reader.readLine().trim()));
                     event.registerParticipant(member);
                 }
 
@@ -117,42 +117,41 @@ public class EventManager {
      * @return if the save was successful, usually determined by if the file path is
      *         correct
      */
-    public boolean save(String file_path) {
+    public boolean save(String filePath) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file_path));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
             writer.write("" + events.size());
-            for (int i = 0; i < events.size(); i++) {
-                Event event = events.get(i);
+            for (Event event : events) {
                 if (event instanceof Competition c) {
                     writer.write("competition\n");
-                    writer.write("" + c.getPrize() + "\n");
-                    writer.write("" + c.getParticipationCost() + "\n");
+                    writer.write(c.getPrize() + "\n");
+                    writer.write(c.getParticipationCost() + "\n");
                 } else if (event instanceof Fundraiser f) {
-                    writer.write("fundraiser\n" + "\n");
-                    writer.write("" + f.getGoal() + "\n");
+                    writer.write("fundraiser\n");
+                    writer.write(f.getGoal() + "\n");
                 }
 
-                writer.write("" + event.getFacility().getId() + "\n");
-                writer.write("" + event.getTimeBlock().getDay() + "\n");
-                writer.write("" + event.getTimeBlock().getMonth() + "\n");
+                writer.write(event.getFacility().getId() + "\n");
+                writer.write(event.getTimeBlock().getDay() + "\n");
+                writer.write(event.getTimeBlock().getMonth() + "\n");
 
-                writer.write("" + event.getTimeBlock().getYear() + "\n");
-                writer.write("" + event.getTimeBlock().getStartHour() + "\n");
-                writer.write("" + event.getTimeBlock().duration() + "\n");
+                writer.write(event.getTimeBlock().getYear() + "\n");
+                writer.write(event.getTimeBlock().getStartHour() + "\n");
+                writer.write(event.getTimeBlock().duration() + "\n");
 
                 if (event.getHost() != null) {
-                    writer.write("" + event.getHost().getId() + "\n");
+                    writer.write(event.getHost().getId() + "\n");
                 } else {
-                    writer.write("" + (-1) + "\n"); // no host
+                    writer.write("-1\n"); // no host
                 }
 
                 // write staff and member ids
-                writer.write("" + event.getStaffSupervising().size() + "\n");
+                writer.write(event.getStaffSupervising().size() + "\n");
                 for (int j = 0; j < event.getStaffSupervising().size(); j++) {
                     writer.write(event.getStaffSupervising().get(j) + "\n");
                 }
-                writer.write("" + event.getParticipants().size() + "\n");
+                writer.write(event.getParticipants().size() + "\n");
                 for (int j = 0; j < event.getParticipants().size(); j++) {
                     writer.write(event.getParticipants().get(j) + "\n");
                 }
@@ -191,10 +190,8 @@ public class EventManager {
     private int generateId() {
         int maxId = -1;
 
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getId() > maxId) {
-                maxId = events.get(i).getId();
-            }
+        for (Event event : events) {
+            maxId = Math.max(maxId, event.getId());
         }
         return maxId + 1;
     }
@@ -206,15 +203,15 @@ public class EventManager {
      * @return whether any events were printed
      */
     public boolean printAllEvents() {
-        boolean found = false;
-
-        for (int i = 0; i < events.size(); i++) {
-            found = true;
-            System.out.println(events.get(i));
-            System.out.println(); // blank line
+        if (events.isEmpty()) {
+            return false;
         }
 
-        return found;
+        for (Event event : events) {
+            System.out.println(event);
+        }
+
+        return true;
     }
 
     /**
@@ -226,11 +223,10 @@ public class EventManager {
     public boolean printPastEvents() {
         boolean found = false;
 
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).hasCompleted()) {
+        for (Event event : events) {
+            if (event.hasCompleted()) {
                 found = true;
-                System.out.println(events.get(i));
-                System.out.println(); // blank line
+                System.out.println(event);
             }
         }
 
@@ -246,14 +242,11 @@ public class EventManager {
     public boolean printFutureEvents() {
         boolean found = false;
 
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
-
+        for (Event event : events) {
             if (!event.hasCompleted()) {
                 if (!main.CommunityCentreRunner.getTimeManager().isOngoing(event.getTimeBlock())) {
                     found = true;
                     System.out.println(event);
-                    System.out.println(); // blank line
                 }
             }
         }
@@ -272,14 +265,11 @@ public class EventManager {
     public boolean printFutureEventsBefore(TimeBlock time) {
         boolean found = false;
 
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
-
+        for (Event event : events) {
             // print if the event starts before the time
             if (!event.occursBefore(time)) {
                 found = true;
                 System.out.println(event);
-                System.out.println(); // blank line
             }
         }
 
@@ -295,13 +285,10 @@ public class EventManager {
     public boolean printOngoingEvents() {
         boolean found = false;
 
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
-
+        for (Event event : events) {
             if (!event.hasCompleted()) {
                 found = true;
                 System.out.println(event);
-                System.out.println(); // blank line
             }
         }
 
@@ -336,9 +323,7 @@ public class EventManager {
      * @param newTime
      */
     public void advanceTime(TimeBlock newTime) {
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
-
+        for (Event event : events) {
             if (!event.hasCompleted()) {
                 if (event.getTimeBlock().compareToEnd(newTime) < 0) {
                     event.setCompleted();
@@ -402,12 +387,10 @@ public class EventManager {
         ArrayList<Member> participants = event.getParticipants();
         ArrayList<Staff> staffSupervising = event.getStaffSupervising();
 
-        for (int i = 0; i < participants.size(); i++) {
-            Member member = participants.get(i);
+        for (Member member : participants) {
             member.getRegistrations().cancelEvent(event);
         }
-        for (int i = 0; i < staffSupervising.size(); i++) {
-            Staff staff = staffSupervising.get(i);
+        for (Staff staff : staffSupervising) {
             staff.getShifts().cancelEvent(event);
         }
         return true;

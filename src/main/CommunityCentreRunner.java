@@ -70,14 +70,15 @@ public class CommunityCentreRunner {
         while (choice == null) {
             // input
             System.out.print(" > ");
-            String userInput = scan.nextLine();
+            String userInput = scan.nextLine().trim().toUpperCase();
             if (userInput.length() != 3) {
-                System.out.println("Must be 3 letters");
+                System.out.println("Must enter 3 characters");
                 continue;
             }
             // validate the input to a month
-            choice = TimeBlock.ABBR_TO_MONTH.get(userInput.toUpperCase());
-            if (choice == null) {
+            try {
+                choice = TimeBlock.Month.valueOf(userInput);
+            } catch (IllegalArgumentException e) {
                 System.out.println("Must enter a valid month");
             }
         }
@@ -95,7 +96,7 @@ public class CommunityCentreRunner {
         while (choice < 0) {
             // input
             System.out.print(" > ");
-            String userInput = scan.nextLine();
+            String userInput = scan.nextLine().trim();
             // validate the input to a choice
             try {
                 choice = Integer.parseInt(userInput);
@@ -117,7 +118,7 @@ public class CommunityCentreRunner {
         while (choice < 0) {
             // input
             System.out.print(" > ");
-            String userInput = scan.nextLine();
+            String userInput = scan.nextLine().trim();
             // validate the input to a choice
             try {
                 choice = Integer.parseInt(userInput);
@@ -140,6 +141,12 @@ public class CommunityCentreRunner {
     public static void main(String[] args) {
         // variables
         TimeBlock currentTime = timeManager.getCurrentTime(); // initialize current time at beginning of program
+
+        // load data from files
+        memberManager = new MemberManager(MEMBERS_FILEPATH);
+        eventManager = new EventManager(EVENTS_FILEPATH);
+        facilityManager = new FacilityManager(FACILITIES_FILEPATH);
+        staffManager = new StaffManager(STAFF_FILEPATH);
 
         // GUI main loop ----
         System.out.println(SEPARATOR);
@@ -180,12 +187,11 @@ public class CommunityCentreRunner {
                 facilityManager.printAllFacilities();
 
                 System.out.println("What would you like to view?");
-                // all options for listing
-                // list facilities
+                // all options for listing facilities
                 System.out.println("(1) Facilities by ID");
                 System.out.println("(2) Sports Facilities by Rating");
-                System.out.println("(3) Meeting Faciltiies by Size");
-                System.out.println("(4) Facilties by Cost to Rent");
+                System.out.println("(3) Meeting Facilities by Size");
+                System.out.println("(4) Facilities by Cost to Rent");
                 System.out.println("-");
 
                 // list events

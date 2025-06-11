@@ -21,8 +21,8 @@ public abstract class Event {
     protected Facility facility;
     protected TimeBlock timeBlock;
     protected Member host;
-    protected ArrayList<Staff> staffSupervising = new ArrayList<Staff>();
-    protected ArrayList<Member> participants = new ArrayList<Member>();
+    protected ArrayList<Staff> staffSupervising = new ArrayList<>();
+    protected ArrayList<Member> participants = new ArrayList<>();
     protected int id;
     protected boolean isCompleted;
 
@@ -83,7 +83,7 @@ public abstract class Event {
      * determines if two events are identical
      * 
      * @param other
-     * @return whether or not the events are identical
+     * @return whether the events are identical
      */
     public boolean equals(Event other) {
         return other != null && this.id == other.id && this.timeBlock.equals(other.timeBlock)
@@ -94,7 +94,7 @@ public abstract class Event {
      * isFull
      * determines if the event's facility has reached maximum capacity.
      * 
-     * @return whether or not the event is full
+     * @return whether the event is full
      */
     public boolean isFull() {
         return (participants.size() >= this.facility.getMaxCapacity());
@@ -117,7 +117,7 @@ public abstract class Event {
      * registers a member to the event.
      * 
      * @param member
-     * @return whether or not the member was member was successfully added
+     * @return whether the member was successfully added
      */
     public boolean registerParticipant(Member member) {
         // guard clauses
@@ -181,11 +181,10 @@ public abstract class Event {
      * toString
      */
     public String toString() {
-        String s = "Event #" + id +
+        return "Event #" + id +
                 " | facility room: " + facility.getRoomNum() +
                 " | time: " + timeBlock +
                 " | host name: " + host.getName();
-        return s;
     }
 
     // accessor for start hour

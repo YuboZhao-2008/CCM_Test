@@ -163,35 +163,20 @@ public class TimeBlock {
     }
 
     public static Month nextMonth(Month month) {
-        switch (month) {
-            case Month.JAN:
-                return Month.FEB;
-            case Month.FEB:
-                return Month.MAR;
-            case Month.MAR:
-                return Month.APR;
-            case Month.APR:
-                return Month.MAY;
-            case Month.MAY:
-                return Month.JUN;
-            case Month.JUN:
-                return Month.JUL;
-            case Month.JUL:
-                return Month.AUG;
-            case Month.AUG:
-                return Month.SEP;
-            case Month.SEP:
-                return Month.OCT;
-            case Month.OCT:
-                return Month.NOV;
-            case Month.NOV:
-                return Month.DEC;
-            case Month.DEC:
-                return Month.JAN;
-            default:
-                return Month.JAN;
-        }
-
+        return switch (month) {
+            case JAN -> Month.FEB;
+            case FEB -> Month.MAR;
+            case MAR -> Month.APR;
+            case APR -> Month.MAY;
+            case MAY -> Month.JUN;
+            case JUN -> Month.JUL;
+            case JUL -> Month.AUG;
+            case AUG -> Month.SEP;
+            case SEP -> Month.OCT;
+            case OCT -> Month.NOV;
+            case NOV -> Month.DEC;
+            default -> Month.JAN;
+        };
     }
 
     public TimeBlock nextDay() {
@@ -277,11 +262,7 @@ public class TimeBlock {
         if (startHour >= 24) {
             return false;
         }
-        if (endHour >= 24) {
-            return false;
-        }
-
-        return true;
+        return !(endHour >= 24);
     }
 
     /**

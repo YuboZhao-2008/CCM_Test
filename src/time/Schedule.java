@@ -18,9 +18,9 @@ public class Schedule {
      * constructor
      */
     public Schedule() {
-        eventSchedule = new ArrayList<Event>();
+        eventSchedule = new ArrayList<>();
     }
-    
+
     public ArrayList<Event> getEventSchedule() {
         return this.eventSchedule;
     }
@@ -91,7 +91,7 @@ public class Schedule {
      * @return an arraylist of free blocks
      */
     public ArrayList<TimeBlock> freeBlocksWithin(TimeBlock range) {
-        ArrayList<TimeBlock> blocks = new ArrayList<TimeBlock>();
+        ArrayList<TimeBlock> blocks = new ArrayList<>();
 
         int lo = binarySearch(range);
         int hi = binarySearch(range.getEndBlock()) - 1;
@@ -134,7 +134,7 @@ public class Schedule {
      * @return an ArrayList of events which start and end within the range
      */
     public ArrayList<Event> eventsWithin(TimeBlock range) {
-        ArrayList<Event> events = new ArrayList<Event>();
+        ArrayList<Event> events = new ArrayList<>();
 
         int lo = binarySearch(range);
         int hi = binarySearch(range.getEndBlock()) - 1;
@@ -171,7 +171,7 @@ public class Schedule {
      * removes from an event from the schedule if it exists
      * 
      * @param event
-     * @return whether it was successfuly
+     * @return whether it was successfully cancelled
      */
     public boolean cancelEvent(Event event) {
         if (eventSchedule.get(binarySearch(event.getTimeBlock())) == event) {

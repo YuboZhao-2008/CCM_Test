@@ -22,7 +22,7 @@ public class FacilityManager {
 
     // constructor for blank facility manager
     public FacilityManager() {
-        facilities = new ArrayList<Facility>();
+        facilities = new ArrayList<>();
     }
 
     /**
@@ -31,28 +31,28 @@ public class FacilityManager {
      * @param fileName
      */
     public FacilityManager(String fileName) {
-        facilities = new ArrayList<Facility>();
+        facilities = new ArrayList<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
 
-            int numFacilities = Integer.parseInt(br.readLine());
+            int numFacilities = Integer.parseInt(br.readLine().trim());
 
             for (int i = 0; i < numFacilities; i++) {
-                int id = Integer.parseInt(br.readLine());
-                String type = br.readLine();
-                int roomNum = Integer.parseInt(br.readLine());
-                int maxCapacity = Integer.parseInt(br.readLine());
-                double ratingOrSize = Double.parseDouble(br.readLine());
+                int id = Integer.parseInt(br.readLine().trim());
+                String type = br.readLine().trim();
+                int roomNum = Integer.parseInt(br.readLine().trim());
+                int maxCapacity = Integer.parseInt(br.readLine().trim());
+                double ratingOrSize = Double.parseDouble(br.readLine().trim());
 
                 if (type.equals("meeting")) {
                     facilities.add(new MeetingFacility(roomNum, maxCapacity, ratingOrSize));
-                    facilities.getLast().setId(id);
+                    facilities.get(facilities.size() - 1).setId(id);
                 }
 
                 if (type.equals("sports")) {
                     facilities.add(new SportsFacility(roomNum, maxCapacity, ratingOrSize));
-                    facilities.getLast().setId(id);
+                    facilities.get(facilities.size() - 1).setId(id);
                 }
             }
 
