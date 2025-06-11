@@ -101,6 +101,17 @@ public abstract class Event {
     }
 
     /**
+     * occursBefore
+     * determines if the event will occur before the given time and is not ongoing.
+     * 
+     * @param time
+     * @return
+     */
+    public boolean occursBefore(TimeBlock time) {
+            return (!hasCompleted() && time.compareToStart(getTimeBlock()) < 0 && !main.CommunityCentreRunner.getTimeManager().isOngoing(getTimeBlock()));
+    }
+
+    /**
      * registerParticipant
      * registers a member to the event.
      * 

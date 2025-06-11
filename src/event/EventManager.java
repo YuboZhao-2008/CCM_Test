@@ -23,7 +23,7 @@ import time.TimeBlock.Month;
 
 public class EventManager {
     // fields
-    private ArrayList<Event> events = new ArrayList<Event>();
+    private ArrayList<Event> events;
 
     /**
      * Constructor for EventManager;
@@ -31,6 +31,7 @@ public class EventManager {
      * Schedule events using this class.
      */
     public EventManager() {
+        events = new ArrayList<Event>();
     }
 
     /**
@@ -41,6 +42,8 @@ public class EventManager {
      * @param filePath
      */
     public EventManager(String filePath) {
+        events = new ArrayList<Event>();
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
@@ -170,7 +173,7 @@ public class EventManager {
     }
 
     /**
-     * generateId()
+     * generateId
      * generates a unique integer ID to be assigned to an event.
      * Only called in the book method.
      * 
@@ -190,57 +193,110 @@ public class EventManager {
     /**
      * printAllEvents
      * prints all events contained in the EventManager.
+     * 
+     * @return whether any events were printed
      */
-    public void printAllEvents() {
+    public boolean printAllEvents() {
+        boolean found = false;
+
         for (int i = 0; i < events.size(); i++) {
+            found = true;
             System.out.println(events.get(i));
             System.out.println(); // blank line
         }
+
+        return found;
     }
 
     /**
      * printPastEvents
      * prints all events that have completed.
+     * 
+     * @return whether any events were printed
      */
-    public void printPastEvents() {
+    public boolean printPastEvents() {
+        boolean found = false;
+
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).hasCompleted()) {
+                found = true;
                 System.out.println(events.get(i));
                 System.out.println(); // blank line
             }
         }
+
+        return found;
     }
 
     /**
      * printFutureEvents
      * prints all events that have not passed or are ongoing.
+     * 
+     * @return whether any events were printed
      */
-    public void printFutureEvents() {
+    public boolean printFutureEvents() {
+        boolean found = false;
+
         for (int i = 0; i < events.size(); i++) {
             Event event = events.get(i);
 
             if (!event.hasCompleted()) {
                 if (!main.CommunityCentreRunner.getTimeManager().isOngoing(event.getTimeBlock())) {
+                    found = true;
                     System.out.println(event);
                     System.out.println(); // blank line
                 }
             }
         }
+
+        return found;
+    }
+
+    /**
+     * printFutureEventsBefore
+     * prints all events that have not passed or are ongoing
+     * and will start before the specified time.
+     * 
+     * @param time
+     * @return whether any events were printed
+     */
+    public boolean printFutureEventsBefore(TimeBlock time) {
+        boolean found = false;
+
+        for (int i = 0; i < events.size(); i++) {
+            Event event = events.get(i);
+
+            // print if the event starts before the time
+            if (!event.occursBefore(time)) {
+                found = true;
+                System.out.println(event);
+                System.out.println(); // blank line
+            }
+        }
+
+        return found;
     }
 
     /**
      * printOngoingEvents
      * prints all events that are currently ongoing.
+     * 
+     * @return whether any events were printed
      */
-    public void printOngoingEvents() {
+    public boolean printOngoingEvents() {
+        boolean found = false;
+
         for (int i = 0; i < events.size(); i++) {
             Event event = events.get(i);
 
-            if (main.CommunityCentreRunner.getTimeManager().isOngoing(event.getTimeBlock())) {
+            if (!event.hasCompleted()) {
+                found = true;
                 System.out.println(event);
                 System.out.println(); // blank line
             }
         }
+
+        return found;
     }
 
     /**

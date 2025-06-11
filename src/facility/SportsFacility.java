@@ -39,7 +39,7 @@ public class SportsFacility extends Facility {
 
     // converts object to string
     public String toString() {
-        return "Sports Facility" + ((Facility) this).toString() + String.format(" | rating: %.1f/10", rating);
+        return "Sports Facility" + super.toString() + String.format(" | rating: %.1f/10", rating);
     }
 
     // accessor for rating

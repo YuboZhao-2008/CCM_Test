@@ -1,15 +1,30 @@
+/**
+ * CommunityCentreRunner
+ * runs and implements all features of TimeManager, EventManager, MemberManager, FacilityManager,
+ * and StaffManager, in a GUI for user interaction.
+ *
+ * @author Mansour Abdelsalam, Sean Yang, Yubo Zhao
+ * @version 1.1
+ * @since 2025-06-11
+ */
+
 package main;
 
 import static java.util.Collections.newSetFromMap;
 
+// import folders
 import event.*;
 import facility.*;
 import member.*;
 import staff.*;
 import time.*;
 
+// import enums
 import member.Member.PlanType;
 import time.TimeBlock.Month;
+
+// import scanner
+import java.util.Scanner;
 
 public class CommunityCentreRunner {
     // file paths
@@ -78,14 +93,138 @@ public class CommunityCentreRunner {
         eventManager.cancelEvent(0);
 
 System.out.println(eventManager.searchById(0));*/
+
+
+        // temp
+        SportsFacility facility1 = new SportsFacility(101, 50, 10);
+        facilityManager.addFacility(facility1);
+
+
+
+        // variables
+        TimeBlock currentTime = timeManager.getCurrentTime(); // initialize current time at beginning of program
+        Scanner scan = new Scanner(System.in);
+
         // separator for formatting
-        String separator = "------------------------------------------";
+        String separator = "------------------------------------------/------------------------------------------";
+        String userInput = "";
+        int choice = -1;
         
+        // GUI main loop ----
         System.out.println(separator);
         System.out.println("It is currently "+timeManager.getCurrentTime()+".");
         System.out.println(separator);
         System.out.println(); // blank line
         
+        // show events occuring soon
+        System.out.println("Events occuring within this month:");
+        TimeBlock next_month = new TimeBlock(currentTime.getYear(), TimeBlock.nextMonth(currentTime.getMonth()), currentTime.getDay());
+        if (!eventManager.printFutureEventsBefore(next_month)) {
+            System.out.println("No events.");
+        }
+        System.out.println(); // blank line
+        System.out.println("Events ongoing now:");
+        if (!eventManager.printOngoingEvents()) {
+            System.out.println("No events.");
+        }
+        System.out.println(); // blank line
 
+        System.out.println(separator);
+        System.out.println(); // blank line
+        System.out.println("What would you like to do?");
+        System.out.println("(1) List");
+        System.out.println("(2) Search");
+        System.out.println("(3) Create");
+        System.out.println("(4) Modify");
+        System.out.println("(5) Delete");
+        System.out.println("(6) Advance Time");
+        System.out.print(" > ");
+        // input
+        userInput = scan.nextLine();
+        // validate the input to a choice
+        choice = Integer.parseInt(userInput);
+        
+        System.out.println(); // blank line
+        System.out.println(separator);
+        System.out.println(); // blank line
+
+        // if valid input
+        switch (choice) {
+            case 1:
+                facilityManager.printAllFacilities();
+
+                System.out.println("What would you like to view?");
+                // all options for listing
+                // list facilities
+                System.out.println("(1) Facilities by ID");
+                System.out.println("(2) Sports Facilities by Rating");
+                System.out.println("(3) Meeting Faciltiies by Size");
+                System.out.println("(4) Facilties by Cost to Rent");
+                System.out.println("-");
+                
+                // list events
+                System.out.println("(5) Events by ID");
+                System.out.println("(6) Events in Chronological Order");
+                System.out.println("(7) Future Events");
+                System.out.println("(8) Past Events");
+                System.out.println("-");
+
+                // list members
+                System.out.println("(9) Members by ID");
+                System.out.println("(10) Members by Alphabet");
+                System.out.println("(12) Members by Bill");
+                System.out.println("-");
+
+                // list staff
+                System.out.println("(13) Staff by ID");
+                System.out.println("(14) Staff by ");
+                // back
+                break;
+            case 2:
+                System.out.println("What would you like to search for?");
+                // all options for searching
+                // search facilities
+                // search events
+                // search members
+                // search staff
+                // back
+                break;
+            case 3:
+                System.out.println("What would you like to create?");
+                // all options for creating
+                // create facilities
+                // create events
+                // create members
+                // create staff
+                // back
+                break;
+            case 4:
+                System.out.println("What would you like to modify?");
+                // all options for modifying
+                // modify facilities
+                // modify events
+                // modify members
+                // modify staff
+                // back
+                break;
+            case 5:
+                System.out.println("What would you like to delete?");
+                // all options for deleting
+                // delete facilities
+                // delete events
+                // delete members
+                // delete staff
+                // back
+                break;
+            case 6:
+                System.out.println("What time would you like to advance to?");
+                // options to advance time
+                // advance time by specified hours
+                // advance time by an hour
+                // advance time to a date
+                break;
+        }
+
+        scan.close();
     }
 }

@@ -32,7 +32,6 @@ public class TimeManager {
      * @param hours a double, the number of hours
      */
     public void advanceHours(double hours) {
-        TimeBlock oldTime = new TimeBlock(time, time.getStartHour(), time.getStartHour()-time.getEndHour()); // save old time for weeks passed comparison
         double newHour = time.getEndHour() + hours;
 
         while (newHour >= 24) {
@@ -45,6 +44,8 @@ public class TimeManager {
             if (prev_month != time.getMonth()) {
                 // bill monthly members
                 main.CommunityCentreRunner.getMemberManager().billMonthlyMembers();
+                // pay part-time staff
+                main.CommunityCentreRunner.getStaffManager().payPartTimeStaff();
             }
             if (prev_year != time.getYear()) {
                 // bill yearly members
@@ -55,14 +56,6 @@ public class TimeManager {
         }
 
         time = new TimeBlock(time, newHour, 0);
-
-        double hoursPassed = oldTime.hoursUntil(time);
-
-        while (hoursPassed >= 168) { // 168 hours in one week
-            hoursPassed -= 168;
-            // pay part-time staff
-            main.CommunityCentreRunner.getStaffManager().payPartTimeStaff();
-        }
 
         main.CommunityCentreRunner.getEventManager().advanceTime(time);
     }
