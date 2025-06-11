@@ -10,11 +10,10 @@
 
 package main;
 
-// import scanner
-import event.EventManager;
-import facility.Facility;
-import facility.FacilityManager;
 import java.util.Scanner;
+
+import event.EventManager;
+import facility.FacilityManager;
 import member.Member;
 import member.MemberManager;
 import staff.StaffManager;
@@ -39,13 +38,7 @@ public class CommunityCentreRunner {
     public static Scanner scan = new Scanner(System.in);
 
     // separator for formatting
-    public static final String separator = "------------------------------------------/------------------------------------------";
-
-    // scanner
-    public static Scanner scan = new Scanner(System.in);
-
-    // separator for formatting
-    public static final String separator = "------------------------------------------/------------------------------------------";
+    public static final String SEPARATOR = "------------------------------------------/------------------------------------------";
 
     // accessor methods for managers
     public static MemberManager getMemberManager() {
@@ -84,7 +77,7 @@ public class CommunityCentreRunner {
         }
 
         System.out.println(); // blank line
-        System.out.println(separator);
+        System.out.println(SEPARATOR);
         System.out.println(); // blank line
 
         return choice;
@@ -110,7 +103,7 @@ public class CommunityCentreRunner {
         }
 
         System.out.println(); // blank line
-        System.out.println(separator);
+        System.out.println(SEPARATOR);
         System.out.println(); // blank line
 
         return choice;
@@ -123,16 +116,17 @@ public class CommunityCentreRunner {
         // separator for formatting
         String userInput = "";
         int choice = -1;
-        
+
         // GUI main loop ----
-        System.out.println(separator);
+        System.out.println(SEPARATOR);
         System.out.println("It is currently " + timeManager.getCurrentTime() + ".");
-        System.out.println(separator);
+        System.out.println(SEPARATOR);
         System.out.println(); // blank line
-        
+
         // show events occuring soon
         System.out.println("Events occuring within this month:");
-        TimeBlock next_month = new TimeBlock(currentTime.getYear(), TimeBlock.nextMonth(currentTime.getMonth()), currentTime.getDay());
+        TimeBlock next_month = new TimeBlock(currentTime.getYear(), TimeBlock.nextMonth(currentTime.getMonth()),
+                currentTime.getDay());
         if (!eventManager.printFutureEventsBefore(next_month)) {
             System.out.println("No events.");
         }
@@ -143,7 +137,7 @@ public class CommunityCentreRunner {
         }
         System.out.println(); // blank line
 
-        System.out.println(separator);
+        System.out.println(SEPARATOR);
         System.out.println(); // blank line
         System.out.println("What would you like to do?");
         System.out.println("(1) List");
@@ -152,12 +146,12 @@ public class CommunityCentreRunner {
         System.out.println("(4) Modify");
         System.out.println("(5) Delete");
         System.out.println("(6) Advance Time");
-        
+
         choice = menuInputValidation(6);
 
         // if valid input
         switch (choice) {
-            case 1:
+            case 1 -> {
                 facilityManager.printAllFacilities();
 
                 System.out.println("What would you like to view?");
@@ -168,7 +162,7 @@ public class CommunityCentreRunner {
                 System.out.println("(3) Meeting Faciltiies by Size");
                 System.out.println("(4) Facilties by Cost to Rent");
                 System.out.println("-");
-                
+
                 // list events
                 System.out.println("(5) Events by ID");
                 System.out.println("(6) Events in Chronological Order");
@@ -179,13 +173,13 @@ public class CommunityCentreRunner {
                 // list members
                 System.out.println("(9) Members by ID");
                 System.out.println("(10) Members by Alphabet");
-                System.out.println("(12) Members by Bill");
+                System.out.println("(11) Members by Bill");
                 System.out.println("-");
 
                 // list staff
-                System.out.println("(13) Staff by ID");
-                System.out.println("(14) Staff by Alphabet");
-                System.out.println("(15) Full-Time Staff by Pay");
+                System.out.println("(12) Staff by ID");
+                System.out.println("(13) Staff by Alphabet");
+                System.out.println("(14) Full-Time Staff by Pay");
                 System.out.println("-");
 
                 // back
@@ -194,18 +188,84 @@ public class CommunityCentreRunner {
                 int viewChoice = menuInputValidation(15);
 
                 switch (viewChoice) {
-                    case 1:
-                        for (Facility facility : facilityManagerl.)
-                        break;
-                    case 2:
-                        
-                }
+                    case 1 -> {
+                        if (!facilityManager.printAllFacilities()) {
+                            System.out.println("No facilities");
+                        }
+                    }
+                    case 2 -> {
+                        if (!facilityManager.printSportsFacilitiesByRating()) {
+                            System.out.println("No sports facilities");
+                        }
+                    }
+                    case 3 -> {
+                        if (!facilityManager.printMeetingFacilitiesBySize()) {
+                            System.out.println("No meeting facilities");
+                        }
+                    }
+                    case 4 -> {
+                        if (!facilityManager.printFacilitiesByCost()) {
+                            System.out.println("No facilities");
+                        }
+                    }
+                    case 5 -> {
+                        if (!eventManager.printAllEvents()) {
+                            System.out.println("No events");
+                        }
+                    }
+                    case 6 -> {
+                        if (!eventManager.printEventsChronologically()) {
+                            System.out.println("No events");
+                        }
+                    }
+                    case 7 -> {
+                        if (!eventManager.printFutureEvents()) {
+                            System.out.println("No future events");
+                        }
+                    }
+                    case 8 -> {
+                        if (!eventManager.printPastEvents()) {
+                            System.out.println("No past events");
+                        }
+                    }
+                    case 9 -> {
+                        if (!memberManager.printAllMembers()) {
+                            System.out.println("No members");
+                        }
+                    }
+                    case 10 -> {
+                        if (!memberManager.printAlphabetical()) {
+                            System.out.println("No members");
+                        }
+                    }
+                    case 11 -> {
+                        if (!memberManager.printAllBills()) {
+                            System.out.println("No bills");
 
-                break;
-            case 2:
+                        }
+                    }
+                    case 12 -> {
+                        if (!staffManager.printAllStaff()) {
+                            System.out.println("No members");
+                        }
+                    }
+                    case 13 -> {
+                        if (!staffManager.printAlphabetical()) {
+                            System.out.println("No staff");
+                        }
+                    }
+                    case 14 -> {
+                        if (!staffManager.printAllPayrolls()) {
+                            System.out.println("No payrolls");
+
+                        }
+                    }
+                }
+            }
+
+            case 2 -> {
                 System.out.println("What would you like to search for?");
                 // all options for searching
-                
                 // search facilities
                 System.out.println("(1) Facility using ID");
                 System.out.println("(2) Facility using Room Num.");
@@ -213,39 +273,32 @@ public class CommunityCentreRunner {
                 System.out.println("(4) Facilities Available using Time");
                 System.out.println("(5) Facilties Available using Time above Capacity");
                 System.out.println("-");
-                
                 // search events
                 System.out.println("(6) Event using ID");
                 System.out.println("(7) Events using Time");
                 System.out.println("-");
-
                 // search members
                 System.out.println("(8) Members using ID");
                 System.out.println("(9) Members using Name");
-   
                 // search staff
                 System.out.println("(10) Members ");
                 // back
-                break;
-            case 3:
-                System.out.println("What would you like to create?");
-                // all options for creating
-                // create facilities
-                // create events
-                // create members
-                // create staff
-                // back
-                break;
-            case 4:
-                System.out.println("What would you like to modify?");
-                // all options for modifying
-                // modify facilities
-                // modify events
-                // modify members
-                // modify staff
-                // back
-                break;
-            case 5:
+            }
+            case 3 -> System.out.println("What would you like to create?");
+            // all options for creating
+            // create facilities
+            // create events
+            // create members
+            // create staff
+            // back
+            case 4 -> System.out.println("What would you like to modify?");
+            // all options for modifying
+            // modify facilities
+            // modify events
+            // modify members
+            // modify staff
+            // back
+            case 5 -> {
                 System.out.println("What would you like to delete?");
                 System.out.println("1. Delete Member");
                 System.out.println("2. Delete Staff");
@@ -253,8 +306,7 @@ public class CommunityCentreRunner {
                 System.out.println("4. Delete Event");
                 int deleteChoice = scan.nextInt();
                 scan.nextLine();
-                
-                switch(deleteChoice) {
+                switch (deleteChoice) {
                     case 1:
                         System.out.print("Enter the member ID to delete: ");
                         int memberId = scan.nextInt();
@@ -271,7 +323,6 @@ public class CommunityCentreRunner {
                     case 2:
                         System.out.print("Enter the staff ID to delete: ");
                         int staffId = scan.nextInt();
-                        scan.nextLine
                 }
                 // all options for deleting
                 // delete facilities
@@ -279,14 +330,12 @@ public class CommunityCentreRunner {
                 // delete members
                 // delete staff
                 // back
-                break;
-            case 6:
-                System.out.println("What time would you like to advance to?");
-                // options to advance time
-                // advance time by specified hours
-                // advance time by an hour
-                // advance time to a date
-                break;
+            }
+            case 6 -> System.out.println("What time would you like to advance to?");
+            // options to advance time
+            // advance time by specified hours
+            // advance time by an hour
+            // advance time to a date
         }
         scan.close();
     }

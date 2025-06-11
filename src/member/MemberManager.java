@@ -1,7 +1,13 @@
 package member;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages a collection of Member objects: loading from file,
@@ -15,15 +21,15 @@ import java.io.*;
  * <age>
  * <name>
  * <planType>
- *   If adult:
- *     <contactPhone>
- *     <address>
- *     <billAmount>
- *     <billPaid>
- *     <num children>
- *     <child id>...
- *   If youth:
- *     <guardian id>
+ * If adult:
+ * <contactPhone>
+ * <address>
+ * <billAmount>
+ * <billPaid>
+ * <num children>
+ * <child id>...
+ * If youth:
+ * <guardian id>
  *
  * @author Yubo-Zhao
  * @version 1.0
@@ -35,7 +41,8 @@ public class MemberManager {
      */
     public ArrayList<Member> members = new ArrayList<>();
 
-    public MemberManager() {}
+    public MemberManager() {
+    }
 
     /**
      * Constructs a MemberManager and immediately loads member data
@@ -45,25 +52,25 @@ public class MemberManager {
      */
     public MemberManager(String filename) {
         members = new ArrayList<>();
-        Map<Integer, Member> idToMember      = new HashMap<>();
-        Map<Integer, Integer> youthGuardian  = new HashMap<>();
+        Map<Integer, Member> idToMember = new HashMap<>();
+        Map<Integer, Integer> youthGuardian = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             int numMembers = Integer.parseInt(br.readLine().trim());
 
             for (int i = 0; i < numMembers; i++) {
-                int id           = Integer.parseInt(br.readLine().trim());
-                String type      = br.readLine().trim().toLowerCase();
-                int age          = Integer.parseInt(br.readLine().trim());
-                String name      = br.readLine().trim();
-                Member.PlanType pType   = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
+                int id = Integer.parseInt(br.readLine().trim());
+                String type = br.readLine().trim().toLowerCase();
+                int age = Integer.parseInt(br.readLine().trim());
+                String name = br.readLine().trim();
+                Member.PlanType pType = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
 
                 if (type.equals("adult")) {
-                    String phone          = br.readLine().trim();
-                    String address        = br.readLine().trim();
-                    double totalAmount    = Double.parseDouble(br.readLine().trim());
-                    double paidAmount     = Double.parseDouble(br.readLine().trim());
-                    int numChildren       = Integer.parseInt(br.readLine().trim());
+                    String phone = br.readLine().trim();
+                    String address = br.readLine().trim();
+                    double totalAmount = Double.parseDouble(br.readLine().trim());
+                    double paidAmount = Double.parseDouble(br.readLine().trim());
+                    int numChildren = Integer.parseInt(br.readLine().trim());
 
                     List<Integer> childIds = new ArrayList<>();
                     for (int j = 0; j < numChildren; j++) {
@@ -75,8 +82,7 @@ public class MemberManager {
                     members.add(adult);
                     idToMember.put(id, adult);
                     // you can still wire children if you stored their IDs elsewhere
-                }
-                else {  // youth
+                } else { // youth
                     int guardianId = Integer.parseInt(br.readLine().trim());
                     YouthMember youth = new YouthMember(age, name, pType, null);
                     youth.setId(id);
@@ -88,8 +94,8 @@ public class MemberManager {
 
             // now hook up youth to guardian and guardian to children
             for (var e : youthGuardian.entrySet()) {
-                YouthMember  y = (YouthMember) idToMember.get(e.getKey());
-                AdultMember  a = (AdultMember) idToMember.get(e.getValue());
+                YouthMember y = (YouthMember) idToMember.get(e.getKey());
+                AdultMember a = (AdultMember) idToMember.get(e.getValue());
                 y.setGuardian(a);
                 a.addChild(y);
             }
@@ -143,7 +149,7 @@ public class MemberManager {
         if (low > high) {
             return null;
         }
-        int mid   = (low + high) / 2;
+        int mid = (low + high) / 2;
         int midId = members.get(mid).getId();
 
         if (midId == id) {
@@ -157,17 +163,31 @@ public class MemberManager {
 
     /**
      * Prints all members' bills to standard output.
+     * 
+     * @return whether anything was printed
      */
-    public void printAllBills() {
+    public boolean printAllBills() {
+        if (members.isEmpty()) {
+            return false;
+        }
+
         for (Member m : members) {
             m.printBill();
         }
+
+        return true;
     }
 
     /**
      * Prints all member names in alphabetical order.
+     * 
+     * @return whether anythign was printed
      */
-    public void printAlphabetical() {
+    public boolean printAlphabetical() {
+        if (members.isEmpty()) {
+            return false;
+        }
+
         ArrayList<String> sorted = new ArrayList<>();
         for (Member m : members) {
             sorted.add(m.getName());
@@ -176,13 +196,34 @@ public class MemberManager {
         for (String name : sorted) {
             System.out.println(name);
         }
+
+        return true;
     }
 
     /**
-     * Searches for all members whose name matches the given string (case-insensitive).
+     * Prints all member names in alphabetical order.
+     * 
+     * @return whether anything was printed
+     */
+    public boolean printAllMembers() {
+        if (members.isEmpty()) {
+            return false;
+        }
+
+        for (Member member : members) {
+            System.out.println(member);
+        }
+
+        return true;
+    }
+
+    /**
+     * Searches for all members whose name matches the given string
+     * (case-insensitive).
      *
      * @param name the full name to search for
-     * @return a list of Member objects whose names equal the search term; empty if none found
+     * @return a list of Member objects whose names equal the search term; empty if
+     *         none found
      */
     public List<Member> searchByName(String name) {
         List<Member> matches = new ArrayList<>();

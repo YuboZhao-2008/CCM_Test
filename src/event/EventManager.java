@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import facility.Facility;
 import member.Member;
@@ -86,7 +87,8 @@ public class EventManager {
 
                 int numParticipants = Integer.parseInt(reader.readLine());
                 for (int k = 0; k < numParticipants; k++) {
-                    Member member = main.CommunityCentreRunner.getMemberManager().searchById(Integer.parseInt(reader.readLine()));
+                    Member member = main.CommunityCentreRunner.getMemberManager()
+                            .searchById(Integer.parseInt(reader.readLine()));
                     event.registerParticipant(member);
                 }
 
@@ -138,7 +140,7 @@ public class EventManager {
                 writer.write("" + event.getTimeBlock().getYear() + "\n");
                 writer.write("" + event.getTimeBlock().getStartHour() + "\n");
                 writer.write("" + event.getTimeBlock().duration() + "\n");
-              
+
                 if (event.getHost() != null) {
                     writer.write("" + event.getHost().getId() + "\n");
                 } else {
@@ -300,6 +302,26 @@ public class EventManager {
     }
 
     /**
+     * prints all events chronologically
+     * 
+     * @return whether any events were printed
+     */
+    public boolean printEventsChronologically() {
+        if (events.isEmpty()) {
+            return false;
+        }
+
+        ArrayList<Event> sorted = new ArrayList<>(events);
+        sorted.sort(Comparator.comparingDouble(Event::hoursSinceEpoch));
+
+        for (Event event : sorted) {
+            System.out.println(event);
+        }
+
+        return true;
+    }
+
+    /**
      * advanceTime
      * advances the time of all events within EventManager to a certain timeblock.
      * Is called within TimeManager.
@@ -382,5 +404,10 @@ public class EventManager {
             staff.getShifts().cancelEvent(event);
         }
         return true;
+    }
+
+    // accessor for events
+    public ArrayList<Event> getEvents() {
+        return events;
     }
 }

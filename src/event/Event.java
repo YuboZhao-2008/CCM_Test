@@ -108,7 +108,8 @@ public abstract class Event {
      * @return
      */
     public boolean occursBefore(TimeBlock time) {
-            return (!hasCompleted() && time.compareToStart(getTimeBlock()) < 0 && !main.CommunityCentreRunner.getTimeManager().isOngoing(getTimeBlock()));
+        return (!hasCompleted() && time.compareToStart(getTimeBlock()) < 0
+                && !main.CommunityCentreRunner.getTimeManager().isOngoing(getTimeBlock()));
     }
 
     /**
@@ -185,5 +186,10 @@ public abstract class Event {
                 " | time: " + timeBlock +
                 " | host name: " + host.getName();
         return s;
+    }
+
+    // accessor for start hour
+    public double hoursSinceEpoch() {
+        return timeBlock.hoursSinceEpoch();
     }
 }

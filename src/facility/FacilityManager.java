@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+
 import time.TimeBlock;
 
 public class FacilityManager {
@@ -124,11 +125,21 @@ public class FacilityManager {
         return null;
     }
 
-    // prints all facilities to standard output
-    public void printAllFacilities() {
+    /**
+     * prints all facilities
+     * 
+     * @return whether anything was printed
+     */
+    public boolean printAllFacilities() {
+        if (facilities.isEmpty()) {
+            return true;
+        }
+
         for (Facility facility : facilities) {
             System.out.println(facility);
         }
+
+        return false;
     }
 
     /**
@@ -138,7 +149,7 @@ public class FacilityManager {
      * @return an ArrayList of available facilities
      */
     public ArrayList<Facility> availableFacilities(TimeBlock timeBlock) {
-        ArrayList<Facility> avail = new ArrayList<Facility>();
+        ArrayList<Facility> avail = new ArrayList<>();
 
         for (Facility facility : facilities) {
             if (facility.getBookings().isBlockFree(timeBlock)) {
@@ -150,11 +161,11 @@ public class FacilityManager {
     }
 
     /**
-     * sorts sports facilities by rating (highest first)
+     * prints sports facilities by rating (highest first)
      * 
-     * @return an ArrayList of sports facilities
+     * @return whether anything was printed
      */
-    public ArrayList<SportsFacility> getSportsFacilitiesByRating() {
+    public boolean printSportsFacilitiesByRating() {
         ArrayList<SportsFacility> sportsFacilities = new ArrayList<>();
 
         for (Facility facility : facilities) {
@@ -163,17 +174,44 @@ public class FacilityManager {
             }
         }
 
+        if (sportsFacilities.isEmpty()) {
+            return false;
+        }
+
         sportsFacilities.sort(Comparator.comparingDouble(SportsFacility::getRating).reversed());
 
-        return sportsFacilities;
+        for (SportsFacility sportsFacility : sportsFacilities) {
+            System.out.println(sportsFacility);
+        }
+
+        return true;
     }
 
     /**
-     * sorts meeting facilities by size (highest first)
+     * prints facilities by cost (cheapest first)
      * 
-     * @return an ArrayList of meeting facilities
+     * @return whether anything was printed
      */
-    public ArrayList<MeetingFacility> getMeetingFacilitiesBySize() {
+    public boolean printFacilitiesByCost() {
+        if (facilities.isEmpty()) {
+            return false;
+        }
+
+        ArrayList<Facility> sorted = new ArrayList<>(facilities);
+        sorted.sort(Comparator.comparingDouble(Facility::calcCostOneHour));
+        for (Facility facility : sorted) {
+            System.out.println(facility);
+        }
+
+        return true;
+    }
+
+    /**
+     * prints meeting facilities by size (largest first)
+     * 
+     * @return whether anything was printed
+     */
+    public boolean printMeetingFacilitiesBySize() {
         ArrayList<MeetingFacility> meetingFacilities = new ArrayList<>();
 
         for (Facility facility : facilities) {
@@ -182,9 +220,17 @@ public class FacilityManager {
             }
         }
 
+        if (meetingFacilities.isEmpty()) {
+            return false;
+        }
+
         meetingFacilities.sort(Comparator.comparingDouble(MeetingFacility::getSize).reversed());
 
-        return meetingFacilities;
+        for (MeetingFacility meetingFacility : meetingFacilities) {
+            System.out.println(meetingFacility);
+        }
+
+        return true;
     }
 
     /**

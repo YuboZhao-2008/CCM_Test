@@ -149,12 +149,37 @@ public class StaffManager {
     }
 
     /**
-     * Prints the payroll information for all staff to standard output.
+     * Prints all staff
+     * 
+     * @return whether anything was printed
      */
-    public void printAllPayrolls() {
+    public boolean printAllStaff() {
+        if (staffs.isEmpty()) {
+            return false;
+        }
+
+        for (Staff s : staffs) {
+            System.out.println(s);
+        }
+
+        return true;
+    }
+
+    /**
+     * Prints the payroll information for all staff to standard output.
+     * 
+     * @return whether anything was printed
+     */
+    public boolean printAllPayrolls() {
+        if (staffs.isEmpty()) {
+            return false;
+        }
+
         for (Staff s : staffs) {
             s.printPayroll();
         }
+
+        return true;
     }
 
     /**
@@ -175,8 +200,14 @@ public class StaffManager {
 
     /**
      * Prints all staff names in alphabetical order.
+     * 
+     * @return whether anything was printed
      */
-    public void printAlphabetical() {
+    public boolean printAlphabetical() {
+        if (staffs.isEmpty()) {
+            return false;
+        }
+
         ArrayList<String> sortedNames = new ArrayList<>();
         for (Staff s : staffs) {
             sortedNames.add(s.getName());
@@ -185,6 +216,8 @@ public class StaffManager {
         for (String name : sortedNames) {
             System.out.println(name);
         }
+
+        return true;
     }
 
     /**

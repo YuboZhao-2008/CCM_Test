@@ -318,6 +318,16 @@ public class TimeBlock {
     }
 
     /**
+     * calculates the amount of time between the start of this time block and unix
+     * epoch
+     * 
+     * @return a double, the number of hours
+     */
+    public double hoursSinceEpoch() {
+        return hoursBeforeStart();
+    }
+
+    /**
      * checks whether two time blocks conflict each other
      * 
      * @param other the other TimeBlock
