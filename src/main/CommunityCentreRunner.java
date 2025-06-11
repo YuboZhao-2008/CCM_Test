@@ -17,6 +17,7 @@ import java.util.Scanner;
 // import folders
 import event.EventManager;
 import facility.FacilityManager;
+import member.Member.PlanType;
 import member.MemberManager;
 import staff.StaffManager;
 import time.TimeBlock;
@@ -112,7 +113,6 @@ public class CommunityCentreRunner {
     }
 
     public static TimeBlock dateInputValidation() {
-        boolean valid = false;
         int year = -1;
         Month month = null;
         int day = 0;
@@ -166,7 +166,7 @@ public class CommunityCentreRunner {
             }
         }
 
-        TimeBlock date = new TimeBlock(year, month, day);
+        TimeBlock date = new TimeBlock(year, month, day, 0);
         if (!date.isValid()) {
             System.out.println("Invalid date. Please try again.");
             return dateInputValidation();
@@ -381,12 +381,23 @@ public class CommunityCentreRunner {
 
             case 3 -> {
                 System.out.println("What would you like to create?");
-                // create facilities
-                // create events
-                // create members
-                // create staff
-                // back
+                System.out.println("(1) Create Member");
+                System.out.println("(2) Create Staff");
+                System.out.println("(3) Create Facility");
+                System.out.println("-");
                 System.out.println("(0) Back");
+                System.out.println("(0) Back");
+                int createChoice = menuInputValidation(3);
+
+                switch (createChoice) {
+                    case 1 -> {
+                        int age;
+                        String name;
+                        PlanType planType;
+
+                        System.out.println();
+                    }
+                }
             }
 
             case 4 -> {
@@ -484,7 +495,7 @@ public class CommunityCentreRunner {
                     }
                     case 3 -> {
                         TimeBlock dateInput = dateInputValidation();
-                        timeManager.advanceToDay(dateInput.getYear(), dateInput.getMonth(), dateInput.getDay());
+                        timeManager.advanceToTimeBlock(dateInput);
                         System.out.println("Time set to " + timeManager.getCurrentTime() + ".");
                     }
                     case 0 -> System.out.println("Returning to main menu.");

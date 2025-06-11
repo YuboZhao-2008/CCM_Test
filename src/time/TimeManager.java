@@ -102,6 +102,8 @@ public class TimeManager {
                 main.CommunityCentreRunner.getMemberManager().billAnnualMembers();
                 // pay full-time staff
                 main.CommunityCentreRunner.getStaffManager().payFullTimeStaff();
+                // age members
+                main.CommunityCentreRunner.getMemberManager().ageMembers();
             }
         }
 
@@ -118,14 +120,13 @@ public class TimeManager {
     }
 
     /**
-     * advances the time until a specified date at 12:00 AM
+     * advances the time until the start of a specified time block
      * 
-     * @param year
-     * @param month
-     * @param day
+     * @param timeBlock
      */
-    public void advanceToDay(int year, Month month, int day) {
-        time = new TimeBlock(year, month, day, 0);
+    public void advanceToTimeBlock(TimeBlock timeBlock) {
+        TimeBlock timeBlock2 = new TimeBlock(timeBlock, timeBlock.getStartHour(), 0);
+        advanceHours(time.hoursUntil(timeBlock2));
     }
 
     /**

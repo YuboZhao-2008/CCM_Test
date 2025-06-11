@@ -339,6 +339,26 @@ public class MemberManager {
         }
     }
 
+    /**
+     * ages all members by one year
+     */
+    public void ageMembers() {
+        for (Member member : members) {
+            if (member instanceof AdultMember) {
+                member.age++;
+            } else if (member instanceof YouthMember youth) {
+                if (++member.age >= Member.ADULT_AGE) {
+                    AdultMember guardian = youth.getGuardian();
+                    AdultMember adult = new AdultMember(member.age, member.name, member.planType,
+                            guardian.getContactPhone(), guardian.getAddress());
+                    members.remove(youth);
+                    guardian.getChildren().remove(youth);
+                    members.add(adult);
+                }
+            }
+        }
+    }
+
     public ArrayList<Member> getMembers() {
         return members;
     }
