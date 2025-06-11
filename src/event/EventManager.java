@@ -86,7 +86,8 @@ public class EventManager {
 
                 int numParticipants = Integer.parseInt(reader.readLine());
                 for (int k = 0; k < numParticipants; k++) {
-                    Member member = main.CommunityCentreRunner.getMemberManager().searchById(Integer.parseInt(reader.readLine()));
+                    Member member = main.CommunityCentreRunner.getMemberManager()
+                            .searchById(Integer.parseInt(reader.readLine()));
                     event.registerParticipant(member);
                 }
 
@@ -138,7 +139,7 @@ public class EventManager {
                 writer.write("" + event.getTimeBlock().getYear() + "\n");
                 writer.write("" + event.getTimeBlock().getStartHour() + "\n");
                 writer.write("" + event.getTimeBlock().duration() + "\n");
-              
+
                 if (event.getHost() != null) {
                     writer.write("" + event.getHost().getId() + "\n");
                 } else {
@@ -170,6 +171,13 @@ public class EventManager {
     public void book(Event event) {
         event.setId(generateId());
         events.add(event);
+    }
+
+    /**
+     * Removes the given event from the EventManager without cleanup.
+     */
+    public boolean removeEvent(Event event) {
+        return events.remove(event);
     }
 
     /**
