@@ -1,10 +1,11 @@
 /**
- * Yubo
+ * Facility implements an abstract facility and associated methods
+ *
+ * @author Sean Yang
+ * @since June 9, 2025
  */
 
-package staff;
-
-import static java.util.Collections.*;
+package facility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,295 +13,167 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import time.TimeBlock;
 
-/**
- * Manages a collection of Staff members: loading from file, adding new staff,
- * searching by ID, printing payrolls, finding available staff for a timeslot,
- * and printing names alphabetically.
- *
- * @author Yubo-Zhao
- * @version 1.0
- * @since 2025-06-09
- */
-public class StaffManager {
-    /**
-     * The list of all staff members managed by this class.
-     */
-    private ArrayList<Staff> staffs;
+public class FacilityManager {
+    private ArrayList<Facility> facilities;
 
-    /**
-     * Default constructor for StaffManager.
-     */
-    public StaffManager() {
-        staffs = new ArrayList<>();
+    // constructor for blank facility manager
+    public FacilityManager() {
+        facilities = new ArrayList<Facility>();
     }
 
     /**
-     * Constructs a StaffManager and loads staff data from a text file.
-     * The file format is:
-     * <num staff>
-     * <id>
-     * <type> // "fulltime" or "parttime"
-     * <name>
-     * [fulltime only] <yearsWorked>
-     * [parttime only] <hoursWorked>
-     * <hourlySalary>
-     * <maxWeeklyHours>
-     *
-     * @param filename the path to the staff data file
+     * creates a facility manager from a data file
+     * 
+     * @param fileName
      */
+    public FacilityManager(String fileName) {
+        facilities = new ArrayList<Facility>();
 
-    public StaffManager(String filename) {
-        staffs = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            int numStaff = Integer.parseInt(br.readLine().trim());
+            int numFacilities = Integer.parseInt(br.readLine());
 
-            for (int i = 0; i < numStaff; i++) {
-                int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim().toLowerCase();
-                String name = br.readLine().trim();
+            for (int i = 0; i < numFacilities; i++) {
+                int id = Integer.parseInt(br.readLine());
+                String type = br.readLine();
+                int roomNum = Integer.parseInt(br.readLine());
+                int maxCapacity = Integer.parseInt(br.readLine());
+                double ratingOrSize = Double.parseDouble(br.readLine());
 
-                if (type.equals("fulltime")) {
-                    int yearsWorked = Integer.parseInt(br.readLine().trim());
-                    FullTimeStaff full = new FullTimeStaff(name, yearsWorked);
-                    full.setId(id);
-                    staffs.add(full);
+                if (type.equals("meeting")) {
+                    facilities.add(new MeetingFacility(roomNum, maxCapacity, ratingOrSize));
+                    facilities.getLast().setId(id);
+                }
 
-                } else if (type.equals("parttime")) {
-                    int hoursWorked = Integer.parseInt(br.readLine().trim());
-                    double hourlyRate = Double.parseDouble(br.readLine().trim());
-                    int maxWeeklyHours = Integer.parseInt(br.readLine().trim());
-                    PartTimeStaff part = new PartTimeStaff(name, hoursWorked, hourlyRate, maxWeeklyHours);
-                    part.setId(id);
-                    staffs.add(part);
+                if (type.equals("sports")) {
+                    facilities.add(new SportsFacility(roomNum, maxCapacity, ratingOrSize));
+                    facilities.getLast().setId(id);
                 }
             }
 
             br.close();
         } catch (IOException iox) {
-            System.out.println("Error reading staff file: " + iox.getMessage());
+            System.out.println("Error reading from file");
         }
     }
 
     /**
-     * saves staff to file
+     * saves the facilities to a file
      * 
-     * @param filepath
+     * @param fileName the file to save to
      */
-    public void save(String filepath) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
-            bw.write(staffs.size() + "\n");
+    public void save(String fileName) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
 
-            for (Staff staff : staffs) {
-                bw.write(staff.id + "\n");
-                if (staff instanceof FullTimeStaff) {
-                    bw.write("fulltime\n");
+            bw.write(facilities.size() + "\n");
+
+            for (Facility facility : facilities) {
+                bw.write(facility.getId() + "\n");
+                double ratingOrSize;
+                if (facility instanceof MeetingFacility meetingFacility) {
+                    bw.write("meeting\n");
+                    ratingOrSize = meetingFacility.getSize();
                 } else {
-                    bw.write("parttime\n");
+                    bw.write("sports\n");
+                    ratingOrSize = ((SportsFacility) facility).getRating();
                 }
-                bw.write(staff.name + "\n");
-
-                if (staff instanceof FullTimeStaff fts) {
-                    bw.write(fts.getYearsWorked() + "\n");
-                } else if (staff instanceof PartTimeStaff pts) {
-                    bw.write(pts.getHoursWorked() + "\n");
-                    bw.write(pts.getHourlySalary() + "\n");
-                    bw.write(pts.getMaxMonthlyHours() + "\n");
-                }
+                bw.write(facility.getRoomNum() + "\n");
+                bw.write(facility.getMaxCapacity() + "\n");
+                bw.write(ratingOrSize + "\n");
             }
 
             bw.close();
         } catch (IOException iox) {
-            System.out.println("Error writing to staff file: " + iox.getMessage());
+            System.out.println("Error writing to file");
         }
     }
 
     /**
-     * Adds a new staff member, assigning them a unique ID.
-     *
-     * @param staff the Staff object to add
-     */
-    public void addStaff(Staff staff) {
-        staff.setId(generateId());
-        staffs.add(staff);
-    }
-
-    /**
-     * Generates the next unique staff ID by taking the last assigned ID + 1.
-     *
-     * @return a new unique ID
+     * generates a new facility ID
+     * 
+     * @return a free ID
      */
     public int generateId() {
         int maxId = -1;
 
-        for (int i = 0; i < staffs.size(); i++) {
-            if (staffs.get(i).getId() > maxId) {
-                maxId = staffs.get(i).getId();
-            }
+        for (Facility facility : facilities) {
+            maxId = Math.max(maxId, facility.getId());
         }
-        return maxId + 1;
+
+        return ++maxId;
     }
 
     /**
-     * Searches for a staff member by their ID using binary search.
-     * Assumes the list is sorted by ID.
-     *
-     * @param id the staff ID to search for
-     * @return the Staff with the matching ID, or null if not found
-     */
-    public Staff searchById(int id) {
-        return searchByIdRecursive(id, 0, staffs.size() - 1);
-    }
-
-    /**
-     * Recursive helper for binary search by ID.
-     *
-     * @param id   the target ID
-     * @param low  the lower index
-     * @param high the upper index
-     * @return the matching Staff, or null if not present
-     */
-    private Staff searchByIdRecursive(int id, int low, int high) {
-        if (low > high) {
-            return null;
-        }
-        int mid = (low + high) / 2;
-        int midId = staffs.get(mid).getId();
-
-        if (midId == id) {
-            return staffs.get(mid);
-        } else if (midId > id) {
-            return searchByIdRecursive(id, low, mid - 1);
-        } else {
-            return searchByIdRecursive(id, mid + 1, high);
-        }
-    }
-
-    /**
-     * Prints all staff
+     * searches for a facility matching the ID
      * 
-     * @return whether anything was printed
+     * @param id
+     * @return a facility object
      */
-    public boolean printAllStaff() {
-        if (staffs.isEmpty()) {
-            return false;
+    public Facility searchById(int id) {
+        for (Facility facility : facilities) {
+            if (facility.getId() == id) {
+                return facility;
+            }
         }
 
-        for (Staff s : staffs) {
-            System.out.println(s);
-        }
+        return null;
+    }
 
-        return true;
+    // prints all facilities to standard output
+    public void printAllFacilities() {
+        for (Facility facility : facilities) {
+            System.out.println(facility);
+        }
     }
 
     /**
-     * Prints the payroll information for all staff to standard output.
+     * finds all facilities that are available during a given time block
      * 
-     * @return whether anything was printed
+     * @param timeBlock the time block to search
+     * @return an ArrayList of available facilities
      */
-    public boolean printAllPayrolls() {
-        if (staffs.isEmpty()) {
-            return false;
-        }
+    public ArrayList<Facility> availableFacilities(TimeBlock timeBlock) {
+        ArrayList<Facility> avail = new ArrayList<Facility>();
 
-        for (Staff s : staffs) {
-            s.printPayroll();
-        }
-
-        return true;
-    }
-
-    /**
-     * Finds all staff members available during the given time block.
-     *
-     * @param block the time block to check availability against
-     * @return a list of Staff who are available
-     */
-    public ArrayList<Staff> availableStaff(TimeBlock block) {
-        ArrayList<Staff> available = new ArrayList<>();
-        for (Staff s : staffs) {
-            if (s.isAvailable(block)) {
-                available.add(s);
+        for (Facility facility : facilities) {
+            if (facility.getBookings().isBlockFree(timeBlock)) {
+                avail.add(facility);
             }
         }
-        return available;
+
+        return avail;
     }
 
     /**
-     * Prints all staff names in alphabetical order.
-     * 
-     * @return whether anything was printed
+     * adds a facility to the facilities arraylist
      */
-    public boolean printAlphabetical() {
-        if (staffs.isEmpty()) {
-            return false;
-        }
-
-        ArrayList<String> sortedNames = new ArrayList<>();
-        for (Staff s : staffs) {
-            sortedNames.add(s.getName());
-        }
-        sort(sortedNames);
-        for (String name : sortedNames) {
-            System.out.println(name);
-        }
-
-        return true;
+    public void addFacility(Facility facility) {
+        facilities.add(facility);
     }
 
     /**
-     * Pays all full-time staff
+     * Removes a facility with the given ID from the list.
      */
-    public void payFullTimeStaff() {
-        for (Staff s : staffs) {
-            if (s instanceof FullTimeStaff fs) {
-                System.out.println(fs + " was paid " + fs.calculatePay());
-            }
-        }
-    }
-
-    /**
-     * Pays all part-time staff
-     */
-    public void payPartTimeStaff() {
-        for (Staff s : staffs) {
-            if (s instanceof PartTimeStaff ps) {
-                System.out.println(ps + " was paid " + ps.calculatePay());
-            }
-        }
-    }
-
-    /**
-     * Sorts the staff list by descending pay, then by ascending name.
-     */
-    public void sortByPayThenName() {
-        sort(staffs, Comparator.comparingDouble(Staff::calculatePay).reversed().thenComparing(Staff::getName,
-                String.CASE_INSENSITIVE_ORDER));
-    }
-
-    public ArrayList<Staff> getStaffs() {
-        return staffs;
-    }
-
-    public void setStaffs(ArrayList<Staff> staffs) {
-        this.staffs = staffs;
-    }
-
-    /**
-     * Removes a staff member by ID.
-     */
-    public boolean removeStaff(int id) {
-        for (int i = 0; i < staffs.size(); i++) {
-            if (staffs.get(i).getId() == id) {
-                staffs.remove(i);
+    public boolean removeFacility(int id) {
+        for (int i = 0; i < facilities.size(); i++) {
+            if (facilities.get(i).getId() == id) {
+                facilities.remove(i);
                 return true;
             }
         }
         return false;
     }
 
+    public ArrayList<Facility> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(ArrayList<Facility> facilities) {
+        this.facilities = facilities;
+    }
 }
