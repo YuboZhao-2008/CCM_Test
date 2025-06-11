@@ -33,11 +33,23 @@ public class SportsFacility extends Facility {
      * @param timeBlock
      * @return a double, the cost
      */
+    @Override
     public double calcCost(TimeBlock timeBlock) {
         return Facility.BASE_COST + timeBlock.duration() * Facility.HOURLY_COST + rating * COST_PER_RATING;
     }
 
+    /**
+     * calculates the cost to book this sports facility for one hour
+     * 
+     * @return the cost
+     */
+    @Override
+    public double calcCostOneHour() {
+        return Facility.BASE_COST + Facility.HOURLY_COST + rating * COST_PER_RATING;
+    }
+
     // converts object to string
+    @Override
     public String toString() {
         return "Sports Facility" + super.toString() + String.format(" | rating: %.1f/10", rating);
     }

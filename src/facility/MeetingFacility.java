@@ -33,11 +33,23 @@ public class MeetingFacility extends Facility {
      * @param timeBlock
      * @return a double, the cost
      */
+    @Override
     public double calcCost(TimeBlock timeBlock) {
         return Facility.BASE_COST + timeBlock.duration() * Facility.HOURLY_COST + size * COST_PER_SQFT;
     }
 
+    /**
+     * calculates the cost to book this sports facility for one hour
+     * 
+     * @return the cost
+     */
+    @Override
+    public double calcCostOneHour() {
+        return Facility.BASE_COST + Facility.HOURLY_COST + size * COST_PER_SQFT;
+    }
+
     // converts object to string
+    @Override
     public String toString() {
         return "Meeting Facility" + ((Facility) this).toString() + String.format(" | size: %.0fsqft", size);
     }

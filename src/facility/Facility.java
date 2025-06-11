@@ -46,6 +46,13 @@ public abstract class Facility {
     public abstract double calcCost(TimeBlock timeBlock);
 
     /**
+     * abstract method to calculate cost for a one hour booking
+     * 
+     * @return the cost
+     */
+    public abstract double calcCostOneHour();
+
+    /**
      * equals method compares two facilities
      * 
      * @param other

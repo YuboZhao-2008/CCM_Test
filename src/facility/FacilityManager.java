@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-
 import time.TimeBlock;
 
 public class FacilityManager {
@@ -155,8 +154,8 @@ public class FacilityManager {
      * 
      * @return an ArrayList of sports facilities
      */
-    public ArrayList<SportsFacility> sportsFacilitiesByRating() {
-        ArrayList<SportsFacility> sportsFacilities = new ArrayList<SportsFacility>();
+    public ArrayList<SportsFacility> getSportsFacilitiesByRating() {
+        ArrayList<SportsFacility> sportsFacilities = new ArrayList<>();
 
         for (Facility facility : facilities) {
             if (facility instanceof SportsFacility sportsFacility) {
@@ -167,6 +166,25 @@ public class FacilityManager {
         sportsFacilities.sort(Comparator.comparingDouble(SportsFacility::getRating).reversed());
 
         return sportsFacilities;
+    }
+
+    /**
+     * sorts meeting facilities by size (highest first)
+     * 
+     * @return an ArrayList of meeting facilities
+     */
+    public ArrayList<MeetingFacility> getMeetingFacilitiesBySize() {
+        ArrayList<MeetingFacility> meetingFacilities = new ArrayList<>();
+
+        for (Facility facility : facilities) {
+            if (facility instanceof MeetingFacility meetingFacility) {
+                meetingFacilities.add(meetingFacility);
+            }
+        }
+
+        meetingFacilities.sort(Comparator.comparingDouble(MeetingFacility::getSize).reversed());
+
+        return meetingFacilities;
     }
 
     /**
