@@ -252,4 +252,9 @@ public class FacilityManager {
         }
         return false;
     }
+
+    // accessor for facilities
+    public ArrayList<Facility> getFacilities() {
+        return facilities;
+    }
 }

@@ -10,18 +10,22 @@
 
 package main;
 
+import java.util.ArrayList;
 // import scanner
 import java.util.Scanner;
 
+import event.Event;
 // import folders
 // import folders
 import event.EventManager;
+import facility.Facility;
 import facility.FacilityManager;
 import member.AdultMember;
 import member.Member;
 import member.Member.PlanType;
 import member.MemberManager;
 import member.YouthMember;
+import staff.Staff;
 import staff.StaffManager;
 import time.TimeBlock;
 import time.TimeBlock.Month;
@@ -398,7 +402,98 @@ public class CommunityCentreRunner {
                 // search staff
                 // back
                 System.out.println("(0) Back");
-                // code
+
+                System.out.println("What would you like to search for?");
+                System.out.println("(1) Facility by ID");
+                System.out.println("(2) Facility by Room Number");
+                System.out.println("(3) Facilities Available in a Time Range");
+                System.out.println("(4) Facilities Available in a Time Range AND Minimum Capacity");
+                System.out.println("(5) Event by ID");
+                System.out.println("(6) Member by Name");
+                System.out.println("(7) Staff by Name");
+                System.out.println("(0) Back");
+                int searchChoice = menuInputValidation(7);
+
+                switch (searchChoice) {
+                    case 1 -> {
+                        System.out.print("Enter facility ID: ");
+                        int fid = posIntInputValidation();
+                        Facility fac = facilityManager.searchById(fid);
+                        if (fac != null)
+                            System.out.println(fac);
+                        else
+                            System.out.println("Facility with ID " + fid + " not found.");
+                    }
+                    case 2 -> {
+                        System.out.print("Enter room number: ");
+                        int roomNum = posIntInputValidation();
+                        Facility found = null;
+                        for (Facility f : facilityManager.getFacilities()) {
+                            if (f.getRoomNum() == roomNum) {
+                                found = f;
+                                break;
+                            }
+                        }
+                        if (found != null)
+                            System.out.println(found);
+                        else
+                            System.out.println("Facility with room number " + roomNum + " not found.");
+                    }
+                    case 3, 4 -> {
+                        // build a TimeBlock
+                        TimeBlock date = dateInputValidation();
+                        System.out.print("Enter start hour (e.g. 14.5): ");
+                        double start = doubleInputValidation();
+                        System.out.print("Enter duration (hours): ");
+                        double dur = doubleInputValidation();
+                        TimeBlock tb = new TimeBlock(date, start, dur);
+
+                        ArrayList<Facility> avail = facilityManager.availableFacilities(tb);
+
+                        if (searchChoice == 4) {
+                            System.out.print("Enter minimum capacity: ");
+                            int minCap = posIntInputValidation();
+                            avail.removeIf(f -> f.getMaxCapacity() < minCap);
+                        }
+
+                        if (avail.isEmpty()) {
+                            System.out.println("No matching facilities found.");
+                        } else {
+                            for (Facility f : avail)
+                                System.out.println(f);
+                        }
+                    }
+                    case 5 -> {
+                        System.out.print("Enter event ID: ");
+                        int eid = posIntInputValidation();
+                        Event ev = eventManager.searchById(eid);
+                        if (ev != null)
+                            System.out.println(ev);
+                        else
+                            System.out.println("Event with ID " + eid + " not found.");
+                    }
+                    case 6 -> {
+                        System.out.print("Enter member name: ");
+                        String mName = scan.nextLine();
+                        Member member = memberManager.searchByName(mName);
+                        if (member == null) {
+                            System.out.println("No member named \"" + mName + "\".");
+                        } else {
+                            System.out.println(member);
+                        }
+                    }
+                    case 7 -> {
+                        System.out.print("Enter staff name: ");
+                        String sName = scan.nextLine();
+                        Staff staff = staffManager.searchByName(sName);
+                        if (staff == null) {
+                            System.out.println("No staff named \"" + sName + "\".");
+                        } else {
+                            System.out.println(staff);
+                        }
+                    }
+                    case 0 -> System.out.println("Returning to main menu.");
+                }
             }
 
             case 3 -> {

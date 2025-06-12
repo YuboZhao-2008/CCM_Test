@@ -157,6 +157,22 @@ public class StaffManager {
     }
 
     /**
+     * Searches for a staff member by their name
+     *
+     * @param name the name to search for
+     * @return the Staff with the matching name, or null if not found
+     */
+    public Staff searchByName(String name) {
+        for (Staff staff : staffs) {
+            if (staff.name.equalsIgnoreCase(name)) {
+                return staff;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Recursive helper for binary search by ID.
      *
      * @param id   the target ID
