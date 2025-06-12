@@ -136,9 +136,30 @@ public class CreateMenu {
                     participationCost = ValidateInput.posDouble();
                 }
 
-                System.out.println("Enter facility ID");
-                int facId = ValidateInput.posInt();
-                Facility fac = facilityManager.searchById(facId);
+                Facility fac = null;
+                boolean validFacility = false;
+                while (!validFacility) {
+                    System.out.println("Enter facility ID");
+                    int facId = ValidateInput.posInt();
+                    fac = facilityManager.searchById(facId);
+
+                    if (fac == null) {
+                        System.out.println("Facility with ID " + facId + " not found.");
+                    } else {
+                        switch (eventType) {
+                            case 0 -> { // Competition
+                                if (fac instanceof SportsFacility sf) {
+                                    validFacility = true;
+                                }
+                            }
+                            case 1 -> { // Fundraiser
+                                if (fac instanceof MeetingFacility mf) {
+                                    validFacility = true;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 TimeBlock d = ValidateInput.date();
 
