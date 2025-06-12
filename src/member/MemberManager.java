@@ -317,8 +317,8 @@ public class MemberManager {
     public void billMonthlyMembers() {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.MONTHLY && m instanceof AdultMember am) {
-                am.payBill(m.calculateBill());
                 System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
+                am.payBill(m.calculateBill());
             }
         }
     }
@@ -331,8 +331,8 @@ public class MemberManager {
     public void billAnnualMembers() {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.ANNUAL && m instanceof AdultMember am) {
-                am.payBill(m.calculateBill());
                 System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
+                am.payBill(m.calculateBill());
             }
         }
     }
