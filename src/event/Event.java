@@ -181,10 +181,14 @@ public abstract class Event {
      * toString
      */
     public String toString() {
-        return "Event #" + id +
+        String s = "Event #" + id +
                 " | Room number: " + facility.getRoomNum() +
-                " | Time: " + timeBlock +
-                " | Host name: " + host.getName();
+                " | Time: " + timeBlock;
+                if (host != null) {
+                    s+=" | Host name: " + host.getName();
+                }
+
+        return s;
     }
 
     // accessor for start hour

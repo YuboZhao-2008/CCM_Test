@@ -10,19 +10,14 @@ package main.menu;
 
 import java.util.Scanner;
 
-import facility.FacilityManager;
-import facility.MeetingFacility;
-import facility.SportsFacility;
+import event.*;
+import facility.*;
+import main.*;
 import main.CommunityCentreRunner.MenuStatus;
-import main.ValidateInput;
-import member.AdultMember;
-import member.Member;
+import member.*;
 import member.Member.PlanType;
-import member.MemberManager;
-import member.YouthMember;
-import staff.FullTimeStaff;
-import staff.PartTimeStaff;
-import staff.StaffManager;
+import staff.*;
+import time.*;
 
 public class CreateMenu {
     public static Scanner scan = main.CommunityCentreRunner.scan;
@@ -36,10 +31,12 @@ public class CreateMenu {
         System.out.println("(1) Create Member");
         System.out.println("(2) Create Staff");
         System.out.println("(3) Create Facility");
+        System.out.println("(4) Create Event");
         System.out.println("-");
         System.out.println("(0) Back");
 
-        int createChoice = ValidateInput.menu(3);
+        // now allow choice up to 4
+        int createChoice = ValidateInput.menu(4);
         main.CommunityCentreRunner.separate();
 
         switch (createChoice) {
@@ -59,7 +56,8 @@ public class CreateMenu {
                     System.out.print(" > ");
                     String address = scan.nextLine().trim();
 
-                    memberManager.addMember(new AdultMember(age, name, planType, contactPhone, address));
+                    memberManager.addMember(
+                            new AdultMember(age, name, planType, contactPhone, address));
                     System.out.println("Adult member created successfully.");
                 } else {
                     System.out.println("Guardian ID or name");
@@ -92,20 +90,15 @@ public class CreateMenu {
                 if (staffType == 0) {
                     System.out.println("Years worked");
                     int years = ValidateInput.posInt();
-                    staffManager.addStaff(
-                            new FullTimeStaff(staffName, years));
+                    staffManager.addStaff(new FullTimeStaff(staffName, years));
                 } else {
                     System.out.println("Hours worked");
                     int hours = ValidateInput.posInt();
-
                     System.out.println("Hourly rate");
                     double rate = ValidateInput.posDouble();
-
                     System.out.println("Max weekly hours");
                     int maxH = ValidateInput.posInt();
-
-                    staffManager.addStaff(
-                            new PartTimeStaff(staffName, hours, rate, maxH));
+                    staffManager.addStaff(new PartTimeStaff(staffName, hours, rate, maxH));
                 }
                 System.out.println("Staff created successfully.");
             }
@@ -116,23 +109,86 @@ public class CreateMenu {
 
                 System.out.println("Enter room number");
                 int room = ValidateInput.posInt();
-
                 System.out.println("Enter max capacity");
                 int cap = ValidateInput.posInt();
 
                 if (type == 0) {
                     System.out.println("Enter room size");
                     double size = ValidateInput.posDouble();
-                    facilityManager.addFacility(
-                            new MeetingFacility(room, cap, size));
+                    facilityManager.addFacility(new MeetingFacility(room, cap, size));
                 } else {
                     System.out.println("Enter facility rating");
                     double rating = ValidateInput.posDouble();
-                    facilityManager.addFacility(
-                            new SportsFacility(room, cap, rating));
+                    facilityManager.addFacility(new SportsFacility(room, cap, rating));
                 }
                 System.out.println("Facility created successfully.");
             }
+            case 4 -> {
+                System.out.println("Event type   (0) Competition   (1) Fundraiser");
+                int eventType = ValidateInput.menu(1);
+
+                System.out.println("Enter prize (or goal) amount");
+                double prizeOrGoal = ValidateInput.posDouble();
+
+                double participationCost = 0;
+                if (eventType == 0) {
+                    System.out.println("Enter participation cost");
+                    participationCost = ValidateInput.posDouble();
+                }
+
+                System.out.println("Enter facility ID");
+                int facId = ValidateInput.posInt();
+                Facility fac = facilityManager.searchById(facId);
+
+                TimeBlock d = ValidateInput.date();
+
+                System.out.println("Enter duration type   (0) Set duration   (1) All-day");
+                int durationChoice = ValidateInput.menu(1);
+
+                TimeBlock tb = new TimeBlock();
+                switch(durationChoice) {
+                    case 1 -> {
+                        tb = d;
+                    }
+                    case 0 -> {
+                        double[] sd = ValidateInput.startDuration();
+                        double startHour = sd[0];
+                        double duration = sd[1];
+                        tb = new TimeBlock(
+                            d.getYear(),
+                            d.getMonth(),
+                            d.getDay(),
+                            startHour,
+                            duration);
+                    }
+                }
+
+                System.out.println("Enter hosting type   (0) Member ID   (1) None");
+                int hostingChoice = ValidateInput.menu(2);
+                Member host = null;
+                switch (hostingChoice) {
+                    case 0 -> {
+                        while (host == null) {
+                            System.out.println("Enter host (member) ID");
+                            int hid = ValidateInput.posInt();
+                            host = memberManager.searchById(hid);
+                            if (host == null)
+                                System.out.println("Member with ID " + host + " not found.");
+                        }
+                    }
+                    case 1 -> {
+                        System.out.println("No host.");
+                    }
+                }
+
+                Event newEvent = (eventType == 0)
+                        ? new Competition(fac, tb, host, prizeOrGoal, participationCost)
+                        : new Fundraiser(fac, tb, host, prizeOrGoal);
+
+                main.CommunityCentreRunner.getEventManager().book(newEvent);
+                System.out.println("Event created successfully.");
+            }
+
             case 0 -> {
                 return MenuStatus.BACK;
             }

@@ -52,7 +52,7 @@ public class ValidateInput {
             // validate the input to a choice
             try {
                 startHour = Double.parseDouble(userInput);
-                if (startHour >= 0 || startHour <= 24) {
+                if (startHour < 0 || startHour > 24) {
                     System.out.println("Must be between 0 and 24 (inclusive).");
                     startHour = -1;
                 }

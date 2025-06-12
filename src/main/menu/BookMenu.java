@@ -19,7 +19,7 @@ import member.Member.PlanType;
 import staff.*;
 import time.*;
 
-public class CreateMenu {
+public class BookMenu {
     public static Scanner scan = main.CommunityCentreRunner.scan;
     public static MemberManager memberManager = main.CommunityCentreRunner.getMemberManager();
     public static StaffManager staffManager = main.CommunityCentreRunner.getStaffManager();
