@@ -14,6 +14,7 @@ import java.util.Scanner;
 import member.Member.PlanType;
 import time.TimeBlock;
 import time.TimeBlock.Month;
+import main.CommunityCentreRunner;
 
 public class ValidateInput {
     // scanner
@@ -122,7 +123,7 @@ public class ValidateInput {
         return planType;
     }
 
-    // validates input for dates
+    // validates input for dates, also disallows dates in the past
     public static TimeBlock date() {
         int year = -1;
         Month month = null;
@@ -180,6 +181,11 @@ public class ValidateInput {
         TimeBlock date = new TimeBlock(year, month, day, 0);
         if (!date.isValid()) {
             System.out.println("Invalid date. Please try again.");
+            System.out.println(); // blank line
+            return date();
+        } else if (date.compareToStart(CommunityCentreRunner.getTimeManager().getCurrentTime())>0) {
+            System.out.println("Date cannot be in the past. Please try again.");
+            System.out.println(); // blank line
             return date();
         }
 
