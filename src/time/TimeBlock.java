@@ -180,7 +180,7 @@ public class TimeBlock {
     }
 
     public TimeBlock nextDay() {
-        int newDay = day+1;
+        int newDay = day + 1;
         Month newMonth = month;
         int newYear = year;
 
@@ -259,7 +259,10 @@ public class TimeBlock {
         if (startHour < 0) {
             return false;
         }
-        if (startHour >= 24) {
+        if (startHour > 24) {
+            return false;
+        }
+        if (duration() < 0) {
             return false;
         }
         return !(endHour > 24);

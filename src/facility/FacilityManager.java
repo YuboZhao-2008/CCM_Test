@@ -143,21 +143,63 @@ public class FacilityManager {
     }
 
     /**
-     * finds all facilities that are available during a given time block
+     * prints all facilities that are available during a given time block
      * 
      * @param timeBlock the time block to search
-     * @return an ArrayList of available facilities
+     * @return whether anything was printed
      */
-    public ArrayList<Facility> availableFacilities(TimeBlock timeBlock) {
-        ArrayList<Facility> avail = new ArrayList<>();
+    public boolean printAvailableFacilities(TimeBlock timeBlock) {
+        boolean found = false;
 
         for (Facility facility : facilities) {
             if (facility.getBookings().isBlockFree(timeBlock)) {
-                avail.add(facility);
+                System.out.println(facility);
+                found = true;
             }
         }
 
-        return avail;
+        return found;
+    }
+
+    /**
+     * prints all facilities that are available during a given time block and
+     * minimum
+     * cap
+     * 
+     * @param timeBlock the time block to search
+     * @param minCap    the minimum capacity of the facilities
+     * @return whether anything was printed
+     */
+    public boolean printAvailableFacilities(TimeBlock timeBlock, int minCap) {
+        boolean found = false;
+
+        for (Facility facility : facilities) {
+            if (facility.getBookings().isBlockFree(timeBlock) && facility.maxCapacity >= minCap) {
+                System.out.println(facility);
+                found = true;
+            }
+        }
+
+        return found;
+    }
+
+    /**
+     * prints all facilities that are above a minimum cap
+     * 
+     * @param minCap the minimum capacity of the facilities
+     * @return whether any facilities were found
+     */
+    public boolean printFacilitesWithCapacity(int minCap) {
+        boolean found = false;
+
+        for (Facility facility : facilities) {
+            if (facility.maxCapacity >= minCap) {
+                System.out.println(facility);
+                found = true;
+            }
+        }
+
+        return found;
     }
 
     /**

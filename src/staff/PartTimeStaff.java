@@ -31,9 +31,9 @@ public class PartTimeStaff extends Staff {
     /**
      * Constructs a new PartTimeStaff with the given name and pay parameters.
      *
-     * @param name           the staff member's name
-     * @param hoursWorked    the initial hours worked
-     * @param hourlySalary   the wage per hour
+     * @param name            the staff member's name
+     * @param hoursWorked     the initial hours worked
+     * @param hourlySalary    the wage per hour
      * @param maxMonthlyHours the cap on hours per month
      */
     public PartTimeStaff(String name, int hoursWorked, double hourlySalary, int maxMonthlyHours) {
@@ -62,7 +62,8 @@ public class PartTimeStaff extends Staff {
      */
     @Override
     public void printPayroll() {
-        System.out.println("Your pay is: " + calculatePay() +
+        System.out.println(name +
+                "'s pay is: " + calculatePay() +
                 " | Hours worked: " + hoursWorked);
     }
 

@@ -56,7 +56,8 @@ public class FullTimeStaff extends Staff {
      */
     @Override
     public void printPayroll() {
-        System.out.println("Your monthly pay is: " + calculatePay() +
+        System.out.println(name +
+                "'s monthly pay is: " + calculatePay() +
                 " | Years worked: " + yearsWorked);
     }
 

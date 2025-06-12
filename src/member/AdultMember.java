@@ -82,7 +82,6 @@ public class AdultMember extends Member {
      */
     @Override
     public double calculateBill() {
-        System.out.println((calculateTotalBill()-paidBillAmount)  +" this is the bill of "+getName());
         return calculateTotalBill() - paidBillAmount;
     }
 

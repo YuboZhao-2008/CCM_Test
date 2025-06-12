@@ -397,6 +397,25 @@ public class EventManager {
         return true;
     }
 
+    /**
+     * prints all events which happen within the time block
+     * 
+     * @param timeBlock the time block to search
+     * @return whether anything was printed
+     */
+    public boolean printEventsWithin(TimeBlock timeBlock) {
+        boolean found = false;
+
+        for (Event event : events) {
+            if (event.getTimeBlock().isConflicting(timeBlock)) {
+                System.out.println(event);
+                found = true;
+            }
+        }
+
+        return found;
+    }
+
     // accessor for events
     public ArrayList<Event> getEvents() {
         return events;
