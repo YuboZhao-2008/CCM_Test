@@ -72,7 +72,7 @@ public class YouthMember extends Member {
      */
     @Override
     public String toString() {
-        return "Youth Member " + super.toString() + " | guardian: " + guardian.getName();
+        return "Youth Member " + super.toString() + " | Guardian: " + guardian.getName();
     }
 
     /**
@@ -92,6 +92,8 @@ public class YouthMember extends Member {
      */
     public void setGuardian(AdultMember guardian) {
         this.guardian = guardian;
-        guardian.addChild(this);
+        if (guardian != null) {
+            guardian.addChild(this);
+        }
     }
 }

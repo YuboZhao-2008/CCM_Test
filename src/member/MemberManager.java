@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sound.sampled.SourceDataLine;
+
 /**
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
@@ -178,6 +180,7 @@ public class MemberManager {
             AdultMember adult = (AdultMember) target;
             for (YouthMember child : adult.getChildren()) {
                 child.setGuardian(null);
+                removeMember(child.getId());
             }
         } else if (target instanceof YouthMember) {
             YouthMember youth = (YouthMember) target;
@@ -318,7 +321,8 @@ public class MemberManager {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.MONTHLY && m instanceof AdultMember am) {
                 System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
-                am.payBill(m.calculateBill());
+                am.payBill(m.calculateBill()); // they pay off their bill
+                am.addBillBase();
             }
         }
     }
@@ -332,7 +336,8 @@ public class MemberManager {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.ANNUAL && m instanceof AdultMember am) {
                 System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
-                am.payBill(m.calculateBill());
+                am.payBill(m.calculateBill()); // they pay off their bill
+                am.addBillBase();
             }
         }
     }
@@ -345,10 +350,15 @@ public class MemberManager {
             if (member instanceof AdultMember) {
                 member.age++;
             } else if (member instanceof YouthMember youth) {
-                if (++member.age >= Member.ADULT_AGE) {
+                if (++youth.age >= Member.ADULT_AGE) {
+                    System.out.println(member.getName()+" is now an adult member.");
+                    
                     AdultMember guardian = youth.getGuardian();
-                    AdultMember adult = new AdultMember(member.age, member.name, member.planType,
+                    AdultMember adult = new AdultMember(youth.age, youth.name, youth.planType,
                             guardian.getContactPhone(), guardian.getAddress());
+                    adult.setId(youth.getId());
+                    adult.addBillBase();
+
                     members.remove(youth);
                     guardian.getChildren().remove(youth);
                     members.add(adult);

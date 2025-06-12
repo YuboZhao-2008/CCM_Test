@@ -101,9 +101,9 @@ public class Fundraiser extends Event {
      * toString
      */
     public String toString() {
-        String s = super.toString() + " | goal: " + String.format("$%.2f", goal);
+        String s = super.toString() + " | Goal: " + String.format("$%.2f", goal);
         if (isCompleted) {
-            s += " | total raised: " + String.format("$%.2f", amountRaised);
+            s += " | Total raised: " + String.format("$%.2f", amountRaised);
         }
 
         return s;

@@ -74,9 +74,9 @@ public class PartTimeStaff extends Staff {
      */
     public String toString() {
         return "Staff #" + id +
-                " | name: " + name +
-                " | hourly salary: " + hourlySalary +
-                " | max monthly hours: " + maxMonthlyHours;
+                " | Name: " + name +
+                " | Hourly salary: " + hourlySalary +
+                " | Max monthly hours: " + maxMonthlyHours;
     }
 
     /**

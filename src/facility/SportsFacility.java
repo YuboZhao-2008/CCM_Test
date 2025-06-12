@@ -51,7 +51,7 @@ public class SportsFacility extends Facility {
     // converts object to string
     @Override
     public String toString() {
-        return "Sports Facility" + super.toString() + String.format(" | rating: %.1f/10", rating);
+        return "Sports Facility" + super.toString() + String.format(" | Rating: %.1f/10", rating);
     }
 
     // accessor for rating

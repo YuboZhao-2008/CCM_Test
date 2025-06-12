@@ -51,7 +51,7 @@ public class MeetingFacility extends Facility {
     // converts object to string
     @Override
     public String toString() {
-        return "Meeting Facility" + super.toString() + String.format(" | size: %.0fsqft", size);
+        return "Meeting Facility" + super.toString() + String.format(" | Size: %.0fsqft", size);
     }
 
     // accessor for size

@@ -89,6 +89,6 @@ public abstract class Facility {
 
     // #<id>, rm<rm#>, capacity: <capacity>
     public String toString() {
-        return String.format(" #%d | room: %d | capacity: %d", id, roomNum, maxCapacity);
+        return String.format(" #%d | Room number: %d | Capacity: %d", id, roomNum, maxCapacity);
     }
 }

@@ -75,10 +75,10 @@ public abstract class Member {
     public String toString() {
 
         return "#" + id
-                + " | age: " + age
-                + " | name: " + name
-                + " | plan: " + planType
-                + " | bill: "
+                + " | Age: " + age
+                + " | Name: " + name
+                + " | Plan: " + planType
+                + " | Gross bill: "
                 + String.format("$%.2f", calculateBill());
     }
 

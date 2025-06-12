@@ -69,8 +69,8 @@ public class FullTimeStaff extends Staff {
     @Override
     public String toString() {
         return "Staff #" + id +
-                " | name: " + name +
-                " | years worked: " + yearsWorked;
+                " | Name: " + name +
+                " | Years worked: " + yearsWorked;
     }
 
     /**

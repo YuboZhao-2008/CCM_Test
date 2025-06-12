@@ -13,6 +13,7 @@ import facility.FacilityManager;
 import main.CommunityCentreRunner;
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
+import member.AdultMember;
 import member.MemberManager;
 import staff.StaffManager;
 
@@ -39,10 +40,15 @@ public class DeleteMenu {
             case 1 -> {
                 System.out.print("Enter the member ID to delete: ");
                 int memberId = ValidateInput.posInt();
+
+                boolean isAdult = CommunityCentreRunner.getMemberManager().searchById(memberId) instanceof AdultMember am;
+
                 boolean removedMember = CommunityCentreRunner
                         .getMemberManager()
                         .removeMember(memberId);
-                if (removedMember) {
+                if (removedMember && isAdult) {
+                    System.out.println("Member with ID " + memberId + " and their children have been deleted.");
+                } else if (removedMember) {
                     System.out.println("Member with ID " + memberId + " has been deleted.");
                 } else {
                     System.out.println("Member with ID " + memberId + " not found.");

@@ -110,7 +110,6 @@ public class ListMenu {
             case 11 -> {
                 if (!memberManager.printAllBills()) {
                     System.out.println("No member bills found.");
-
                 }
             }
             case 12 -> {

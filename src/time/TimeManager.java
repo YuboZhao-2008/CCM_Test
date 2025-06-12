@@ -101,14 +101,14 @@ public class TimeManager {
             }
             if (prev_year != time.getYear()) {
                 System.out.println("--------------------- NEW YEAR: "+time.getYear()+" ---------------------");
+                // age members
+                main.CommunityCentreRunner.getMemberManager().ageMembers();
                 // bill yearly members
                 main.CommunityCentreRunner.getMemberManager().billAnnualMembers();
                 // increase years worked for full-time staff
                 main.CommunityCentreRunner.getStaffManager().increaseYearsWorked();
                 // pay full-time staff
                 main.CommunityCentreRunner.getStaffManager().payFullTimeStaff();
-                // age members
-                main.CommunityCentreRunner.getMemberManager().ageMembers();
                 System.out.println(); // blank line
             }
         }

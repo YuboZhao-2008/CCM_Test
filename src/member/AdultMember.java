@@ -82,7 +82,7 @@ public class AdultMember extends Member {
      */
     @Override
     public double calculateBill() {
-        return calculateTotalBill() - paidBillAmount;
+        return totalBillAmount - paidBillAmount;
     }
 
     /**
@@ -128,7 +128,7 @@ public class AdultMember extends Member {
      * Prints this member’s billing details to standard output.
      */
     public void printBill() {
-        System.out.println(toString());
+        System.out.println(this+" | Total bill: "+totalBillAmount+" | Paid off: "+paidBillAmount);
     }
 
     /**
@@ -202,6 +202,17 @@ public class AdultMember extends Member {
      */
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Adds the base to the total bill
+     */
+    public void addBillBase() {
+        double base = switch (planType) {
+            case MONTHLY -> MONTHLY_BASE;
+            case ANNUAL -> ANNUAL_BASE;
+        };
+        this.totalBillAmount+=base;
     }
 
     /**
