@@ -503,7 +503,6 @@ public class CommunityCentreRunner {
                 System.out.println("(3) Create Facility");
                 System.out.println("-");
                 System.out.println("(0) Back");
-                System.out.println("(0) Back");
                 int createChoice = menuInputValidation(3);
 
                 switch (createChoice) {
