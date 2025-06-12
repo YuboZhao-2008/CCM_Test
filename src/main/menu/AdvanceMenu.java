@@ -16,6 +16,7 @@ import time.TimeManager;
 public class AdvanceMenu {
     public static TimeManager timeManager = main.CommunityCentreRunner.getTimeManager();
 
+    // show the menu
     public static MenuStatus show() {
         System.out.println("What time would you like to advance to?");
         // options to advance time

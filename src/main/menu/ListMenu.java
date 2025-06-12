@@ -21,6 +21,7 @@ public class ListMenu {
     public static FacilityManager facilityManager = main.CommunityCentreRunner.getFacilityManager();
     public static EventManager eventManager = main.CommunityCentreRunner.getEventManager();
 
+    // show the menu
     public static MenuStatus show() {
         System.out.println("What would you like to view?");
         // all options for listing facilities
