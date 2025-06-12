@@ -1,3 +1,11 @@
+/**
+ * DeleteMenu
+ * contains the menu to delete objects
+ *
+ * @author Yubo Zhao
+ * @since June 12, 2025
+ */
+
 package main.menu;
 
 import event.EventManager;

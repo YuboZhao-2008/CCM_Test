@@ -1,3 +1,11 @@
+/**
+ * ListMenu
+ * contains the menu to list objects in various ways
+ *
+ * @author Sean Yang
+ * @since June 11, 2025
+ */
+
 package main.menu;
 
 import event.EventManager;

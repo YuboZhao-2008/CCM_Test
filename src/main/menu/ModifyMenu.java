@@ -1,9 +1,18 @@
+/**
+ * ModifyMenu
+ * contains the menu to modify modify objects
+ *
+ * @author
+ * @since
+ */
+
 package main.menu;
 
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
 
 public class ModifyMenu {
+    // shows the menu
     public static MenuStatus show() {
         System.out.println("What would you like to modify?");
         System.out.println("(1) Modify Member");

@@ -1,3 +1,11 @@
+/**
+ * SearchMenu
+ * contains the menu to search objects
+ *
+ * @author Yubo Zhao, Sean Yang
+ * @since June 12, 2025
+ */
+
 package main.menu;
 
 import java.util.Scanner;

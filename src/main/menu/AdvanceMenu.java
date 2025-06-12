@@ -1,3 +1,11 @@
+/**
+ * AdvanceMenu
+ * contains the menu to advance time
+ *
+ * @author Yubo Zhao
+ * @since June 12, 2025
+ */
+
 package main.menu;
 
 import main.CommunityCentreRunner.MenuStatus;
