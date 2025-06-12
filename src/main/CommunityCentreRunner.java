@@ -20,11 +20,15 @@ import event.Event;
 import event.EventManager;
 import facility.Facility;
 import facility.FacilityManager;
+import facility.MeetingFacility;
+import facility.SportsFacility;
 import member.AdultMember;
 import member.Member;
 import member.Member.PlanType;
 import member.MemberManager;
 import member.YouthMember;
+import staff.FullTimeStaff;
+import staff.PartTimeStaff;
 import staff.Staff;
 import staff.StaffManager;
 import time.TimeBlock;
@@ -52,6 +56,10 @@ public class CommunityCentreRunner {
     // separator for formatting
     public static final String SEPARATOR = "------------------------------------------/------------------------------------------";
 
+    public enum MenuStatus {
+        EXIT, BACK, CONTINUE
+    }
+
     // accessor methods for managers
     public static MemberManager getMemberManager() {
         return memberManager;
@@ -73,7 +81,7 @@ public class CommunityCentreRunner {
         return facilityManager;
     }
 
-    public static int posIntInputValidation() {
+    public static int posIntInputValidation(boolean useSeparator) {
         int choice = -1;
 
         while (choice < 0) {
@@ -88,14 +96,20 @@ public class CommunityCentreRunner {
             }
         }
 
-        System.out.println(); // blank line
-        System.out.println(SEPARATOR);
-        System.out.println(); // blank line
+        if (useSeparator) {
+            System.out.println(); // blank line
+            System.out.println(SEPARATOR);
+            System.out.println(); // blank line
+        }
 
         return choice;
     }
 
-    public static double doubleInputValidation() {
+    public static int posIntInputValidation() {
+        return posIntInputValidation(true);
+    }
+
+    public static double doubleInputValidation(boolean useSeparator) {
         boolean valid = false;
         double choice = 0;
 
@@ -112,11 +126,17 @@ public class CommunityCentreRunner {
             }
         }
 
-        System.out.println(); // blank line
-        System.out.println(SEPARATOR);
-        System.out.println(); // blank line
+        if (useSeparator) {
+            System.out.println(); // blank line
+            System.out.println(SEPARATOR);
+            System.out.println(); // blank line
+        }
 
         return choice;
+    }
+
+    public static double doubleInputValidation() {
+        return doubleInputValidation(true);
     }
 
     public static PlanType planTypeValidation() {
@@ -231,7 +251,7 @@ public class CommunityCentreRunner {
         return choice;
     }
 
-    public static void guiLoop() {
+    public static MenuStatus menuLoop() {
         TimeBlock currentTime = timeManager.getCurrentTime(); // update current time
 
         // GUI main loop ----
@@ -264,8 +284,9 @@ public class CommunityCentreRunner {
         System.out.println("(5) Book");
         System.out.println("(6) Delete");
         System.out.println("(7) Advance Time");
+        System.out.println("(8) Quit");
 
-        int choice = menuInputValidation(7);
+        int choice = menuInputValidation(8);
 
         // if valid input
         switch (choice) {
@@ -377,7 +398,9 @@ public class CommunityCentreRunner {
 
                         }
                     }
-                    case 0 -> System.out.println("Returning to main menu.");
+                    case 0 -> {
+                        return MenuStatus.BACK;
+                    }
                 }
             }
 
@@ -400,17 +423,10 @@ public class CommunityCentreRunner {
                 System.out.println("(9) Members using Name");
                 System.out.println("-");
                 // search staff
+                System.out.println("(10) Staff using ID");
+                System.out.println("(11) Staff using Name");
+                System.out.println("-");
                 // back
-                System.out.println("(0) Back");
-
-                System.out.println("What would you like to search for?");
-                System.out.println("(1) Facility by ID");
-                System.out.println("(2) Facility by Room Number");
-                System.out.println("(3) Facilities Available in a Time Range");
-                System.out.println("(4) Facilities Available in a Time Range AND Minimum Capacity");
-                System.out.println("(5) Event by ID");
-                System.out.println("(6) Member by Name");
-                System.out.println("(7) Staff by Name");
                 System.out.println("(0) Back");
                 int searchChoice = menuInputValidation(7);
 
@@ -443,7 +459,7 @@ public class CommunityCentreRunner {
                         // build a TimeBlock
                         TimeBlock date = dateInputValidation();
                         System.out.print("Enter start hour (e.g. 14.5): ");
-                        double start = doubleInputValidation();
+                        double start = doubleInputValidation(false);
                         System.out.print("Enter duration (hours): ");
                         double dur = doubleInputValidation();
                         TimeBlock tb = new TimeBlock(date, start, dur);
@@ -473,7 +489,8 @@ public class CommunityCentreRunner {
                             System.out.println("Event with ID " + eid + " not found.");
                     }
                     case 6 -> {
-                        System.out.print("Enter member name: ");
+                        System.out.println("Enter member name: ");
+                        System.out.print(" > ");
                         String mName = scan.nextLine();
                         Member member = memberManager.searchByName(mName);
                         if (member == null) {
@@ -483,7 +500,8 @@ public class CommunityCentreRunner {
                         }
                     }
                     case 7 -> {
-                        System.out.print("Enter staff name: ");
+                        System.out.println("Enter staff name: ");
+                        System.out.print(" > ");
                         String sName = scan.nextLine();
                         Staff staff = staffManager.searchByName(sName);
                         if (staff == null) {
@@ -492,7 +510,9 @@ public class CommunityCentreRunner {
                             System.out.println(staff);
                         }
                     }
-                    case 0 -> System.out.println("Returning to main menu.");
+                    case 0 -> {
+                        return MenuStatus.BACK;
+                    }
                 }
             }
 
@@ -508,21 +528,25 @@ public class CommunityCentreRunner {
                 switch (createChoice) {
                     case 1 -> {
                         System.out.println("Age");
-                        int age = posIntInputValidation();
+                        int age = posIntInputValidation(false);
                         System.out.println("Full name");
+                        System.out.print(" > ");
                         String name = scan.nextLine().trim().toUpperCase();
                         PlanType planType = planTypeValidation();
 
                         if (age >= Member.ADULT_AGE) {
                             System.out.println("Contact phone ###-###-####");
+                            System.out.print(" > ");
                             String contactPhone = scan.nextLine().trim();
                             System.out.println("Address");
+                            System.out.print(" > ");
                             String address = scan.nextLine().trim();
 
                             memberManager.addMember(new AdultMember(age, name, planType, contactPhone, address));
                             System.out.println("Adult member created successfully.");
                         } else {
                             System.out.println("Guardian ID or name");
+                            System.out.print(" > ");
                             String guardianIdOrName = scan.nextLine().trim().toUpperCase();
                             Member guardian;
                             try {
@@ -538,6 +562,62 @@ public class CommunityCentreRunner {
                                 System.out.println("No matching adult.");
                             }
                         }
+                    }
+                    case 2 -> {
+                        // --- CREATE STAFF ---
+                        System.out.println("Full-time or Part-time?   (0) Full-time   (1) Part-time");
+                        int staffType = menuInputValidation(1);
+
+                        System.out.println("Full name");
+                        System.out.print(" > ");
+                        String staffName = scan.nextLine().trim().toUpperCase();
+
+                        if (staffType == 0) {
+                            System.out.println("Years worked");
+                            int years = posIntInputValidation(false);
+                            staffManager.addStaff(
+                                    new FullTimeStaff(staffName, years));
+                        } else {
+                            System.out.println("Hours worked");
+                            int hours = posIntInputValidation(false);
+
+                            System.out.println("Hourly rate");
+                            double rate = doubleInputValidation(false);
+
+                            System.out.println("Max weekly hours");
+                            int maxH = posIntInputValidation();
+
+                            staffManager.addStaff(
+                                    new PartTimeStaff(staffName, hours, rate, maxH));
+                        }
+                        System.out.println("Staff created successfully.");
+                    }
+                    case 3 -> {
+                        // --- CREATE FACILITY ---
+                        System.out.println("Meeting or Sports?   (0) Meeting Room   (1) Sports Facility");
+                        int type = menuInputValidation(1);
+
+                        System.out.println("Enter room number");
+                        int room = posIntInputValidation(false);
+
+                        System.out.println("Enter max capacity");
+                        int cap = posIntInputValidation(false);
+
+                        if (type == 0) {
+                            System.out.println("Enter room size");
+                            double size = doubleInputValidation();
+                            facilityManager.addFacility(
+                                    new MeetingFacility(room, cap, size));
+                        } else {
+                            System.out.println("Enter facility rating");
+                            double rating = doubleInputValidation();
+                            facilityManager.addFacility(
+                                    new SportsFacility(room, cap, rating));
+                        }
+                        System.out.println("Facility created successfully.");
+                    }
+                    case 0 -> {
+                        return MenuStatus.BACK;
                     }
                 }
             }
@@ -612,7 +692,9 @@ public class CommunityCentreRunner {
                             System.out.println("Event with ID " + eventId + " not found.");
                         }
                     }
-                    case 0 -> System.out.println("Returning to main menu.");
+                    case 0 -> {
+                        return MenuStatus.BACK;
+                    }
                 }
             }
             case 7 -> {
@@ -640,10 +722,17 @@ public class CommunityCentreRunner {
                         timeManager.advanceToTimeBlock(dateInput);
                         System.out.println("Time set to " + timeManager.getCurrentTime() + ".");
                     }
-                    case 0 -> System.out.println("Returning to main menu.");
+                    case 0 -> {
+                        return MenuStatus.BACK;
+                    }
                 }
             }
+            case 8 -> {
+                return MenuStatus.EXIT;
+            }
         }
+
+        return MenuStatus.CONTINUE;
     }
 
     public static void main(String[] args) {
@@ -658,20 +747,29 @@ public class CommunityCentreRunner {
 
         while (!exit) {
             // run the GUI loop
-            guiLoop();
-
-            // ask if user wants to continue
-            System.out.println("Enter (Q) to quit or any other key to continue.");
-            String continueChoice = scan.nextLine().trim().toUpperCase();
-            if (continueChoice.equals("Q")) {
-                eventManager.save(EVENTS_FILEPATH);
-                memberManager.save(MEMBERS_FILEPATH);
-                staffManager.save(STAFFS_FILEPATH);
-                facilityManager.save(FACILITIES_FILEPATH);
-                timeManager.save(TIME_FILEPATH);
-                exit = true; // exit the loop
+            switch (menuLoop()) {
+                case CONTINUE -> {
+                    // ask if user wants to continue
+                    System.out.print("Enter (Q) to quit or enter to continue: ");
+                    String continueChoice = scan.nextLine().trim().toUpperCase();
+                    if (continueChoice.equals("Q")) {
+                        exit = true; // exit the loop
+                        System.out.println();
+                        System.out.println(SEPARATOR);
+                        System.out.println();
+                    }
+                }
+                case EXIT -> exit = true;
+                case BACK -> System.out.println("Returning to main menu.\n");
             }
+
         }
+
+        eventManager.save(EVENTS_FILEPATH);
+        memberManager.save(MEMBERS_FILEPATH);
+        staffManager.save(STAFFS_FILEPATH);
+        facilityManager.save(FACILITIES_FILEPATH);
+        timeManager.save(TIME_FILEPATH);
 
         scan.close();
     }

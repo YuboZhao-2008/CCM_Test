@@ -64,12 +64,12 @@ public abstract class Facility {
 
     // accessor for max capacity
     public int getMaxCapacity() {
-        return 0;
+        return maxCapacity;
     }
 
     // accessor for room num
     public int getRoomNum() {
-        return 0;
+        return roomNum;
     }
 
     // accessor for id

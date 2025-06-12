@@ -7,7 +7,8 @@ package member;
 import java.util.ArrayList;
 import java.util.List;
 
-import event.*;
+import event.Competition;
+import event.Event;
 
 /**
  * Represents an adult member with contact information, billing details,
@@ -32,24 +33,22 @@ public class AdultMember extends Member {
     /** Amount already paid toward the total bill. */
     private double paidBillAmount;
 
-
-
     /** List of youth members (children) linked to this guardian. */
     private List<YouthMember> children = new ArrayList<>();
 
     /**
      * Constructs an AdultMember with the specified details.
      *
-     * @param age              the member's age
-     * @param name             the member's full name
-     * @param planType         the membership billing plan
-     * @param contactPhone     phone number for contact
-     * @param address          residential address
+     * @param age          the member's age
+     * @param name         the member's full name
+     * @param planType     the membership billing plan
+     * @param contactPhone phone number for contact
+     * @param address      residential address
      */
     public AdultMember(int age, String name, PlanType planType, String contactPhone, String address) {
         super(age, name, planType);
-        this.contactPhone   = contactPhone;
-        this.address        = address;
+        this.contactPhone = contactPhone;
+        this.address = address;
         this.totalBillAmount = 0;
         this.paidBillAmount = 0;
     }
@@ -57,20 +56,20 @@ public class AdultMember extends Member {
     /**
      * Constructs an AdultMember with the specified details.
      *
-     * @param age              the member's age
-     * @param name             the member's full name
-     * @param planType         the membership billing plan
-     * @param contactPhone     phone number for contact
-     * @param address          residential address
-     * @param totalBillAmount  additional bill amount beyond base fee
-     * @param paidBillAmount   amount already paid toward the bill
+     * @param age             the member's age
+     * @param name            the member's full name
+     * @param planType        the membership billing plan
+     * @param contactPhone    phone number for contact
+     * @param address         residential address
+     * @param totalBillAmount additional bill amount beyond base fee
+     * @param paidBillAmount  amount already paid toward the bill
      */
     public AdultMember(int age, String name, PlanType planType,
-                       String contactPhone, String address,
-                       double totalBillAmount, double paidBillAmount) {
+            String contactPhone, String address,
+            double totalBillAmount, double paidBillAmount) {
         super(age, name, planType);
-        this.contactPhone    = contactPhone;
-        this.address         = address;
+        this.contactPhone = contactPhone;
+        this.address = address;
         this.totalBillAmount = totalBillAmount;
         this.paidBillAmount = paidBillAmount;
     }
@@ -128,9 +127,8 @@ public class AdultMember extends Member {
     /**
      * Prints this member’s billing details to standard output.
      */
-    @Override
     public void printBill() {
-        super.printBill();
+        System.out.println(toString());
     }
 
     /**
@@ -140,7 +138,7 @@ public class AdultMember extends Member {
      */
     @Override
     public String toString() {
-        return super.toString();
+        return "Adult Member " + super.toString();
     }
 
     /**

@@ -67,34 +67,19 @@ public abstract class Member {
     public abstract double calculateBill();
 
     /**
-     * Builds a summary string of this member's ID, age, name, plan, and bill.
-     *
-     * @return formatted membership details
-     */
-    public String membershipDetails() {
-        return "Member #" + id
-                + " | age: " + age
-                + " | name: " + name
-                + " | plan: " + planType
-                + " | bill: "
-                + String.format("$%.2f", calculateBill());
-    }
-
-    /**
-     * Prints the membership details to standard output.
-     */
-    public void printBill() {
-        System.out.println(membershipDetails());
-    }
-
-    /**
      * Returns the membership details string.
      *
      * @return the toString representation
      */
     @Override
     public String toString() {
-        return membershipDetails();
+
+        return "#" + id
+                + " | age: " + age
+                + " | name: " + name
+                + " | plan: " + planType
+                + " | bill: "
+                + String.format("$%.2f", calculateBill());
     }
 
     /**

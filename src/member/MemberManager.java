@@ -102,8 +102,8 @@ public class MemberManager {
 
             // now hook up youth to guardian and guardian to children
             for (var e : youthGuardian.entrySet()) {
-                YouthMember y = (YouthMember) main.CommunityCentreRunner.getMemberManager().searchById(e.getKey());
-                AdultMember a = (AdultMember) main.CommunityCentreRunner.getMemberManager().searchById(e.getValue());
+                YouthMember y = (YouthMember) searchById(e.getKey());
+                AdultMember a = (AdultMember) searchById(e.getValue());
                 y.setGuardian(a);
                 a.addChild(y);
             }
@@ -246,7 +246,9 @@ public class MemberManager {
         }
 
         for (Member m : members) {
-            m.printBill();
+            if (m instanceof AdultMember adult) {
+                adult.printBill();
+            }
         }
 
         return true;
