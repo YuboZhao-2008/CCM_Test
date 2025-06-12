@@ -125,8 +125,7 @@ public class TimeManager {
      * @param timeBlock
      */
     public void advanceToTimeBlock(TimeBlock timeBlock) {
-        TimeBlock timeBlock2 = new TimeBlock(timeBlock, timeBlock.getStartHour(), 0);
-        advanceHours(time.hoursUntil(timeBlock2));
+        advanceHours(time.hoursUntil(timeBlock));
     }
 
     /**

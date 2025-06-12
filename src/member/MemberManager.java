@@ -294,23 +294,17 @@ public class MemberManager {
     /**
      * Searches for all members whose name matches the given string
      * (case-insensitive).
-     * Searches for all members whose name matches the given string
-     * (case-insensitive).
      *
      * @param name the full name to search for
-     * @return a list of Member objects whose names equal the search term; empty if
-     *         none found
-     * @return a list of Member objects whose names equal the search term; empty if
-     *         none found
+     * @return the first person with the name
      */
-    public List<Member> searchByName(String name) {
-        List<Member> matches = new ArrayList<>();
+    public Member searchByName(String name) {
         for (Member m : members) {
-            if (m.getName().equalsIgnoreCase(name)) {
-                matches.add(m);
+            if (m.name.equalsIgnoreCase(name)) {
+                return m;
             }
         }
-        return matches;
+        return null;
     }
 
     /**

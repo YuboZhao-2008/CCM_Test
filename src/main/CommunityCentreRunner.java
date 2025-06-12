@@ -17,8 +17,11 @@ import java.util.Scanner;
 // import folders
 import event.EventManager;
 import facility.FacilityManager;
+import member.AdultMember;
+import member.Member;
 import member.Member.PlanType;
 import member.MemberManager;
+import member.YouthMember;
 import staff.StaffManager;
 import time.TimeBlock;
 import time.TimeBlock.Month;
@@ -110,6 +113,25 @@ public class CommunityCentreRunner {
         System.out.println(); // blank line
 
         return choice;
+    }
+
+    public static PlanType planTypeValidation() {
+        PlanType planType = null;
+
+        while (planType == null) {
+            // input
+            System.out.println("Enter the plan type (MONTHLY/ANNUAL)");
+            System.out.print(" > ");
+            String userInput = scan.nextLine().trim().toUpperCase();
+            // validate the input to a plan type
+            try {
+                planType = PlanType.valueOf(userInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Must enter a valid plan type");
+            }
+        }
+
+        return planType;
     }
 
     public static TimeBlock dateInputValidation() {
@@ -391,11 +413,37 @@ public class CommunityCentreRunner {
 
                 switch (createChoice) {
                     case 1 -> {
-                        int age;
-                        String name;
-                        PlanType planType;
+                        System.out.println("Age");
+                        int age = posIntInputValidation();
+                        System.out.println("Full name");
+                        String name = scan.nextLine().trim().toUpperCase();
+                        PlanType planType = planTypeValidation();
 
-                        System.out.println();
+                        if (age >= Member.ADULT_AGE) {
+                            System.out.println("Contact phone ###-###-####");
+                            String contactPhone = scan.nextLine().trim();
+                            System.out.println("Address");
+                            String address = scan.nextLine().trim();
+
+                            memberManager.addMember(new AdultMember(age, name, planType, contactPhone, address));
+                            System.out.println("Adult member created successfully.");
+                        } else {
+                            System.out.println("Guardian ID or name");
+                            String guardianIdOrName = scan.nextLine().trim().toUpperCase();
+                            Member guardian;
+                            try {
+                                int id = Integer.parseInt(guardianIdOrName);
+                                guardian = memberManager.searchById(id);
+                            } catch (NumberFormatException nfe) {
+                                guardian = memberManager.searchByName(guardianIdOrName);
+                            }
+                            if (guardian instanceof AdultMember adult) {
+                                memberManager.addMember(new YouthMember(age, name, planType, adult));
+                                System.out.println("Youth member created successfully.");
+                            } else {
+                                System.out.println("No matching adult.");
+                            }
+                        }
                     }
                 }
             }
