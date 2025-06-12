@@ -7,7 +7,9 @@ package staff;
 import static java.util.Collections.*;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,11 +60,7 @@ public class StaffManager {
             int numStaff = Integer.parseInt(br.readLine().trim());
 
             for (int i = 0; i < numStaff; i++) {
-                String line;
-                while ((line = br.readLine()) != null
-                        && (line.trim().isEmpty() || line.trim().equals("##"))) {
-                }
-                int id = Integer.parseInt(line.trim());
+                int id = Integer.parseInt(br.readLine().trim());
                 String type = br.readLine().trim().toLowerCase();
                 String name = br.readLine().trim();
 
@@ -82,8 +80,42 @@ public class StaffManager {
                 }
             }
 
-        } catch (IOException e) {
-            System.out.println("Error loading staff file: " + e.getMessage());
+            br.close();
+        } catch (IOException iox) {
+            System.out.println("Error reading staff file: " + iox.getMessage());
+        }
+    }
+
+    /**
+     * saves staff to file
+     * 
+     * @param filepath
+     */
+    public void save(String filepath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+            bw.write(staffs.size() + "\n");
+
+            for (Staff staff : staffs) {
+                bw.write(staff.id + "\n");
+                if (staff instanceof FullTimeStaff) {
+                    bw.write("fulltime\n");
+                } else {
+                    bw.write("parttime\n");
+                }
+                bw.write(staff.name + "\n");
+
+                if (staff instanceof FullTimeStaff fts) {
+                    bw.write(fts.getYearsWorked() + "\n");
+                } else if (staff instanceof PartTimeStaff pts) {
+                    bw.write(pts.getHoursWorked() + "\n");
+                    bw.write(pts.getHourlySalary() + "\n");
+                    bw.write(pts.getMaxMonthlyHours() + "\n");
+                }
+            }
+
+            bw.close();
+        } catch (IOException iox) {
+            System.out.println("Error writing to staff file: " + iox.getMessage());
         }
     }
 
@@ -122,6 +154,22 @@ public class StaffManager {
      */
     public Staff searchById(int id) {
         return searchByIdRecursive(id, 0, staffs.size() - 1);
+    }
+
+    /**
+     * Searches for a staff member by their name
+     *
+     * @param name the name to search for
+     * @return the Staff with the matching name, or null if not found
+     */
+    public Staff searchByName(String name) {
+        for (Staff staff : staffs) {
+            if (staff.name.equalsIgnoreCase(name)) {
+                return staff;
+            }
+        }
+
+        return null;
     }
 
     /**

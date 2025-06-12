@@ -40,7 +40,7 @@ public class FacilityManager {
 
             for (int i = 0; i < numFacilities; i++) {
                 int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim();
+                String type = br.readLine().trim().toLowerCase();
                 int roomNum = Integer.parseInt(br.readLine().trim());
                 int maxCapacity = Integer.parseInt(br.readLine().trim());
                 double ratingOrSize = Double.parseDouble(br.readLine().trim());
@@ -58,7 +58,7 @@ public class FacilityManager {
 
             br.close();
         } catch (IOException iox) {
-            System.out.println("Error reading from file");
+            System.out.println("Error reading facility file: " + iox.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class FacilityManager {
 
             bw.close();
         } catch (IOException iox) {
-            System.out.println("Error writing to file");
+            System.out.println("Error writing to facilities file: " + iox.getMessage());
         }
     }
 
@@ -132,14 +132,14 @@ public class FacilityManager {
      */
     public boolean printAllFacilities() {
         if (facilities.isEmpty()) {
-            return true;
+            return false;
         }
 
         for (Facility facility : facilities) {
             System.out.println(facility);
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -251,5 +251,10 @@ public class FacilityManager {
             }
         }
         return false;
+    }
+
+    // accessor for facilities
+    public ArrayList<Facility> getFacilities() {
+        return facilities;
     }
 }

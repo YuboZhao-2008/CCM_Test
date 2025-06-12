@@ -7,6 +7,12 @@
 
 package time;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import time.TimeBlock.Month;
 
 public class TimeManager {
@@ -16,7 +22,7 @@ public class TimeManager {
     public TimeManager() {
         this.time = new TimeBlock(2025, Month.JUN, 1, 12);
     }
-  
+
     /**
      * constructor for a time manager
      * 
@@ -24,6 +30,50 @@ public class TimeManager {
      */
     public TimeManager(TimeBlock time) {
         this.time = time;
+    }
+
+    /**
+     * constructor for a time manager
+     * 
+     * @param filepath the filepath to load from
+     */
+    public TimeManager(String filepath) {
+        this.time = new TimeBlock(2025, Month.JUN, 1, 12);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+            Month month = Month.valueOf(br.readLine().trim().toUpperCase());
+            int day = Integer.parseInt(br.readLine().trim());
+            int year = Integer.parseInt(br.readLine().trim());
+            double hour = Double.parseDouble(br.readLine().trim());
+
+            TimeBlock time = new TimeBlock(year, month, day, hour);
+
+            if (!time.isValid()) {
+                time = new TimeBlock(2025, Month.JUN, 1, 12);
+            }
+
+            this.time = time;
+            br.close();
+        } catch (IOException iox) {
+            System.out.println("Error reading time file: " + iox.getMessage());
+        }
+    }
+
+    /**
+     * saves time to file
+     * 
+     * @param filepath the filepath to save to
+     */
+    public void save(String filepath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+            bw.write(time.getMonth() + "\n");
+            bw.write(time.getDay() + "\n");
+            bw.write(time.getYear() + "\n");
+            bw.write(time.getStartHour() + "\n");
+            bw.close();
+        } catch (IOException iox) {
+            System.out.println("Error writing to time file: " + iox.getMessage());
+        }
     }
 
     /**
@@ -52,6 +102,8 @@ public class TimeManager {
                 main.CommunityCentreRunner.getMemberManager().billAnnualMembers();
                 // pay full-time staff
                 main.CommunityCentreRunner.getStaffManager().payFullTimeStaff();
+                // age members
+                main.CommunityCentreRunner.getMemberManager().ageMembers();
             }
         }
 
@@ -68,14 +120,12 @@ public class TimeManager {
     }
 
     /**
-     * advances the time until a specified date
+     * advances the time until the start of a specified time block
      * 
-     * @param year
-     * @param month
-     * @param day
+     * @param timeBlock
      */
-    public void advanceToDay(int year, Month month, int day) {
-        time = new TimeBlock(year, month, day, 0);
+    public void advanceToTimeBlock(TimeBlock timeBlock) {
+        advanceHours(time.hoursUntil(timeBlock));
     }
 
     /**

@@ -21,6 +21,8 @@ public abstract class Member {
     public static final double MONTHLY_BASE = 35.00;
     /** Annual base fee */
     public static final double ANNUAL_BASE = 350.00;
+    /** Minimum age for adult membership */
+    public static final int ADULT_AGE = 18;
 
     /** Unique identifier for this member */
     protected int id;
@@ -65,34 +67,19 @@ public abstract class Member {
     public abstract double calculateBill();
 
     /**
-     * Builds a summary string of this member's ID, age, name, plan, and bill.
-     *
-     * @return formatted membership details
-     */
-    public String membershipDetails() {
-        return "Member #" + id
-                + " | age: " + age
-                + " | name: " + name
-                + " | plan: " + planType
-                + " | bill: "
-                + String.format("$%.2f", calculateBill());
-    }
-
-    /**
-     * Prints the membership details to standard output.
-     */
-    public void printBill() {
-        System.out.println(membershipDetails());
-    }
-
-    /**
      * Returns the membership details string.
      *
      * @return the toString representation
      */
     @Override
     public String toString() {
-        return membershipDetails();
+
+        return "#" + id
+                + " | age: " + age
+                + " | name: " + name
+                + " | plan: " + planType
+                + " | bill: "
+                + String.format("$%.2f", calculateBill());
     }
 
     /**

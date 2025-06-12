@@ -35,8 +35,10 @@ public class YouthMember extends Member {
      */
     public YouthMember(int age, String name, PlanType planType, AdultMember guardian) {
         super(age, name, planType);
-        this.guardian = guardian;
-        guardian.addChild(this);
+        if (guardian != null) {
+            this.guardian = guardian;
+            guardian.addChild(this);
+        }
     }
 
     /**
@@ -48,7 +50,7 @@ public class YouthMember extends Member {
     @Override
     public double calculateBill() {
         double base;
-        switch(planType) {
+        switch (planType) {
             case MONTHLY:
                 base = MONTHLY_BASE;
                 break;
@@ -63,14 +65,6 @@ public class YouthMember extends Member {
     }
 
     /**
-     * Prints the calculated bill to standard output.
-     */
-    @Override
-    public void printBill() {
-        super.printBill();
-    }
-
-    /**
      * `
      * Returns a string representation of this youth member's billing details.
      *
@@ -78,7 +72,7 @@ public class YouthMember extends Member {
      */
     @Override
     public String toString() {
-        return super.toString()+" | guardian: "+guardian.getName();
+        return "Youth Member " + super.toString() + " | guardian: " + guardian.getName();
     }
 
     /**

@@ -262,7 +262,7 @@ public class TimeBlock {
         if (startHour >= 24) {
             return false;
         }
-        return !(endHour >= 24);
+        return !(endHour > 24);
     }
 
     /**

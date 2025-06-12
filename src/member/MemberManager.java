@@ -1,7 +1,9 @@
 package member;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +64,6 @@ public class MemberManager {
      */
     public MemberManager(String filename) {
         members = new ArrayList<>();
-        Map<Integer, Member> idToMember = new HashMap<>();
         Map<Integer, Integer> youthGuardian = new HashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -70,18 +71,17 @@ public class MemberManager {
 
             for (int i = 0; i < numMembers; i++) {
                 int id = Integer.parseInt(br.readLine().trim());
-                String type = br.readLine().trim().toLowerCase();
                 int age = Integer.parseInt(br.readLine().trim());
                 String name = br.readLine().trim();
                 Member.PlanType pType = Member.PlanType.valueOf(br.readLine().trim().toUpperCase());
 
-                if (type.equals("adult")) {
+                if (age >= Member.ADULT_AGE) {
                     String phone = br.readLine().trim();
                     String address = br.readLine().trim();
                     double totalAmount = Double.parseDouble(br.readLine().trim());
                     double paidAmount = Double.parseDouble(br.readLine().trim());
-                    int numChildren = Integer.parseInt(br.readLine().trim());
 
+                    int numChildren = Integer.parseInt(br.readLine().trim());
                     List<Integer> childIds = new ArrayList<>();
                     for (int j = 0; j < numChildren; j++) {
                         childIds.add(Integer.parseInt(br.readLine().trim()));
@@ -90,28 +90,63 @@ public class MemberManager {
                     AdultMember adult = new AdultMember(age, name, pType, phone, address, totalAmount, paidAmount);
                     adult.setId(id);
                     members.add(adult);
-                    idToMember.put(id, adult);
                     // you can still wire children if you stored their IDs elsewhere
                 } else { // youth
                     int guardianId = Integer.parseInt(br.readLine().trim());
                     YouthMember youth = new YouthMember(age, name, pType, null);
                     youth.setId(id);
                     members.add(youth);
-                    idToMember.put(id, youth);
                     youthGuardian.put(id, guardianId);
                 }
             }
 
             // now hook up youth to guardian and guardian to children
             for (var e : youthGuardian.entrySet()) {
-                YouthMember y = (YouthMember) idToMember.get(e.getKey());
-                AdultMember a = (AdultMember) idToMember.get(e.getValue());
+                YouthMember y = (YouthMember) searchById(e.getKey());
+                AdultMember a = (AdultMember) searchById(e.getValue());
                 y.setGuardian(a);
                 a.addChild(y);
             }
 
-        } catch (IOException e) {
-            System.out.println(e);
+            br.close();
+        } catch (IOException iox) {
+            System.out.println("Error reading member file: " + iox.getMessage());
+        }
+    }
+
+    /**
+     * saves to file
+     * 
+     * @param filepath
+     */
+    public void save(String filepath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
+            bw.write(members.size() + "\n");
+
+            for (Member member : members) {
+                bw.write(member.id + "\n");
+                bw.write(member.age + "\n");
+                bw.write(member.name + "\n");
+                bw.write(member.planType + "\n");
+
+                if (member instanceof AdultMember adult) {
+                    bw.write(adult.getContactPhone() + "\n");
+                    bw.write(adult.getAddress() + "\n");
+                    bw.write(adult.getTotalBillAmount() + "\n");
+                    bw.write(adult.getPaidBillAmount() + "\n");
+
+                    bw.write(adult.getChildren().size() + "\n");
+                    for (YouthMember child : adult.getChildren()) {
+                        bw.write(child.id + "\n");
+                    }
+                } else if (member instanceof YouthMember youth) {
+                    bw.write(youth.getGuardian().id + "\n");
+                }
+            }
+
+            bw.close();
+        } catch (IOException iox) {
+            System.out.println("Error writing to member file: " + iox.getMessage());
         }
     }
 
@@ -211,7 +246,9 @@ public class MemberManager {
         }
 
         for (Member m : members) {
-            m.printBill();
+            if (m instanceof AdultMember adult) {
+                adult.printBill();
+            }
         }
 
         return true;
@@ -259,23 +296,17 @@ public class MemberManager {
     /**
      * Searches for all members whose name matches the given string
      * (case-insensitive).
-     * Searches for all members whose name matches the given string
-     * (case-insensitive).
      *
      * @param name the full name to search for
-     * @return a list of Member objects whose names equal the search term; empty if
-     *         none found
-     * @return a list of Member objects whose names equal the search term; empty if
-     *         none found
+     * @return the first person with the name
      */
-    public List<Member> searchByName(String name) {
-        List<Member> matches = new ArrayList<>();
+    public Member searchByName(String name) {
         for (Member m : members) {
-            if (m.getName().equalsIgnoreCase(name)) {
-                matches.add(m);
+            if (m.name.equalsIgnoreCase(name)) {
+                return m;
             }
         }
-        return matches;
+        return null;
     }
 
     /**
@@ -300,6 +331,26 @@ public class MemberManager {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.ANNUAL && m instanceof AdultMember) {
                 ((AdultMember) m).payBill(m.calculateBill());
+            }
+        }
+    }
+
+    /**
+     * ages all members by one year
+     */
+    public void ageMembers() {
+        for (Member member : members) {
+            if (member instanceof AdultMember) {
+                member.age++;
+            } else if (member instanceof YouthMember youth) {
+                if (++member.age >= Member.ADULT_AGE) {
+                    AdultMember guardian = youth.getGuardian();
+                    AdultMember adult = new AdultMember(member.age, member.name, member.planType,
+                            guardian.getContactPhone(), guardian.getAddress());
+                    members.remove(youth);
+                    guardian.getChildren().remove(youth);
+                    members.add(adult);
+                }
             }
         }
     }
