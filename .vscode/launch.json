@@ -9,6 +9,13 @@
             "name": "CommunityCentreRunner",
             "request": "launch",
             "mainClass": "main.CommunityCentreRunner",
+            "projectName": "CommunityCentreManager_8845b37"
+        },
+        {
+            "type": "java",
+            "name": "CommunityCentreRunner",
+            "request": "launch",
+            "mainClass": "main.CommunityCentreRunner",
             "projectName": "CommunityCentreManager_dc1e7325"
         },
         {
