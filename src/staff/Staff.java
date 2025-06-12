@@ -69,15 +69,6 @@ public abstract class Staff {
     public abstract void printPayroll();
 
     /**
-     * Returns a string representation of this staff member.
-     * Implementation depends on the concrete staff type.
-     *
-     * @return a descriptive string for this staff
-     */
-    @Override
-    public abstract String toString();
-
-    /**
      * Checks if the staff is available during the given time block.
      *
      * @param block the TimeBlock to check

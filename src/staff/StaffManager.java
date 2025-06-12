@@ -274,7 +274,7 @@ public class StaffManager {
     public void payFullTimeStaff() {
         for (Staff s : staffs) {
             if (s instanceof FullTimeStaff fs) {
-                System.out.println(fs + " was paid " + fs.calculatePay());
+                System.out.printf("Staff #"+fs.getId()+" "+fs.getName()+" was paid %.2f\n", fs.calculatePay()*12);
             }
         }
     }
@@ -285,7 +285,20 @@ public class StaffManager {
     public void payPartTimeStaff() {
         for (Staff s : staffs) {
             if (s instanceof PartTimeStaff ps) {
-                System.out.println(ps + " was paid " + ps.calculatePay());
+                // assume every staff member worked the maximum
+                ps.setHoursWorked(ps.getMaxMonthlyHours());
+                System.out.printf("Staff #"+ps.getId()+" "+ps.getName()+" was paid %.2f\n", ps.calculatePay());
+            }
+        }
+    }
+
+    /**
+     * Increases the years worked of all full-time staff by 1
+     */
+    public void increaseYearsWorked() {
+        for (Staff s : staffs) {
+            if (s instanceof FullTimeStaff fs) {
+                fs.setYearsWorked(fs.getYearsWorked()+1);
             }
         }
     }

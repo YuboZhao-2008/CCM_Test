@@ -38,7 +38,7 @@ public class TimeManager {
      * @param filepath the filepath to load from
      */
     public TimeManager(String filepath) {
-        this.time = new TimeBlock(2025, Month.JUN, 1, 12);
+        this.time = new TimeBlock(2025, Month.JUN, 1, 0);
 
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             Month month = Month.valueOf(br.readLine().trim().toUpperCase());
@@ -88,26 +88,32 @@ public class TimeManager {
             Month prev_month = time.getMonth();
             int prev_year = time.getYear();
 
-            time = new TimeBlock(time.nextDay(), 0, 0);
+            time = time.nextDay();
             newHour -= 24;
 
             if (prev_month != time.getMonth()) {
+                System.out.println("--------------------- NEW MONTH: "+time.getMonth()+" ---------------------");
                 // bill monthly members
                 main.CommunityCentreRunner.getMemberManager().billMonthlyMembers();
                 // pay part-time staff
                 main.CommunityCentreRunner.getStaffManager().payPartTimeStaff();
+                System.out.println(); // blank line
             }
             if (prev_year != time.getYear()) {
+                System.out.println("--------------------- NEW YEAR: "+time.getYear()+" ---------------------");
                 // bill yearly members
                 main.CommunityCentreRunner.getMemberManager().billAnnualMembers();
+                // increase years worked for full-time staff
+                main.CommunityCentreRunner.getStaffManager().increaseYearsWorked();
                 // pay full-time staff
                 main.CommunityCentreRunner.getStaffManager().payFullTimeStaff();
                 // age members
                 main.CommunityCentreRunner.getMemberManager().ageMembers();
+                System.out.println(); // blank line
             }
         }
 
-        time = new TimeBlock(time, newHour, 0);
+        this.time = new TimeBlock(time, newHour, 0);
 
         main.CommunityCentreRunner.getEventManager().advanceTime(time);
     }

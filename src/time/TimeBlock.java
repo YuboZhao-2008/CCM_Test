@@ -180,7 +180,7 @@ public class TimeBlock {
     }
 
     public TimeBlock nextDay() {
-        int newDay = day++;
+        int newDay = day+1;
         Month newMonth = month;
         int newYear = year;
 
@@ -193,7 +193,7 @@ public class TimeBlock {
             }
         }
 
-        return new TimeBlock(newYear, newMonth, newDay);
+        return new TimeBlock(newYear, newMonth, newDay, 0, 0);
     }
 
     /**

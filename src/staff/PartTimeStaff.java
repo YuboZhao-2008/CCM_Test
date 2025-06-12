@@ -71,7 +71,6 @@ public class PartTimeStaff extends Staff {
      *
      * @return a string containing ID, name, salary info, and max hours
      */
-    @Override
     public String toString() {
         return "Staff #" + id +
                 " | name: " + name +

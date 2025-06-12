@@ -14,9 +14,8 @@ import java.util.ArrayList;
 // import scanner
 import java.util.Scanner;
 
+// import folders
 import event.Event;
-// import folders
-// import folders
 import event.EventManager;
 import facility.Facility;
 import facility.FacilityManager;
@@ -81,6 +80,7 @@ public class CommunityCentreRunner {
         return facilityManager;
     }
 
+    // input validation methods
     public static int posIntInputValidation(boolean useSeparator) {
         int choice = -1;
 
@@ -256,7 +256,7 @@ public class CommunityCentreRunner {
 
         // GUI main loop ----
         System.out.println(SEPARATOR);
-        System.out.println("It is currently " + timeManager.getCurrentTime() + ".");
+        System.out.println("It is currently " + currentTime + ".");
         System.out.println(SEPARATOR);
         System.out.println(); // blank line
 
@@ -291,8 +291,6 @@ public class CommunityCentreRunner {
         // if valid input
         switch (choice) {
             case 1 -> {
-                facilityManager.printAllFacilities();
-
                 System.out.println("What would you like to view?");
                 // all options for listing facilities
                 System.out.println("(1) Facilities by ID");
@@ -623,11 +621,6 @@ public class CommunityCentreRunner {
             }
 
             case 4 -> {
-                // first search for the event to book for
-                // then list options to book a member or assign a staff
-            }
-
-            case 5 -> {
                 System.out.println("What would you like to modify?");
                 System.out.println("(1) Modify Member");
                 System.out.println("(2) Modify Staff");
@@ -636,6 +629,11 @@ public class CommunityCentreRunner {
                 System.out.println("-");
                 System.out.println("(0) Back");
                 int modifyChoice = menuInputValidation(4);
+            }
+
+            case 5 -> {
+                // first search for the event to book for
+                // then list options to book a member or assign a staff
             }
 
             case 6 -> {
@@ -720,7 +718,8 @@ public class CommunityCentreRunner {
                     case 3 -> {
                         TimeBlock dateInput = dateInputValidation();
                         timeManager.advanceToTimeBlock(dateInput);
-                        System.out.println("Time set to " + timeManager.getCurrentTime() + ".");
+                        currentTime = timeManager.getCurrentTime();
+                        System.out.println("Time set to " + currentTime + ".");
                     }
                     case 0 -> {
                         return MenuStatus.BACK;
@@ -749,15 +748,16 @@ public class CommunityCentreRunner {
             // run the GUI loop
             switch (menuLoop()) {
                 case CONTINUE -> {
+                    System.out.println(); // blank line
                     // ask if user wants to continue
                     System.out.print("Enter (Q) to quit or enter to continue: ");
                     String continueChoice = scan.nextLine().trim().toUpperCase();
                     if (continueChoice.equals("Q")) {
                         exit = true; // exit the loop
-                        System.out.println();
+                        System.out.println(); // blank line
                         System.out.println(SEPARATOR);
-                        System.out.println();
                     }
+                    System.out.println(); // blank line
                 }
                 case EXIT -> exit = true;
                 case BACK -> System.out.println("Returning to main menu.\n");
