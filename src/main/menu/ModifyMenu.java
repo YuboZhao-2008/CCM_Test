@@ -8,10 +8,27 @@
 
 package main.menu;
 
+import java.util.Scanner;
+
+import event.Event;
+import event.EventManager;
+import facility.Facility;
+import facility.FacilityManager;
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
+import member.Member;
+import member.MemberManager;
+import staff.Staff;
+import staff.StaffManager;
+import time.TimeBlock;
 
 public class ModifyMenu {
+    public static Scanner scan = main.CommunityCentreRunner.scan;
+    public static MemberManager memberManager = main.CommunityCentreRunner.getMemberManager();
+    public static StaffManager staffManager = main.CommunityCentreRunner.getStaffManager();
+    public static FacilityManager facilityManager = main.CommunityCentreRunner.getFacilityManager();
+    public static EventManager eventManager = main.CommunityCentreRunner.getEventManager();
+
     // show the menu
     public static MenuStatus show() {
         System.out.println("What would you like to modify?");
@@ -27,16 +44,26 @@ public class ModifyMenu {
 
         switch (modifyChoice) {
             case 1 -> {
-
+                System.out.println("Enter member ID");
+                int fid = ValidateInput.posInt();
             }
             case 2 -> {
-
+                System.out.println("Enter staff ID");
+                int fid = ValidateInput.posInt();
             }
             case 3 -> {
+                System.out.println("Enter facility ID");
+                int fid = ValidateInput.posInt();
 
+                Facility fac = facilityManager.searchById(fid);
+                if (fac != null)
+                    System.out.println(fac);
+                else
+                    System.out.println("Facility with ID " + fid + " not found.");
             }
             case 4 -> {
-
+                System.out.println("Enter event ID");
+                int fid = ValidateInput.posInt();
             }
             case 0 -> {
                 return MenuStatus.BACK;
