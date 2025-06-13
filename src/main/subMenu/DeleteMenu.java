@@ -6,18 +6,23 @@
  * @since June 12, 2025
  */
 
-package main.menu;
+package main.subMenu;
+
+import java.util.Scanner;
 
 import event.EventManager;
 import facility.FacilityManager;
-import main.CommunityCentreRunner;
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
 import member.AdultMember;
+import member.Member;
 import member.MemberManager;
+import member.YouthMember;
+import staff.Staff;
 import staff.StaffManager;
 
 public class DeleteMenu {
+    public static Scanner scan = main.CommunityCentreRunner.scan;
     public static MemberManager memberManager = main.CommunityCentreRunner.getMemberManager();
     public static StaffManager staffManager = main.CommunityCentreRunner.getStaffManager();
     public static FacilityManager facilityManager = main.CommunityCentreRunner.getFacilityManager();
@@ -30,38 +35,39 @@ public class DeleteMenu {
         System.out.println("(2) Delete Staff");
         System.out.println("(3) Delete Facility");
         System.out.println("(4) Delete Event");
-        System.out.println("-");
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         int deleteChoice = ValidateInput.menu(4);
         main.CommunityCentreRunner.separate();
 
         switch (deleteChoice) {
             case 1 -> {
-                System.out.print("Enter the member ID to delete: ");
-                int memberId = ValidateInput.posInt();
+                System.out.println("Member ID or name to delete");
+                System.out.print(" > ");
+                String memberIdOrName = scan.nextLine().trim().toUpperCase();
+                Member member = memberManager.searchByIdOrName(memberIdOrName);
 
-                boolean isAdult = CommunityCentreRunner.getMemberManager().searchById(memberId) instanceof AdultMember am;
+                memberManager.removeMember(member.getId());
 
-                boolean removedMember = CommunityCentreRunner
-                        .getMemberManager()
-                        .removeMember(memberId);
-                if (removedMember && isAdult) {
-                    System.out.println("Member with ID " + memberId + " and their children have been deleted.");
-                } else if (removedMember) {
-                    System.out.println("Member with ID " + memberId + " has been deleted.");
+                if (member instanceof AdultMember) {
+                    System.out.println(
+                            "Adult member with ID #" + member.getId() + " and their children have been deleted.");
+                } else if (member instanceof YouthMember) {
+                    System.out.println("Youth member with ID #" + member.getId() + " has been deleted.");
                 } else {
-                    System.out.println("Member with ID " + memberId + " not found.");
+                    System.out.println("Member not found.");
                 }
             }
             case 2 -> {
-                System.out.print("Enter the staff ID to delete: ");
-                int staffId = ValidateInput.posInt();
-                boolean removedStaff = staffManager.removeStaff(staffId);
-                if (removedStaff) {
-                    System.out.println("Staff with ID " + staffId + " has been deleted.");
+                System.out.println("Staff ID or name to delete");
+                System.out.print(" > ");
+                String staffIdOrName = scan.nextLine().trim().toUpperCase();
+                Staff staff = staffManager.searchByIdOrName(staffIdOrName);
+
+                if (staff != null) {
+                    System.out.println("Staff with ID #" + staff.getId() + " has been deleted.");
                 } else {
-                    System.out.println("Staff with ID " + staffId + " not found.");
+                    System.out.println("Staff not found.");
                 }
             }
             case 3 -> {
@@ -69,9 +75,9 @@ public class DeleteMenu {
                 int facilityId = ValidateInput.posInt();
                 boolean removedFacility = facilityManager.removeFacility(facilityId);
                 if (removedFacility) {
-                    System.out.println("Facility with ID " + facilityId + " has been deleted.");
+                    System.out.println("Facility with ID #" + facilityId + " has been deleted.");
                 } else {
-                    System.out.println("Facility with ID " + facilityId + " not found.");
+                    System.out.println("Facility with ID #" + facilityId + " not found.");
                 }
             }
             case 4 -> {
@@ -80,9 +86,9 @@ public class DeleteMenu {
                 boolean cancelled = eventManager.cancelEvent(eventId); // uses cancelEvent to clean up
                 // registrations
                 if (cancelled) {
-                    System.out.println("Event with ID " + eventId + " has been deleted.");
+                    System.out.println("Event with ID #" + eventId + " has been deleted.");
                 } else {
-                    System.out.println("Event with ID " + eventId + " not found.");
+                    System.out.println("Event with ID #" + eventId + " not found.");
                 }
             }
             case 0 -> {

@@ -6,7 +6,7 @@
  * @since June 12, 2025
  */
 
-package main.menu;
+package main.subMenu;
 
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
@@ -20,25 +20,24 @@ public class AdvanceMenu {
     public static MenuStatus show() {
         System.out.println("What time would you like to advance to?");
         // options to advance time
-        System.out.println("(1) Advance by specified hours");
-        System.out.println("(2) Advance by an hour");
+        System.out.println("(1) Advance by one hour");
+        System.out.println("(2) Advance by specified hours");
         System.out.println("(3) Advance to a specific date");
-        System.out.println("-");
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         int advanceChoice = ValidateInput.menu(3);
         main.CommunityCentreRunner.separate();
 
         switch (advanceChoice) {
             case 1 -> {
+                timeManager.advanceHour();
+                System.out.println("Time advanced by one hour.");
+            }
+            case 2 -> {
                 System.out.print("Enter the number of hours to advance: ");
                 double hours = ValidateInput.posDouble();
                 timeManager.advanceHours(hours);
                 System.out.println("Time advanced by " + hours + " hours.");
-            }
-            case 2 -> {
-                timeManager.advanceHour();
-                System.out.println("Time advanced by one hour.");
             }
             case 3 -> {
                 TimeBlock dateInput = ValidateInput.date();

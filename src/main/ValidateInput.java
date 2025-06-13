@@ -11,14 +11,58 @@ package main;
 
 import java.util.Scanner;
 
+import member.Member;
 import member.Member.PlanType;
 import time.TimeBlock;
 import time.TimeBlock.Month;
-import main.CommunityCentreRunner;
 
 public class ValidateInput {
     // scanner
     public static Scanner scan = CommunityCentreRunner.scan;
+
+    // validates input for adult ages
+    public static int adultAge() {
+        int age = Member.ADULT_AGE - 1;
+
+        while (age < Member.ADULT_AGE) {
+            // input
+            System.out.print(" > ");
+            String userInput = scan.nextLine().trim();
+            // validate the input to a choice
+            try {
+                age = Integer.parseInt(userInput);
+                if (age < Member.ADULT_AGE) {
+                    System.out.println("Adult age must be at least " + Member.ADULT_AGE + ".");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Must enter an integer.");
+            }
+        }
+
+        return age;
+    }
+
+    // validates input for child age
+    public static int childAge() {
+        int age = -1;
+
+        while (age < 0 || age >= Member.ADULT_AGE) {
+            // input
+            System.out.print(" > ");
+            String userInput = scan.nextLine().trim();
+            // validate the input to a choice
+            try {
+                age = Integer.parseInt(userInput);
+                if (age < 0 || age >= Member.ADULT_AGE) {
+                    System.out.println("Youth age must be at between 0 and " + Member.ADULT_AGE + ".");
+                }
+            } catch (NumberFormatException nfe) {
+                System.out.println("Must enter an integer.");
+            }
+        }
+
+        return age;
+    }
 
     // validates input for positive integers
     public static int posInt() {
@@ -183,7 +227,7 @@ public class ValidateInput {
             System.out.println("Invalid date. Please try again.");
             System.out.println(); // blank line
             return date();
-        } else if (date.compareToStart(CommunityCentreRunner.getTimeManager().getCurrentTime())>0) {
+        } else if (date.compareToStart(CommunityCentreRunner.getTimeManager().getCurrentTime()) > 0) {
             System.out.println("Date cannot be in the past. Please try again.");
             System.out.println(); // blank line
             return date();

@@ -126,6 +126,22 @@ public class FacilityManager {
     }
 
     /**
+     * searches for a facility matching the room number
+     * 
+     * @param roomNum
+     * @return a facility object
+     */
+    public Facility searchByRoomNum(int roomNum) {
+        for (Facility facility : facilities) {
+            if (facility.getRoomNum() == roomNum) {
+                return facility;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * prints all facilities
      * 
      * @return whether anything was printed

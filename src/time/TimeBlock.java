@@ -16,11 +16,11 @@ public class TimeBlock {
         JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
     }
 
-    private int year;
-    private Month month;
-    private int day;
-    private double startHour;
-    private double endHour;
+    private final int year;
+    private final Month month;
+    private final int day;
+    private final double startHour;
+    private final double endHour;
 
     public static final int DAYS_IN_YEAR = 365;
     public static final Map<Month, Integer> DAYS_BEFORE_MONTH;
@@ -79,10 +79,6 @@ public class TimeBlock {
     }
     public static final int HOURS_IN_DAY = 24;
 
-    public TimeBlock() {
-
-    }
-
     /**
      * TimeBlock constructor for a whole-day event
      * 
@@ -129,6 +125,14 @@ public class TimeBlock {
         this.day = day;
         this.startHour = startHour;
         endHour = startHour + duration;
+    }
+
+    public TimeBlock() {
+        this.year = 2025;
+        this.month = Month.JAN;
+        this.day = 1;
+        this.startHour = 0;
+        endHour = startHour;
     }
 
     /**

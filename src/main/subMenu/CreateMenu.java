@@ -6,7 +6,7 @@
  * @since June 12, 2025
  */
 
-package main.menu;
+package main.subMenu;
 
 import java.util.Scanner;
 
@@ -32,8 +32,7 @@ public class CreateMenu {
         System.out.println("(2) Create Staff");
         System.out.println("(3) Create Facility");
         System.out.println("(4) Create Event");
-        System.out.println("-");
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         // now allow choice up to 4
         int createChoice = ValidateInput.menu(4);
@@ -73,6 +72,7 @@ public class CreateMenu {
                     } catch (NumberFormatException nfe) {
                         guardian = memberManager.searchByName(guardianIdOrName);
                     }
+
                     if (guardian instanceof AdultMember adult) {
                         newMember = new YouthMember(age, name, planType, adult);
 

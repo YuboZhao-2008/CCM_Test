@@ -125,20 +125,38 @@ public class AdultMember extends Member {
     }
 
     /**
-     * Prints this member’s billing details to standard output.
+     * Prints this member's billing details to standard output.
      */
     public void printBill() {
-        System.out.println(this+" | Total bill: "+totalBillAmount+" | Paid off: "+paidBillAmount);
+        System.out.println(this + " | Total bill: " + totalBillAmount + " | Paid off: " + paidBillAmount);
     }
 
     /**
-     * Returns a string representation of this member’s details.
+     * Returns a string representation of this member's details.
      *
      * @return membership details string
      */
     @Override
     public String toString() {
-        return "Adult Member " + super.toString();
+        String s = "Adult Member " + super.toString();
+
+        if (!children.isEmpty()) {
+            if (children.size() > 1) {
+                s += " | Children: ";
+
+                for (int i = 0; i < children.size(); i++) {
+                    YouthMember child = children.get(i);
+                    if (i > 0) {
+                        s += ", ";
+                    }
+                    s += child.getName();
+                }
+            } else {
+                s += " | Child: ";
+                s += children.get(0).getName();
+            }
+        }
+        return s;
     }
 
     /**
@@ -151,16 +169,37 @@ public class AdultMember extends Member {
     }
 
     /**
-     * Adds a youth member as this guardian’s child.
+     * Adds a youth member as this guardian's child.
      *
      * @param child the YouthMember to add
+     * @return whether the child was succesfully added (false -> already a child)
      */
-    public void addChild(YouthMember child) {
-        children.add(child);
+    public boolean addChild(YouthMember child) {
+        if (!children.contains(child)) {
+            children.add(child);
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Retrieves the list of this guardian’s children.
+     * Removes a youth member as this guardian's child.
+     *
+     * @param child the YouthMember to remove
+     * @return whether the child was succesfully removed (false -> not a child)
+     */
+    public boolean removeChild(YouthMember child) {
+        if (children.contains(child)) {
+            children.remove(child);
+            main.CommunityCentreRunner.getMemberManager().removeMember(child.getId());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves the list of this guardian's children.
      *
      * @return list of YouthMember
      */
@@ -212,7 +251,7 @@ public class AdultMember extends Member {
             case MONTHLY -> MONTHLY_BASE;
             case ANNUAL -> ANNUAL_BASE;
         };
-        this.totalBillAmount+=base;
+        this.totalBillAmount += base;
     }
 
     /**
