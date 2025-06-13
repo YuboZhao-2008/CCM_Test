@@ -10,14 +10,25 @@ package main.subMenu;
 
 import java.util.Scanner;
 
-import event.*;
-import facility.*;
-import main.*;
+import event.Competition;
+import event.Event;
+import event.Fundraiser;
+import facility.Facility;
+import facility.FacilityManager;
+import facility.MeetingFacility;
+import facility.SportsFacility;
 import main.CommunityCentreRunner.MenuStatus;
-import member.*;
+import main.ValidateInput;
+import member.AdultMember;
+import member.Member;
 import member.Member.PlanType;
-import staff.*;
-import time.*;
+import member.MemberManager;
+import member.YouthMember;
+import staff.FullTimeStaff;
+import staff.PartTimeStaff;
+import staff.Staff;
+import staff.StaffManager;
+import time.TimeBlock;
 
 public class CreateMenu {
     public static Scanner scan = main.CommunityCentreRunner.scan;
@@ -137,7 +148,7 @@ public class CreateMenu {
                             System.out.println("Rating must be between 0 and 10.");
                         }
                     }
-                    
+
                     newFacility = new SportsFacility(room, cap, rating);
                 }
 
@@ -158,14 +169,13 @@ public class CreateMenu {
                     participationCost = ValidateInput.posDouble();
                 }
 
-
                 TimeBlock d = ValidateInput.date();
 
                 System.out.println("Enter duration type   (0) Set duration   (1) All-day");
                 int durationChoice = ValidateInput.menu(1);
 
                 TimeBlock tb = new TimeBlock();
-                switch(durationChoice) {
+                switch (durationChoice) {
                     case 1 -> {
                         tb = d;
                     }
@@ -174,11 +184,11 @@ public class CreateMenu {
                         double startHour = sd[0];
                         double duration = sd[1];
                         tb = new TimeBlock(
-                            d.getYear(),
-                            d.getMonth(),
-                            d.getDay(),
-                            startHour,
-                            duration);
+                                d.getYear(),
+                                d.getMonth(),
+                                d.getDay(),
+                                startHour,
+                                duration);
                     }
                 }
 
@@ -194,7 +204,7 @@ public class CreateMenu {
                     } else {
                         switch (eventType) {
                             case 0 -> { // Competition
-                                if (fac instanceof SportsFacility sf) {
+                                if (fac instanceof SportsFacility) {
                                     if (fac.getBookings().isBlockFree(tb)) {
                                         validFacility = true;
                                     } else {
@@ -205,7 +215,7 @@ public class CreateMenu {
                                 }
                             }
                             case 1 -> { // Fundraiser
-                                if (fac instanceof MeetingFacility mf) {
+                                if (fac instanceof MeetingFacility) {
                                     if (fac.getBookings().isBlockFree(tb)) {
                                         validFacility = true;
                                     } else {

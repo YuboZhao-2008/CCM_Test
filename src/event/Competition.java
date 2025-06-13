@@ -9,13 +9,10 @@
 
 package event;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import facility.Facility;
+import main.ValidateInput;
 import member.Member;
 import time.TimeBlock;
-import main.ValidateInput;
 
 public class Competition extends Event {
     // fields
@@ -72,7 +69,7 @@ public class Competition extends Event {
         while (!valid_winner) {
             System.out.println("Enter the winner's member ID");
             winner_id = ValidateInput.posInt();
-            
+
             if (main.CommunityCentreRunner.getMemberManager().searchById(winner_id) != null) {
                 valid_winner = true;
             } else {
@@ -90,7 +87,7 @@ public class Competition extends Event {
      * toString
      */
     public String toString() {
-        String s = super.toString() +
+        String s = "Competition " + super.toString() +
                 " | Prize: " + prize +
                 " | Participation cost: " + String.format("$%.2f", participationCost);
         if (winner != null) {

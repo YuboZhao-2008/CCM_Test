@@ -181,15 +181,15 @@ public abstract class Event {
      * toString
      */
     public String toString() {
-        String s = "Event #" + id +
+        String s = "#" + id +
                 " | Room number: " + facility.getRoomNum() +
                 " | Time: " + timeBlock;
-                if (host != null) {
-                    s+=" | Host name: " + host.getName();
-                }
-                if (isCompleted) {
-                    s+=" | Completed ";
-                }
+        if (host != null) {
+            s += " | Host: " + host.getName();
+        }
+        if (isCompleted) {
+            s += " | Completed ";
+        }
 
         return s;
     }
