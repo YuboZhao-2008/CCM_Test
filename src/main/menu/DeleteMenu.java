@@ -40,9 +40,7 @@ public class DeleteMenu {
             case 1 -> {
                 System.out.print("Enter the member ID to delete: ");
                 int memberId = ValidateInput.posInt();
-
-                boolean isAdult = CommunityCentreRunner.getMemberManager().searchById(memberId) instanceof AdultMember am;
-
+                boolean isAdult = memberManager.searchById(memberId) instanceof AdultMember;
                 boolean removedMember = CommunityCentreRunner
                         .getMemberManager()
                         .removeMember(memberId);

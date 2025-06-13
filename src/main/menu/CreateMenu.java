@@ -8,19 +8,31 @@
 
 package main.menu;
 
-import java.util.*;
+import java.util.Scanner;
 
-import event.*;
-import facility.*;
-import main.*;
-import member.*;
-import staff.*;
-import time.*;
+import event.Competition;
+import event.Event;
+import event.Fundraiser;
+import facility.Facility;
+import facility.FacilityManager;
+import facility.MeetingFacility;
+import facility.SportsFacility;
+import main.CommunityCentreRunner.MenuStatus;
+import main.ValidateInput;
+import member.AdultMember;
+import member.Member;
+import member.Member.PlanType;
+import member.MemberManager;
+import member.YouthMember;
+import staff.FullTimeStaff;
+import staff.PartTimeStaff;
+import staff.StaffManager;
+import time.TimeBlock;
 
 public class CreateMenu {
     public static Scanner scan = main.CommunityCentreRunner.scan;
     public static MemberManager memberManager = main.CommunityCentreRunner.getMemberManager();
-    public static StaffManager staffManager   = main.CommunityCentreRunner.getStaffManager();
+    public static StaffManager staffManager = main.CommunityCentreRunner.getStaffManager();
     public static FacilityManager facilityManager = main.CommunityCentreRunner.getFacilityManager();
 
     public static MenuStatus show() {
@@ -57,8 +69,7 @@ public class CreateMenu {
                     String address = scan.nextLine().trim();
 
                     memberManager.addMember(
-                        new AdultMember(age, name, planType, contactPhone, address)
-                    );
+                            new AdultMember(age, name, planType, contactPhone, address));
                     System.out.println("Adult member created successfully.");
                 } else {
                     System.out.println("Guardian ID or name");
@@ -73,8 +84,7 @@ public class CreateMenu {
                     }
                     if (guardian instanceof AdultMember adult) {
                         memberManager.addMember(
-                            new YouthMember(age, name, planType, adult)
-                        );
+                                new YouthMember(age, name, planType, adult));
                         System.out.println("Youth member created successfully.");
                     } else {
                         System.out.println("No matching adult found.");
@@ -105,8 +115,7 @@ public class CreateMenu {
                     int maxH = ValidateInput.posInt();
 
                     staffManager.addStaff(
-                        new PartTimeStaff(staffName, hours, rate, maxH)
-                    );
+                            new PartTimeStaff(staffName, hours, rate, maxH));
                 }
                 System.out.println("Staff created successfully.");
             }
@@ -127,12 +136,12 @@ public class CreateMenu {
                         System.out.println("Enter room size (positive):");
                         System.out.print(" > ");
                         size = ValidateInput.posDouble();
-                        if (size <= 0) System.out.println("Room size must be positive.");
+                        if (size <= 0)
+                            System.out.println("Room size must be positive.");
                     } while (size <= 0);
 
                     facilityManager.addFacility(
-                        new MeetingFacility(room, cap, size)
-                    );
+                            new MeetingFacility(room, cap, size));
                 } else {
                     double rating;
                     do {
@@ -144,8 +153,7 @@ public class CreateMenu {
                     } while (rating < 0 || rating > 10);
 
                     facilityManager.addFacility(
-                        new SportsFacility(room, cap, rating)
-                    );
+                            new SportsFacility(room, cap, rating));
                 }
                 System.out.println("Facility created successfully.");
             }
@@ -183,15 +191,13 @@ public class CreateMenu {
                 TimeBlock tb;
                 if (durationChoice == 1) {
                     tb = new TimeBlock(
-                        d.getYear(), d.getMonth(), d.getDay(),
-                        0.0, 24.0
-                    );
+                            d.getYear(), d.getMonth(), d.getDay(),
+                            0.0, 24.0);
                 } else {
                     double[] sd = ValidateInput.startDuration();
                     tb = new TimeBlock(
-                        d.getYear(), d.getMonth(), d.getDay(),
-                        sd[0], sd[1]
-                    );
+                            d.getYear(), d.getMonth(), d.getDay(),
+                            sd[0], sd[1]);
                 }
 
                 Member host = null;
@@ -209,8 +215,8 @@ public class CreateMenu {
                 }
 
                 Event newEvent = (eventType == 0)
-                    ? new Competition(fac, tb, host, prizeOrGoal, participationCost)
-                    : new Fundraiser (fac, tb, host, prizeOrGoal);
+                        ? new Competition(fac, tb, host, prizeOrGoal, participationCost)
+                        : new Fundraiser(fac, tb, host, prizeOrGoal);
 
                 main.CommunityCentreRunner.getEventManager().book(newEvent);
                 System.out.println("Event created successfully.");

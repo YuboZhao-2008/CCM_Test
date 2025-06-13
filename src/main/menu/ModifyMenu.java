@@ -10,17 +10,13 @@ package main.menu;
 
 import java.util.Scanner;
 
-import event.Event;
 import event.EventManager;
 import facility.Facility;
 import facility.FacilityManager;
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
-import member.Member;
 import member.MemberManager;
-import staff.Staff;
 import staff.StaffManager;
-import time.TimeBlock;
 
 public class ModifyMenu {
     public static Scanner scan = main.CommunityCentreRunner.scan;
