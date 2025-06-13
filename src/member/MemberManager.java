@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.sampled.SourceDataLine;
-
 /**
  * Manages a collection of Member objects: loading from file,
  * adding new members, searching by ID, printing bills,
@@ -239,6 +237,25 @@ public class MemberManager {
     }
 
     /**
+     * searches for member by their name or id, whichever is valid
+     * 
+     * @param idOrName
+     * @return the member with the matching name or id
+     */
+    public Member searchByIdOrName(String idOrName) {
+        Member member = null;
+
+        try {
+            int id = Integer.parseInt(idOrName);
+            member = searchById(id);
+        } catch (NumberFormatException ignored) {
+            member = searchByName(idOrName);
+        }
+
+        return member;
+    }
+
+    /**
      * Prints all members' bills to standard output.
      * 
      * @return whether anything was printed
@@ -320,7 +337,8 @@ public class MemberManager {
     public void billMonthlyMembers() {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.MONTHLY && m instanceof AdultMember am) {
-                System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
+                System.out.printf("Member #" + am.getId() + " " + am.getName() + " was billed %.2f\n",
+                        am.calculateBill());
                 am.payBill(m.calculateBill()); // they pay off their bill
                 am.addBillBase();
             }
@@ -335,7 +353,8 @@ public class MemberManager {
     public void billAnnualMembers() {
         for (Member m : members) {
             if (m.getPlanType() == Member.PlanType.ANNUAL && m instanceof AdultMember am) {
-                System.out.printf("Member #"+am.getId()+" "+am.getName()+" was billed %.2f\n", am.calculateBill());
+                System.out.printf("Member #" + am.getId() + " " + am.getName() + " was billed %.2f\n",
+                        am.calculateBill());
                 am.payBill(m.calculateBill()); // they pay off their bill
                 am.addBillBase();
             }
@@ -351,8 +370,8 @@ public class MemberManager {
                 member.age++;
             } else if (member instanceof YouthMember youth) {
                 if (++youth.age >= Member.ADULT_AGE) {
-                    System.out.println(member.getName()+" is now an adult member.");
-                    
+                    System.out.println(member.getName() + " is now an adult member.");
+
                     AdultMember guardian = youth.getGuardian();
                     AdultMember adult = new AdultMember(youth.age, youth.name, youth.planType,
                             guardian.getContactPhone(), guardian.getAddress());

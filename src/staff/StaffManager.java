@@ -173,6 +173,25 @@ public class StaffManager {
     }
 
     /**
+     * searches for staff member by their name or id, whichever is valid
+     * 
+     * @param idOrName
+     * @return the staff with the matching name or id
+     */
+    public Staff searchByIdOrName(String idOrName) {
+        Staff staff = null;
+
+        try {
+            int id = Integer.parseInt(idOrName);
+            staff = searchById(id);
+        } catch (NumberFormatException ignored) {
+            staff = searchByName(idOrName);
+        }
+
+        return staff;
+    }
+
+    /**
      * Recursive helper for binary search by ID.
      *
      * @param id   the target ID
@@ -274,7 +293,8 @@ public class StaffManager {
     public void payFullTimeStaff() {
         for (Staff s : staffs) {
             if (s instanceof FullTimeStaff fs) {
-                System.out.printf("Staff #"+fs.getId()+" "+fs.getName()+" was paid %.2f\n", fs.calculatePay()*12);
+                System.out.printf("Staff #" + fs.getId() + " " + fs.getName() + " was paid %.2f\n",
+                        fs.calculatePay() * 12);
             }
         }
     }
@@ -287,7 +307,7 @@ public class StaffManager {
             if (s instanceof PartTimeStaff ps) {
                 // assume every staff member worked the maximum
                 ps.setHoursWorked(ps.getMaxMonthlyHours());
-                System.out.printf("Staff #"+ps.getId()+" "+ps.getName()+" was paid %.2f\n", ps.calculatePay());
+                System.out.printf("Staff #" + ps.getId() + " " + ps.getName() + " was paid %.2f\n", ps.calculatePay());
             }
         }
     }
@@ -298,7 +318,7 @@ public class StaffManager {
     public void increaseYearsWorked() {
         for (Staff s : staffs) {
             if (s instanceof FullTimeStaff fs) {
-                fs.setYearsWorked(fs.getYearsWorked()+1);
+                fs.setYearsWorked(fs.getYearsWorked() + 1);
             }
         }
     }

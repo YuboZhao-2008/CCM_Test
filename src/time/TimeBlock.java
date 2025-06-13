@@ -16,11 +16,11 @@ public class TimeBlock {
         JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
     }
 
-    private int year;
-    private Month month;
-    private int day;
-    private double startHour;
-    private double endHour;
+    private final int year;
+    private final Month month;
+    private final int day;
+    private final double startHour;
+    private final double endHour;
 
     public static final int DAYS_IN_YEAR = 365;
     public static final Map<Month, Integer> DAYS_BEFORE_MONTH;
@@ -78,10 +78,6 @@ public class TimeBlock {
         ABBR_TO_MONTH = Collections.unmodifiableMap(baz);
     }
     public static final int HOURS_IN_DAY = 24;
-
-    public TimeBlock() {
-
-    }
 
     /**
      * TimeBlock constructor for a whole-day event

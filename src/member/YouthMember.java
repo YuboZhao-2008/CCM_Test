@@ -91,6 +91,10 @@ public class YouthMember extends Member {
      * @param guardian the new adult guardian
      */
     public void setGuardian(AdultMember guardian) {
+        if (this.guardian != null) {
+            this.guardian.getChildren().remove(this);
+        }
+
         this.guardian = guardian;
         if (guardian != null) {
             guardian.addChild(this);

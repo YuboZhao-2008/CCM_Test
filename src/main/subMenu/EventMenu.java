@@ -6,7 +6,7 @@
  * @since 2025-06-12
  */
 
-package main.menu;
+package main.subMenu;
 
 import event.Event;
 import main.CommunityCentreRunner;

@@ -7,7 +7,6 @@ MONTHLY
 123 Apple St.
 455.0
 0.0
-2
 1
 1
 1

@@ -6,7 +6,7 @@
  * @since June 12, 2025
  */
 
-package main.menu;
+package main.subMenu;
 
 import java.util.Scanner;
 
@@ -45,39 +45,33 @@ public class SearchMenu {
         System.out.println("(7) Events within Time Range");
         System.out.println("-");
         // search members
-        System.out.println("(8) Members using ID");
-        System.out.println("(9) Members using Name");
+        System.out.println("(8) Member");
         System.out.println("-");
         // search staff
-        System.out.println("(10) Staff using ID");
-        System.out.println("(11) Staff using Name");
+        System.out.println("(9) Staff");
         System.out.println("-");
         // back
         System.out.println("<0> Back");
 
-        int searchChoice = ValidateInput.menu(11);
+        int searchChoice = ValidateInput.menu(9);
         main.CommunityCentreRunner.separate();
 
         switch (searchChoice) {
             case 1 -> {
-                System.out.println("Enter facility ID");
+                System.out.println("Facility ID");
                 int fid = ValidateInput.posInt();
                 Facility fac = facilityManager.searchById(fid);
+
                 if (fac != null)
                     System.out.println(fac);
                 else
                     System.out.println("Facility with ID #" + fid + " not found.");
             }
             case 2 -> {
-                System.out.println("Enter room number");
+                System.out.println("Room number");
                 int roomNum = ValidateInput.posInt();
-                Facility found = null;
-                for (Facility f : facilityManager.getFacilities()) {
-                    if (f.getRoomNum() == roomNum) {
-                        found = f;
-                        break;
-                    }
-                }
+                Facility found = facilityManager.searchByRoomNum(roomNum);
+
                 if (found != null)
                     System.out.println(found);
                 else
@@ -119,7 +113,7 @@ public class SearchMenu {
                 }
             }
             case 6 -> {
-                System.out.println("Enter event ID");
+                System.out.println("Event ID");
                 int eid = ValidateInput.posInt();
                 Event ev = eventManager.searchById(eid);
                 if (ev != null)
@@ -137,44 +131,26 @@ public class SearchMenu {
                 eventManager.printEventsWithin(tb);
             }
             case 8 -> {
-                System.out.println("Enter member ID");
-                int mid = ValidateInput.posInt();
-                Member m = memberManager.searchById(mid);
-                if (m != null)
-                    System.out.println(m);
+                System.out.println("Member ID or name");
+                System.out.print(" > ");
+                String memberIdOrName = scan.nextLine().trim().toUpperCase();
+                Member member = memberManager.searchByIdOrName(memberIdOrName);
+
+                if (member != null)
+                    System.out.println(member);
                 else
-                    System.out.println("Member with ID #" + mid + " not found.");
+                    System.out.println("Member not found.");
             }
             case 9 -> {
-                System.out.println("Enter member name");
+                System.out.println("Staff ID or name");
                 System.out.print(" > ");
-                String mName = scan.nextLine();
-                Member member = memberManager.searchByName(mName);
-                if (member != null) {
-                    System.out.println(member);
-                } else {
-                    System.out.println("No member named \"" + mName + "\".");
-                }
-            }
-            case 10 -> {
-                System.out.println("Enter staff ID");
-                int sid = ValidateInput.posInt();
-                Staff s = staffManager.searchById(sid);
-                if (s != null)
-                    System.out.println(s);
-                else
-                    System.out.println("Member with ID #" + sid + " not found.");
-            }
-            case 11 -> {
-                System.out.println("Enter staff name");
-                System.out.print(" > ");
-                String sName = scan.nextLine();
-                Staff staff = staffManager.searchByName(sName);
-                if (staff == null) {
-                    System.out.println("No staff named \"" + sName + "\".");
-                } else {
+                String staffIdOrName = scan.nextLine().trim().toUpperCase();
+                Staff staff = staffManager.searchByIdOrName(staffIdOrName);
+
+                if (staff != null)
                     System.out.println(staff);
-                }
+                else
+                    System.out.println("Member not found.");
             }
             case 0 -> {
                 return MenuStatus.BACK;

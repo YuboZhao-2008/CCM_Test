@@ -6,7 +6,7 @@
  * @since June 12, 2025
  */
 
-package main.menu;
+package main.subMenu;
 
 import java.util.Scanner;
 
@@ -75,18 +75,20 @@ public class CreateMenu {
                     System.out.print(" > ");
                     String guardianIdOrName = scan.nextLine().trim().toUpperCase();
                     Member guardian = null;
+
                     try {
                         int id = Integer.parseInt(guardianIdOrName);
                         guardian = memberManager.searchById(id);
                     } catch (NumberFormatException ignored) {
                         guardian = memberManager.searchByName(guardianIdOrName);
                     }
+
                     if (guardian instanceof AdultMember adult) {
                         memberManager.addMember(
                                 new YouthMember(age, name, planType, adult));
                         System.out.println("Youth member created successfully.");
                     } else {
-                        System.out.println("No matching adult found.");
+                        System.out.println("Adult member not found.");
                     }
                 }
             }
