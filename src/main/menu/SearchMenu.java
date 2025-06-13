@@ -53,7 +53,7 @@ public class SearchMenu {
         System.out.println("(11) Staff using Name");
         System.out.println("-");
         // back
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         int searchChoice = ValidateInput.menu(11);
         main.CommunityCentreRunner.separate();
@@ -66,7 +66,7 @@ public class SearchMenu {
                 if (fac != null)
                     System.out.println(fac);
                 else
-                    System.out.println("Facility with ID " + fid + " not found.");
+                    System.out.println("Facility with ID #" + fid + " not found.");
             }
             case 2 -> {
                 System.out.println("Enter room number");
@@ -125,7 +125,7 @@ public class SearchMenu {
                 if (ev != null)
                     System.out.println(ev);
                 else
-                    System.out.println("Event with ID " + eid + " not found.");
+                    System.out.println("Event with ID #" + eid + " not found.");
             }
             case 7 -> {
                 // build a TimeBlock
@@ -143,7 +143,7 @@ public class SearchMenu {
                 if (m != null)
                     System.out.println(m);
                 else
-                    System.out.println("Member with ID " + mid + " not found.");
+                    System.out.println("Member with ID #" + mid + " not found.");
             }
             case 9 -> {
                 System.out.println("Enter member name");
@@ -163,7 +163,7 @@ public class SearchMenu {
                 if (s != null)
                     System.out.println(s);
                 else
-                    System.out.println("Member with ID " + sid + " not found.");
+                    System.out.println("Member with ID #" + sid + " not found.");
             }
             case 11 -> {
                 System.out.println("Enter staff name");

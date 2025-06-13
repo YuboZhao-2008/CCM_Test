@@ -41,8 +41,7 @@ public class CreateMenu {
         System.out.println("(2) Create Staff");
         System.out.println("(3) Create Facility");
         System.out.println("(4) Create Event");
-        System.out.println("-");
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         int createChoice = ValidateInput.menu(4);
         main.CommunityCentreRunner.separate();

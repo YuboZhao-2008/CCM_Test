@@ -51,9 +51,9 @@ public class ListMenu {
         System.out.println("-");
 
         // back
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
-        int viewChoice = ValidateInput.menu(15);
+        int viewChoice = ValidateInput.menu(14);
         main.CommunityCentreRunner.separate();
 
         switch (viewChoice) {

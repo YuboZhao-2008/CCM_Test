@@ -2,20 +2,23 @@
  * ModifyMenu
  * contains the menu to modify modify objects
  *
- * @author
- * @since
+ * @author Sean Yang
+ * @since June 12, 2025
  */
 
 package main.menu;
 
 import java.util.Scanner;
 
+import event.Event;
 import event.EventManager;
 import facility.Facility;
 import facility.FacilityManager;
 import main.CommunityCentreRunner.MenuStatus;
 import main.ValidateInput;
+import member.Member;
 import member.MemberManager;
+import staff.Staff;
 import staff.StaffManager;
 
 public class ModifyMenu {
@@ -32,8 +35,7 @@ public class ModifyMenu {
         System.out.println("(2) Modify Staff");
         System.out.println("(3) Modify Facility");
         System.out.println("(4) Modify Event");
-        System.out.println("-");
-        System.out.println("(0) Back");
+        System.out.println("<0> Back");
 
         int modifyChoice = ValidateInput.menu(4);
         main.CommunityCentreRunner.separate();
@@ -41,25 +43,47 @@ public class ModifyMenu {
         switch (modifyChoice) {
             case 1 -> {
                 System.out.println("Enter member ID");
-                int fid = ValidateInput.posInt();
+                int mid = ValidateInput.posInt();
+                Member member = memberManager.searchById(mid);
+                if (member != null) {
+                    System.out.println(member);
+                    main.CommunityCentreRunner.separate();
+                } else {
+                    System.out.println("Member with ID #" + mid + " not found.");
+                }
             }
             case 2 -> {
                 System.out.println("Enter staff ID");
-                int fid = ValidateInput.posInt();
+                int sid = ValidateInput.posInt();
+                Staff staff = staffManager.searchById(sid);
+                if (staff != null) {
+                    System.out.println(staff);
+                    main.CommunityCentreRunner.separate();
+                } else {
+                    System.out.println("Staff with ID #" + sid + " not found.");
+                }
             }
             case 3 -> {
                 System.out.println("Enter facility ID");
                 int fid = ValidateInput.posInt();
 
-                Facility fac = facilityManager.searchById(fid);
-                if (fac != null)
-                    System.out.println(fac);
-                else
+                Facility facility = facilityManager.searchById(fid);
+                if (facility != null) {
+                    System.out.println(facility);
+                    main.CommunityCentreRunner.separate();
+                } else
                     System.out.println("Facility with ID " + fid + " not found.");
             }
             case 4 -> {
                 System.out.println("Enter event ID");
-                int fid = ValidateInput.posInt();
+                int eid = ValidateInput.posInt();
+                Event event = eventManager.searchById(eid);
+                if (event != null) {
+                    System.out.println(event);
+                    main.CommunityCentreRunner.separate();
+                } else {
+                    System.out.println("Event with ID #" + eid + " not found.");
+                }
             }
             case 0 -> {
                 return MenuStatus.BACK;

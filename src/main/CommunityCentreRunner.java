@@ -16,9 +16,9 @@ import java.util.Scanner;
 import event.EventManager;
 import facility.FacilityManager;
 import main.menu.AdvanceMenu;
-import main.menu.BookMenu;
 import main.menu.CreateMenu;
 import main.menu.DeleteMenu;
+import main.menu.EventMenu;
 import main.menu.ListMenu;
 import main.menu.ModifyMenu;
 import main.menu.SearchMenu;
@@ -50,7 +50,7 @@ public class CommunityCentreRunner {
 
     // enum containing menu statuses
     public enum MenuStatus {
-        EXIT, BACK, CONTINUE
+        QUIT, BACK, CONTINUE
     }
 
     // accessor method for member manager
@@ -120,12 +120,12 @@ public class CommunityCentreRunner {
         System.out.println("(2) Search");
         System.out.println("(3) Create");
         System.out.println("(4) Modify");
-        System.out.println("(5) Book");
-        System.out.println("(6) Delete");
+        System.out.println("(5) Delete");
+        System.out.println("(6) Manage Event");
         System.out.println("(7) Advance Time");
-        System.out.println("(8) Quit");
+        System.out.println("<0> Quit");
 
-        int choice = ValidateInput.menu(8);
+        int choice = ValidateInput.menu(7);
         separate();
 
         // if valid input
@@ -143,16 +143,16 @@ public class CommunityCentreRunner {
                 return ModifyMenu.show();
             }
             case 5 -> {
-                return BookMenu.show();
+                return DeleteMenu.show();
             }
             case 6 -> {
-                return DeleteMenu.show();
+                return EventMenu.show();
             }
             case 7 -> {
                 return AdvanceMenu.show();
             }
-            case 8 -> {
-                return MenuStatus.EXIT;
+            case 0 -> {
+                return MenuStatus.QUIT;
             }
         }
 
@@ -168,9 +168,9 @@ public class CommunityCentreRunner {
         staffManager = new StaffManager(STAFFS_FILEPATH);
         timeManager = new TimeManager(TIME_FILEPATH);
 
-        boolean exit = false;
+        boolean quit = false;
 
-        while (!exit) {
+        while (!quit) {
             // run the GUI loop
             switch (menuLoop()) {
                 case CONTINUE -> {
@@ -179,13 +179,13 @@ public class CommunityCentreRunner {
                     System.out.print("Enter (Q) to quit or enter to continue: ");
                     String continueChoice = scan.nextLine().trim().toUpperCase();
                     if (continueChoice.equals("Q")) {
-                        exit = true; // exit the loop
+                        quit = true; // exit the loop
                         System.out.println(); // blank line
                         System.out.println(SEPARATOR);
                     }
                     System.out.println(); // blank line
                 }
-                case EXIT -> exit = true;
+                case QUIT -> quit = true;
                 case BACK -> System.out.println("Returning to main menu.\n");
             }
 
