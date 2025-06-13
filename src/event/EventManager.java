@@ -99,7 +99,7 @@ public class EventManager {
 
                 facility.book(event);
 
-                events.add(event);
+                book(event);
             }
 
             reader.close();
