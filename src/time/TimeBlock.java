@@ -367,7 +367,7 @@ public class TimeBlock {
         String s = String.format("%s %d, %d %02d:%02d", month, day, year, (int) startHour, startMinute);
 
         if (duration() > 0) {
-            s += String.format(" - %02d:%02d", (int) endHour, endMinute);
+            s += String.format("-%02d:%02d", (int) endHour, endMinute);
         }
 
         return s;

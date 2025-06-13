@@ -324,7 +324,6 @@ public class EventManager {
      * @param newTime
      */
     public void advanceTime(TimeBlock newTime) {
-        main.CommunityCentreRunner.separate();
         System.out.println("Checking for event completion...");
         main.CommunityCentreRunner.separate();
 
