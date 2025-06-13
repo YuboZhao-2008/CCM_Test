@@ -177,7 +177,7 @@ public class CommunityCentreRunner {
                     System.out.println(); // blank line
                     // ask if user wants to continue
                     System.out.print("Enter (Q) to quit or enter to continue: ");
-                    String continueChoice = scan.nextLine().trim().toUpperCase();
+                    String continueChoice = scan.nextLine().toUpperCase();
                     if (continueChoice.equals("Q")) {
                         quit = true; // exit the loop
                         System.out.println(); // blank line

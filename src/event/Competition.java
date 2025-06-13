@@ -59,31 +59,12 @@ public class Competition extends Event {
     //
 
     /**
-     * setWinner
-     * sets the specified member as the winner of the event; used solely within
-     * setCompleted
-     * 
-     * @param member
-     * @return whether or not the winner was successfully set
-     */
-    private boolean setWinner(Member member) {
-        if (participants.contains(member)) {
-            winner = member;
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * setCompleted
      * will ask the user for the winner, affecting their balance in calculateBill
      * accordingly.
      */
     @Override
     public void setCompleted() {
-        Scanner scan = new Scanner(System.in);
-
         isCompleted = true;
         boolean valid_winner = false;
         int winner_id = 0;
@@ -102,8 +83,7 @@ public class Competition extends Event {
         winner = main.CommunityCentreRunner.getMemberManager().searchById(winner_id);
         System.out.println("Member has been set as the winner:");
         System.out.println(winner);
-
-        scan.close();
+        System.out.println(); // blank line
     }
 
     /*

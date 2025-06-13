@@ -141,7 +141,7 @@ public class TimeManager {
      * @return whether the time block coincides with the current time
      */
     public boolean isOngoing(TimeBlock timeBlock) {
-        if (timeBlock.isConflicting(time)) {
+        if (time.checkOngoing(timeBlock)) {
             return true;
         }
 

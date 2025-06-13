@@ -158,34 +158,6 @@ public class CreateMenu {
                     participationCost = ValidateInput.posDouble();
                 }
 
-                Facility fac = null;
-                boolean validFacility = false;
-                while (!validFacility) {
-                    System.out.println("Enter facility ID");
-                    int facId = ValidateInput.posInt();
-                    fac = facilityManager.searchById(facId);
-
-                    if (fac == null) {
-                        System.out.println("Facility with ID " + facId + " not found.");
-                    } else {
-                        switch (eventType) {
-                            case 0 -> { // Competition
-                                if (fac instanceof SportsFacility sf) {
-                                    validFacility = true;
-                                } else {
-                                    System.out.println("Invalid facility for the event.");
-                                }
-                            }
-                            case 1 -> { // Fundraiser
-                                if (fac instanceof MeetingFacility mf) {
-                                    validFacility = true;
-                                } else {
-                                    System.out.println("Invalid facility for the event.");
-                                }
-                            }
-                        }
-                    }
-                }
 
                 TimeBlock d = ValidateInput.date();
 
@@ -207,6 +179,43 @@ public class CreateMenu {
                             d.getDay(),
                             startHour,
                             duration);
+                    }
+                }
+
+                Facility fac = null;
+                boolean validFacility = false;
+                while (!validFacility) {
+                    System.out.println("Enter facility ID");
+                    int facId = ValidateInput.posInt();
+                    fac = facilityManager.searchById(facId);
+
+                    if (fac == null) {
+                        System.out.println("Facility with ID " + facId + " not found.");
+                    } else {
+                        switch (eventType) {
+                            case 0 -> { // Competition
+                                if (fac instanceof SportsFacility sf) {
+                                    if (fac.getBookings().isBlockFree(tb)) {
+                                        validFacility = true;
+                                    } else {
+                                        System.out.println("This facility has already been booked in the time block.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid facility for the event.");
+                                }
+                            }
+                            case 1 -> { // Fundraiser
+                                if (fac instanceof MeetingFacility mf) {
+                                    if (fac.getBookings().isBlockFree(tb)) {
+                                        validFacility = true;
+                                    } else {
+                                        System.out.println("This facility has already been booked in the time block.");
+                                    }
+                                } else {
+                                    System.out.println("Invalid facility for the event.");
+                                }
+                            }
+                        }
                     }
                 }
 

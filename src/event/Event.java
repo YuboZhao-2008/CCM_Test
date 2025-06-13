@@ -108,7 +108,7 @@ public abstract class Event {
      * @return
      */
     public boolean occursBefore(TimeBlock time) {
-        return (!hasCompleted() && time.compareToStart(getTimeBlock()) > 0
+        return (!hasCompleted() && time.compareToStart(getTimeBlock()) < 0
                 && !main.CommunityCentreRunner.getTimeManager().isOngoing(getTimeBlock()));
     }
 
@@ -188,7 +188,7 @@ public abstract class Event {
                     s+=" | Host name: " + host.getName();
                 }
                 if (isCompleted) {
-                    s+=" | This event has finished.";
+                    s+=" | Completed ";
                 }
 
         return s;

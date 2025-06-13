@@ -331,6 +331,21 @@ public class TimeBlock {
     }
 
     /**
+     * checks whether a timeblock is ongoing within another
+     * 
+     * @param other the other TimeBlock
+     * @return whether the explicit is ongoing within the implicit
+     */
+    public boolean checkOngoing(TimeBlock other) {
+        if (year == other.year && month == other.month && day == other.day) {
+            return (startHour <= other.endHour && other.startHour <= endHour) || (startHour >= other.endHour
+                    && other.startHour >= endHour);
+        }
+
+        return false;
+    }
+
+    /**
      * accessor for duration
      * 
      * @return a double, the duration

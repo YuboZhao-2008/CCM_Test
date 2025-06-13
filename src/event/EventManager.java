@@ -268,7 +268,7 @@ public class EventManager {
 
         for (Event event : events) {
             // print if the event starts before the time
-            if (!event.occursBefore(time)) {
+            if (event.occursBefore(time)) {
                 found = true;
                 System.out.println(event);
             }
@@ -325,15 +325,14 @@ public class EventManager {
      */
     public void advanceTime(TimeBlock newTime) {
         main.CommunityCentreRunner.separate();
-        System.out.println("Checking for events...");
+        System.out.println("Checking for event completion...");
         main.CommunityCentreRunner.separate();
 
         for (Event event : events) {
             if (!event.hasCompleted()) {
                 if (event.getTimeBlock().compareToEnd(newTime) > 0) {
-                    System.out.println(event.getTimeBlock().compareToEnd(newTime));
                     System.out.println(event);
-                    System.out.println("Event #"+event.getId()+" has completed!");
+                    System.out.println("Event has completed!");
                     System.out.println(); // blank line
                     event.setCompleted();
                 }

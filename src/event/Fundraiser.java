@@ -13,6 +13,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import facility.Facility;
+import main.ValidateInput;
 import member.AdultMember;
 import member.Member;
 import time.TimeBlock;
@@ -55,28 +56,13 @@ public class Fundraiser extends Event {
         Scanner scan = new Scanner(System.in);
 
         isCompleted = true;
-        boolean valid_input = false;
         double amount = 0;
 
         System.out
-                .println("For each adult participant, enter the amount they raised (This does not affect their bill).");
+                .println("For each adult participant, enter the amount they raised (This does not affect their bill)");
         for (int i = 0; i < participants.size(); i++) {
             if (participants.get(i) instanceof AdultMember adultMember) {
-                valid_input = false;
-
-                while (!valid_input) {
-                    try {
-                        System.out.print(adultMember.getName() + " raised: $");
-
-                        amount = scan.nextDouble();
-
-                        valid_input = true;
-                    } catch (InputMismatchException ime) {
-                        System.out.println("Invalid amount raised.");
-                        System.out.println("Please try again.");
-                        System.out.println(); // blank line
-                    }
-                }
+                amount = ValidateInput.posDouble();
 
                 amountRaised += amount;
             }
