@@ -15,6 +15,7 @@ import java.util.Scanner;
 import facility.Facility;
 import member.Member;
 import time.TimeBlock;
+import main.ValidateInput;
 
 public class Competition extends Event {
     // fields
@@ -88,23 +89,19 @@ public class Competition extends Event {
         int winner_id = 0;
 
         while (!valid_winner) {
-            try {
-                System.out.print("Enter the winner's member ID: ");
-                winner_id = scan.nextInt();
-
-                valid_winner = setWinner(main.CommunityCentreRunner.getMemberManager().searchById(winner_id));
-
-                if (!valid_winner) {
-                    System.out.println("Invalid ID.");
-                    System.out.println("Please try again.");
-                    System.out.println(); // blank line
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Invalid ID.");
-                System.out.println("Please try again.");
-                System.out.println(); // blank line
+            System.out.println("Enter the winner's member ID");
+            winner_id = ValidateInput.posInt();
+            
+            if (main.CommunityCentreRunner.getMemberManager().searchById(winner_id) != null) {
+                valid_winner = true;
+            } else {
+                System.out.println("Please enter a valid id.");
             }
         }
+
+        winner = main.CommunityCentreRunner.getMemberManager().searchById(winner_id);
+        System.out.println("Member has been set as the winner:");
+        System.out.println(winner);
 
         scan.close();
     }

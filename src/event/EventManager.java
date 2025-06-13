@@ -324,9 +324,17 @@ public class EventManager {
      * @param newTime
      */
     public void advanceTime(TimeBlock newTime) {
+        main.CommunityCentreRunner.separate();
+        System.out.println("Checking for events...");
+        main.CommunityCentreRunner.separate();
+
         for (Event event : events) {
             if (!event.hasCompleted()) {
-                if (event.getTimeBlock().compareToEnd(newTime) < 0) {
+                if (event.getTimeBlock().compareToEnd(newTime) > 0) {
+                    System.out.println(event.getTimeBlock().compareToEnd(newTime));
+                    System.out.println(event);
+                    System.out.println("Event #"+event.getId()+" has completed!");
+                    System.out.println(); // blank line
                     event.setCompleted();
                 }
             }

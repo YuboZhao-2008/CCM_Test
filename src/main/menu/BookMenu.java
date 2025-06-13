@@ -28,7 +28,6 @@ public class BookMenu {
         switch (choice) {
             case 1: {
                 System.out.println("Enter event ID");
-                System.out.print(" > ");
                 int eventId = ValidateInput.posInt();
                 Event event = CommunityCentreRunner.getEventManager().searchById(eventId);
                 if (event == null) {
@@ -37,7 +36,6 @@ public class BookMenu {
                 }
 
                 System.out.println("Enter member ID");
-                System.out.print(" > ");
                 int memberId = ValidateInput.posInt();
                 Member member = CommunityCentreRunner.getMemberManager().searchById(memberId);
                 if (member == null) {
@@ -51,7 +49,6 @@ public class BookMenu {
             }
             case 2: {
                 System.out.println("Enter event ID");
-                System.out.print(" > ");
                 int eventId2 = ValidateInput.posInt();
                 Event event2 = CommunityCentreRunner.getEventManager().searchById(eventId2);
                 if (event2 == null) {
@@ -60,7 +57,6 @@ public class BookMenu {
                 }
 
                 System.out.println("Enter staff ID");
-                System.out.print(" > ");
                 int staffId = ValidateInput.posInt();
                 Staff staff = CommunityCentreRunner.getStaffManager().searchById(staffId);
                 if (staff == null) {

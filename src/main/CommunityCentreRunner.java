@@ -163,9 +163,9 @@ public class CommunityCentreRunner {
     public static void main(String[] args) {
         // load data from files=
         memberManager = new MemberManager(MEMBERS_FILEPATH);
-        eventManager = new EventManager(EVENTS_FILEPATH);
         facilityManager = new FacilityManager(FACILITIES_FILEPATH);
         staffManager = new StaffManager(STAFFS_FILEPATH);
+        eventManager = new EventManager(EVENTS_FILEPATH);
         timeManager = new TimeManager(TIME_FILEPATH);
 
         boolean exit = false;
